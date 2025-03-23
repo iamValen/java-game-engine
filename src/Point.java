@@ -35,6 +35,13 @@ public class Point {
         updateCartesian();
     }
 
+    public int x(){return x;}
+    public int y(){return y;}
+
+    public double r(){return r;}
+    public double t(){return t;}
+
+
     /**
      * Updates the polar variables of the point
      */
@@ -91,6 +98,6 @@ public class Point {
 
     @Override
     public String toString() {
-        return "(" + x + ", " + y + ") [r=" + String.format("%.2f", r) + ", θ=" + String.format("%.2f", Math.toDegrees(t)) + "°]";
+        return "(" + x + ", " + y + ")";
     }
 }
