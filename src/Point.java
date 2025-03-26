@@ -2,7 +2,6 @@
  * Represents a point in two dimensions
  * @author Valentim Khakhitva
  * @version (27/2/2025)
- * @inv if a point is outside the 1st quadrant
  */
 public class Point {
     private int x, y;
@@ -13,9 +12,6 @@ public class Point {
      * @param y Ordinate of the point
      */
     public Point(int x, int y) {
-        if (x < 0 || y < 0) {
-            throw new IllegalArgumentException("Ponto:vi");
-        }
         this.x = x;
         this.y = y;
         updatePolar();
