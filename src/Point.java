@@ -98,6 +98,10 @@ public class Point {
         return out;
     }
 
+    public Point sum(Point that){
+        return new Point(this.x+that.x, this.y+that.y);
+    }
+
     /**
      * verifica se 3 pontos sao colineares
      * @param a ponto a
@@ -118,14 +122,21 @@ public class Point {
         return new Point(-x, -y);
     }
 
-    public Point sum(Point that){
-        return new Point(this.x+that.x, this.y+that.y);
-    }
 
+    /**
+     * scales a point from 0,0
+     * @param s
+     * @return
+     */
     public Point scale(double s){
         return new Point(this.x*s, this.x*s);
     }
 
+    /**
+     * returns new point rotated arround 0,0
+     * @param deg rotation in degrees
+     * @return
+     */
     public Point rotate(double deg){
         double rad = Math.toRadians(deg);
         double cos = Math.cos(rad);
