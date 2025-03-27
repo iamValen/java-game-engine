@@ -1,5 +1,5 @@
 
-import static util.util.tol;
+import static util.util.*;
 /**
  * realiza todas as operacoes sobre circulos
  * @author Alexandre Menino a83974
@@ -18,19 +18,6 @@ public class Circulo extends Figura {
     public Circulo(Point c, Double r){
         super(1);
         this.centro = c;
-        this.raio = r;
-        check(c, r);
-    }
-
-    /**
-     * cria um circulo dados um array de objetos
-     * @param nums array de objetos em que Object[0] e Object[1] sao Integer e representam as coordenadas x e y do centro e Object[2] e Double e e o raio do circulo
-     */
-    public Circulo(Object[] nums){
-        super(1);
-        Point c = new Point((Integer) nums[0], (Integer) nums[1]);
-        this.centro = c;
-        double r = (Double) nums[2];
         this.raio = r;
         check(c, r);
     }
@@ -145,6 +132,6 @@ public class Circulo extends Figura {
             if(sb.charAt(sb.length()-1) == '.' || sb.charAt(sb.length()-1) == ',')
                 sb.deleteCharAt(sb.length()-1);
         }
-        return String.format("Circulo: (%d,%d) %s", centro.X(), centro.Y(), sb.toString());
+        return String.format("Circulo: %s %s", centro.toString(), sb.toString());
     }
 }

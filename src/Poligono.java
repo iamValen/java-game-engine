@@ -1,5 +1,5 @@
 
-import static util.util.tol;
+import static util.util.*;
 /**
  * realiza todas as operacoes sobre Poligonos
  * @author Alexandre Menino a83974
@@ -222,7 +222,7 @@ public class Poligono extends Figura {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Poligono de %d vertices: [", pontos.length ));
         for (Point ponto : pontos) {
-            sb.append(String.format("(%d,%d), ", ponto.X(), ponto.Y()));
+            sb.append(String.format("&s, ", ponto.toString()));
         }
         sb.setLength(sb.length() - 2);
         sb.append("]");
