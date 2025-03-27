@@ -6,13 +6,11 @@ public class Collider implements ICollider {
 
         fig = fig.translacao(fig.centroid().flipSign()); //vai para a posicao 0,0
         
-        //TODO: scale, estava a pensar fzr na classe figura
-
-        //TODO: rotate, estava a pensar fzr na classe figura
+        fig = fig.rotate(transform.angle()); //rodada
+        
+        fig = fig.scale(transform.scale()); //escalada
 
         this.fig = fig.translacao(transform.position()); //vai para a posicao certa
-
-        this.fig = fig;
 
         this.layer = transform.layer();
     }

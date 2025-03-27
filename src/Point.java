@@ -122,6 +122,17 @@ public class Point {
         return new Point(this.x+that.x, this.y+that.y);
     }
 
+    public Point scale(double s){
+        return new Point(this.x*s, this.x*s);
+    }
+
+    public Point rotate(double deg){
+        double rad = Math.toRadians(deg);
+        double cos = Math.cos(rad);
+        double sin = Math.sin(rad);
+        return new Point(x*cos - y*sin, x*sin + y*cos);
+    }
+
     /**
      * calcula o vetor que transfora o recetor no ponto dado
      * @param that ponto resultante de aplicar o vetor devolvido ao recetor

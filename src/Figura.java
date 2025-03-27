@@ -12,6 +12,10 @@ public abstract class Figura {
 
     public abstract Point centroid();
 
+    public abstract Figura scale(double r);
+
+    public abstract Figura rotate(double r);
+
     public abstract String toString();
 
     public abstract Figura translacao(double dx, double dy);

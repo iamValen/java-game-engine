@@ -195,6 +195,27 @@ public class Poligono extends Figura {
         return new Point(xc, yc);
     }
 
+    @Override
+    public Figura scale(double s){
+        Point[] pts = new Point[pontos.length];
+
+        for(int i = 0; i < pontos.length; i++){
+            pts[i] = pontos[i].scale(s);
+        }
+
+        return new Poligono(pts);
+    }
+
+    @Override
+    public Figura rotate(double r){
+        Point[] pts = new Point[pontos.length];
+
+        for(int i = 0; i < pontos.length; i++){
+            pts[i] = pontos[i].rotate(r);
+        }
+
+        return new Poligono(pts);
+    }
 
     @Override
     public String toString(){

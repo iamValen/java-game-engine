@@ -125,6 +125,16 @@ public class Circulo extends Figura {
     }
 
     @Override
+    public Figura scale(double r){
+        return new Circulo(this.centro, this.raio*r);
+    }
+
+    @Override
+    public Figura rotate(double r){
+        return this;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(raio.toString());
 
