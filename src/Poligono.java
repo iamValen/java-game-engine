@@ -1,4 +1,3 @@
-
 import static util.util.*;
 /**
  * realiza todas as operacoes sobre Poligonos
@@ -220,12 +219,10 @@ public class Poligono extends Figura {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Poligono de %d vertices: [", pontos.length ));
         for (Point ponto : pontos) {
-            sb.append(String.format("&s, ", ponto.toString()));
+            sb.append(String.format("%s ", ponto.toString()));
         }
-        sb.setLength(sb.length() - 2);
-        sb.append("]");
+        sb.setLength(sb.length() - 1);
         return sb.toString();
     }
 }

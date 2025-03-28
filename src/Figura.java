@@ -1,4 +1,8 @@
-
+/**
+ * ...
+ * @author Alexandre Menino a83974
+ * @version 28/03/2025
+ */
 public abstract class Figura {
     public final int tipoFig;
     /*

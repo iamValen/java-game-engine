@@ -1,5 +1,5 @@
-
 import static util.util.*;
+
 /**
  * realiza todas as operacoes sobre pontos
  * @author Alexandre Menino a83974
@@ -128,7 +128,7 @@ public class Point {
      * @return
      */
     public Point scale(double s){
-        return new Point(this.x*s, this.x*s);
+        return new Point(this.x*s, this.y*s);
     }
 
     /**
@@ -174,28 +174,6 @@ public class Point {
 
     @Override
     public String toString() {
-        Double X = x;
-        StringBuilder sbX = new StringBuilder(X.toString());
-        
-        if(X.toString().contains(".") || X.toString().contains(",") ){
-            while(sbX.charAt(sbX.length()-1) == '0')
-            sbX.deleteCharAt(sbX.length()-1);
-            
-            if(sbX.charAt(sbX.length()-1) == '.' || sbX.charAt(sbX.length()-1) == ',')
-            sbX.deleteCharAt(sbX.length()-1);
-        }
-
-        Double Y = y;
-        StringBuilder sbY = new StringBuilder(Y.toString());
-        
-        if(Y.toString().contains(".") || Y.toString().contains(",") ){
-            while(sbY.charAt(sbY.length()-1) == '0')
-            sbY.deleteCharAt(sbY.length()-1);
-            
-            if(sbY.charAt(sbY.length()-1) == '.' || sbY.charAt(sbY.length()-1) == ',')
-            sbY.deleteCharAt(sbY.length()-1);
-        }
-
-        return "("+sbX.toString()+","+sbY.toString()+")";
+        return String.format("(%.2f,%.2f)", x, y);
     }
 }

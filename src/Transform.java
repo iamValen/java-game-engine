@@ -1,3 +1,8 @@
+/**
+ * ...
+ * @author Alexandre Menino a83974
+ * @version 28/03/2025
+ */
 public class Transform implements ITransform {
 
     private Point posicao;
@@ -23,7 +28,7 @@ public class Transform implements ITransform {
     }
 
     public void scale(double dScale){
-        escala+=dScale;
+        escala*=dScale;
     }
 
     public Point position(){
@@ -42,4 +47,8 @@ public class Transform implements ITransform {
         return escala;
     }
 
+    @Override
+    public String toString(){
+        return String.format("%s %d %.2f %.2f", posicao.toString(), layer, rotacao, escala);
+    }
 }

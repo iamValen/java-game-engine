@@ -1,5 +1,5 @@
-
 import static util.util.*;
+
 /**
  * realiza todas as operacoes sobre segmentos de reta
  * @author Alexandre Menino a83974

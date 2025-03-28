@@ -1,3 +1,8 @@
+/**
+ * ...
+ * @author Alexandre Menino a83974
+ * @version 28/03/2025
+ */
 public class Collider implements ICollider {
     private Figura fig;
     private Point centroid;
@@ -39,5 +44,10 @@ public class Collider implements ICollider {
 
     public Point centroid(){
         return centroid;
+    }
+
+    @Override
+    public String toString(){
+        return fig.toString();
     }
 }

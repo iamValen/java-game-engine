@@ -1,10 +1,7 @@
-
-import static util.util.*;
 /**
  * realiza todas as operacoes sobre circulos
  * @author Alexandre Menino a83974
- * @version 3.0 22/03/2025
- * @inv o circulo nao pertence totalmente ao primeiro quadrante 
+ * @version 28/03/2025
  */
 public class Circulo extends Figura {
     private final Point centro;
@@ -19,15 +16,6 @@ public class Circulo extends Figura {
         super(1);
         this.centro = c;
         this.raio = r;
-        check(c, r);
-    }
-
-    /**
-     * verifica se o circulo esta totalmente no primeiro quadrante
-     */
-    private static void check(Point c, double r){
-        if(tol(c.x() - r) < 0 || tol(c.y() - r) < 0)
-            throw new IllegalArgumentException("Circulo:vi");
     }
 
     public Point centro(){
@@ -123,15 +111,6 @@ public class Circulo extends Figura {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(raio.toString());
-
-        if(raio.toString().contains(".") || raio.toString().contains(",") ){
-            while(sb.charAt(sb.length()-1) == '0')
-                sb.deleteCharAt(sb.length()-1);
-            
-            if(sb.charAt(sb.length()-1) == '.' || sb.charAt(sb.length()-1) == ',')
-                sb.deleteCharAt(sb.length()-1);
-        }
-        return String.format("Circulo: %s %s", centro.toString(), sb.toString());
+        return String.format("%s %.2f", centro.toString(), raio);
     }
 }
