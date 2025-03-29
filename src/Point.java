@@ -1,4 +1,4 @@
-import static util.util.*;
+import static utili.util.*;
 
 /**
  * realiza todas as operacoes sobre pontos

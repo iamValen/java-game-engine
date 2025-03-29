@@ -5,7 +5,7 @@ import java.util.Scanner;
  * @author Valentim Khakhitva a81785
  * @version 28/03/2025
  */
-public class Main {
+public class MainL {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String name = sc.nextLine().trim();

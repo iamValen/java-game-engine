@@ -28,7 +28,7 @@ public class Transform implements ITransform {
     }
 
     public void scale(double dScale){
-        escala*=dScale;
+        escala+=dScale;
     }
 
     public Point position(){

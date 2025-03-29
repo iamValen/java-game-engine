@@ -1,8 +1,10 @@
+package utili;
 /**
  * Extra functions for the project
  * @author Alexandre Menino a83974
  * @version 28/03/2025
  */
+
 public class util {
     public static double tol(double d){
         if(-1e-9 <= d && d <= 1e-9) return 0;

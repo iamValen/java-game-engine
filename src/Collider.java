@@ -6,6 +6,7 @@
 public class Collider implements ICollider {
     private Figura fig;
     private Point centroid;
+    private double scale;
     private int layer;
 
     Collider(Figura fig, Transform transform){
@@ -15,6 +16,7 @@ public class Collider implements ICollider {
         fig = fig.rotate(transform.angle()); //rodada
 
         fig = fig.scale(transform.scale()); //escalada
+        scale = transform.scale();
 
         this.centroid = transform.position();
         
@@ -24,21 +26,22 @@ public class Collider implements ICollider {
     }
 
     public void move(Point p, int layer){
-        fig.translacao(p.x(), p.y());
-        centroid.sum(p);
+        fig = fig.translacao(p.x(), p.y());
+        centroid = centroid.sum(p);
         this.layer += layer;
     }
 
     public void rotate(double r){
-        fig.translacao(centroid.flipSign());
-        fig.rotate(r);
-        fig.translacao(centroid);
+        fig = fig.translacao(centroid.flipSign());
+        fig = fig.rotate(r);
+        fig = fig.translacao(centroid);
     }
 
     public void scale(double s){
-        fig.translacao(centroid.flipSign());
-        fig.scale(s);
-        fig.translacao(centroid);
+        fig = fig.translacao(centroid.flipSign());
+        fig = fig.scale(1f + s/scale);
+        scale += s;
+        fig = fig.translacao(centroid);
     }
 
 

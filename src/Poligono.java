@@ -1,4 +1,5 @@
-import static util.util.*;
+import static utili.util.*;
+
 /**
  * realiza todas as operacoes sobre Poligonos
  * @author Alexandre Menino a83974
