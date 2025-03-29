@@ -18,7 +18,7 @@ public class GameObjectTests {
         // Com escala 2, raio: 3*2 = 6.00; centro ajustado para (3,7)
         assertEquals("(3.00,7.00) 6.00", go.collider().toString());
     }
-    
+
     @Test
     public void testGameObjectWithPoligono() {
         Point[] pts = new Point[] {

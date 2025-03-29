@@ -25,7 +25,7 @@ public class MainL {
             double cy = Double.parseDouble(colliderTokens[1]);
             double r = Double.parseDouble(colliderTokens[2]);
             fig = new Circulo(new Point(cx, cy), r);
-        } 
+        }
         else {
             int nVertices = colliderTokens.length / 2;
             Point[] points = new Point[nVertices];

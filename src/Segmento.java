@@ -4,14 +4,14 @@ import static utili.util.*;
  * realiza todas as operacoes sobre segmentos de reta
  * @author Alexandre Menino a83974
  * @version 4.0  22/03/2025
- * @inv 2 pontos nao formam um segmento de reta 
+ * @inv 2 pontos nao formam um segmento de reta
  */
 public class Segmento {
     private final Point p1;
     private final Point p2;
 
     /**
-     * cria um segmento de reta dados 2 pontos com coordenadas diferentes 
+     * cria um segmento de reta dados 2 pontos com coordenadas diferentes
      * @param p1 um extremo do segmento de reta
      * @param p2 o outro extremo do segmento de reta
      */

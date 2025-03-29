@@ -12,7 +12,7 @@ public class ColliderTests {
         String expected = "(10.00,20.00) 3.00";
         assertEquals(expected, colCircle.toString());
     }
-    
+
     @Test
     public void testColliderWithPoligono() {
         Point[] pts = new Point[] {

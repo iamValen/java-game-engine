@@ -58,7 +58,7 @@ public class Point {
     public int X(){
         return (int) Math.round(x());
     }
-    
+
     /**
      * @return y arredondado para inteiro
      */
@@ -112,7 +112,7 @@ public class Point {
         Point AB,BC;
         AB = a.vetor(b);
         BC = b.vetor(c);
-        if(tol(vetorPE(AB, BC)) == 0)    
+        if(tol(vetorPE(AB, BC)) == 0)
             return true;
         return false;
     }
@@ -146,7 +146,7 @@ public class Point {
     /**
      * calcula o vetor que transfora o recetor no ponto dado
      * @param that ponto resultante de aplicar o vetor devolvido ao recetor
-     * @return array com os valores do vetor: dx na posicao 0 e dy na posicao 1 
+     * @return array com os valores do vetor: dx na posicao 0 e dy na posicao 1
      */
     public Point vetor(Point that){
         return new Point(that.x - this.x, that.y - this.y);

@@ -12,14 +12,14 @@ public class Collider implements ICollider {
     Collider(Figura fig, Transform transform){
 
         fig = fig.translacao(fig.centroid().flipSign()); //vai para a posicao 0,0
-        
+
         fig = fig.rotate(transform.angle()); //rodada
 
         fig = fig.scale(transform.scale()); //escalada
         scale = transform.scale();
 
         this.centroid = transform.position();
-        
+
         this.fig = fig.translacao(centroid); //vai para a posicao certa
 
         this.layer = transform.layer();

@@ -8,7 +8,7 @@ public interface IGameObject {
      * @return the Transform of the GameObject
      */
     ITransform transform();
-    
+
     /**
      * @return the Collider of the GameObject with its centroid at this.transform().position()
      */

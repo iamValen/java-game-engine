@@ -43,7 +43,7 @@ public class Poligono extends Figura {
 
     /**
      * verifica se o poligono tem pelo menos 3 lados, nao ha lados colineares consecutivos
-     * e os seus segmentos nao se intersetam 
+     * e os seus segmentos nao se intersetam
      */
     private static void checkPol(Point[] pontos, Segmento[] segmentos){
         if(pontos.length < 3) throw new IllegalArgumentException("Poligono:vi");
