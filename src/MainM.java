@@ -33,9 +33,8 @@ public class MainM {
 
         GameObject gameObj = new GameObject(name, x, y, layer, angle, scale, fig);
 
-        while(true){
+        while(sc.hasNextLine()){
             String line = sc.nextLine();
-            if(line.isEmpty()) break;
 
             String[] tokens = line.split(" ");
             switch(tokens[0]){
