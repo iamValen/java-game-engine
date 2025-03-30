@@ -1,5 +1,12 @@
 import java.util.Scanner;
 
+/**
+ * Main - M
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 28/03/2025
+ */
 public class MainM {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -39,9 +46,9 @@ public class MainM {
             String[] tokens = line.split(" ");
             switch(tokens[0]){
                 case("move"):
-                    gameObj.move(new Point(Double.parseDouble(tokens[1]),
-                                                       Double.parseDouble(tokens[2])),
-                                        Integer.parseInt(tokens[3]));
+                    gameObj.move(new Point( Double.parseDouble(tokens[1]),
+                                            Double.parseDouble(tokens[2])),
+                                            Integer.parseInt(tokens[3]));
                     break;
 
                 case("rotate"):
@@ -53,7 +60,7 @@ public class MainM {
                     break;
 
                 default:
-                    System.out.println("pluh"); //o stor n deve testar isto
+                    System.out.println("Unknown argument");
             }
         }
         sc.close();

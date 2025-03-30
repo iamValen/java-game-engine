@@ -1,7 +1,9 @@
 import java.util.Scanner;
 
 /**
- * Main - Lab L
+ * Main - L
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
  * @author Valentim Khakhitva a81785
  * @version 28/03/2025
  */

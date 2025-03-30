@@ -1,3 +1,10 @@
+/**
+ * Interface do Transform
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 28/03/2025
+ */
 public interface ITransform {
     /**
     * Move this ITransform by dPos.x(), dPos.y() and dlayer
@@ -27,12 +34,11 @@ public interface ITransform {
     /**
     * @return the layer
      */
-
     public int layer();
+    
     /**
      * @return the angle in degrees
      */
-
     public double angle();
 
     /**

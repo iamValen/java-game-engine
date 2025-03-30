@@ -1,7 +1,7 @@
 import static utili.util.*;
 
 /**
- * realiza todas as operacoes sobre segmentos de reta
+ * Realiza todas as operacoes sobre segmentos de reta
  * @author Alexandre Menino a83974
  * @version 4.0  22/03/2025
  * @inv 2 pontos nao formam um segmento de reta
@@ -11,7 +11,8 @@ public class Segmento {
     private final Point p2;
 
     /**
-     * cria um segmento de reta dados 2 pontos com coordenadas diferentes
+     * Cria um segmento de reta dados 2 pontos com coordenadas diferentes
+     * 
      * @param p1 um extremo do segmento de reta
      * @param p2 o outro extremo do segmento de reta
      */
@@ -22,22 +23,19 @@ public class Segmento {
     }
 
     /**
-     * verifica se os pontos formam um segmento
+     * Verifica se os pontos formam um segmento
      */
     private static void check(Point p1, Point p2){
         if(p1.equals(p2))
             throw new IllegalArgumentException("Segmento:vi");
     }
 
-    public Point p1(){
-        return p1;
-    }
-    public Point p2(){
-        return p2;
-    }
+    public Point p1(){ return p1; }
+    public Point p2(){ return p2; }
 
     /**
-     * verifica se os segmentos se intersetam
+     * Verifica se os segmentos se intersetam
+     * 
      * @param that segmento dado
      * @return true se os segmentos se intersetarem, senao false
      */

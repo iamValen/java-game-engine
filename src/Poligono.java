@@ -1,7 +1,7 @@
 import static utili.util.*;
 
 /**
- * realiza todas as operacoes sobre Poligonos
+ * Realiza todas as operacoes sobre Poligonos
  * @author Alexandre Menino a83974
  * @version 1.0 22/03/2025
  * @inv invariante e um poligono com pontos seguidos colineares ou com segmentos que se intersetam
@@ -18,7 +18,8 @@ public class Poligono extends Figura {
      */
 
     /**
-     * cria um poligono dado um numero de pontos e um tipo
+     * Cria um poligono dado um numero de pontos e um tipo
+     * 
      * @param arr array de pontos que formam o poligono
      * @param tipo tipo do poligono
      */
@@ -30,11 +31,12 @@ public class Poligono extends Figura {
             segmentos[i] = new Segmento(arr[i], arr[(i+1)%arr.length]);
         }
         pontos = arr;
-        checkPol(arr, segmentos);
+        checkPol();
     }
 
     /**
-     * cria um poligono de N lados dado um array de pontos
+     * Cria um poligono de N lados dado um array de pontos
+     * 
      * @param arr array de Ponto
      */
     public Poligono(Point[] arr){
@@ -42,10 +44,10 @@ public class Poligono extends Figura {
     }
 
     /**
-     * verifica se o poligono tem pelo menos 3 lados, nao ha lados colineares consecutivos
+     * Verifica se o poligono tem pelo menos 3 lados, nao ha lados colineares consecutivos
      * e os seus segmentos nao se intersetam
      */
-    private static void checkPol(Point[] pontos, Segmento[] segmentos){
+    private void checkPol(){
         if(pontos.length < 3) throw new IllegalArgumentException("Poligono:vi");
 
         for(int i = 0; i < pontos.length; i++) {
@@ -64,15 +66,13 @@ public class Poligono extends Figura {
         }
     }
 
-    public Segmento[] segmentos(){
-        return segmentos;
-    }
-    public Point[] pontos(){
-        return pontos;
-    }
+    public Segmento[] segmentos(){ return segmentos; }
+
+    public Point[] pontos(){ return pontos; }
 
     /**
-     * verifica se um ponto esta dentro do poligono
+     * Verifica se um ponto esta dentro do poligono
+     * 
      * @param p ponto dado
      * @return true se estiver dentro, senao false
      */
@@ -93,7 +93,8 @@ public class Poligono extends Figura {
     }
 
     /**
-     * verifica a colisao do poligono com um circulo dado
+     * Verifica a colisao do poligono com um circulo dado
+     * 
      * @param that circulo dado
      * @return true se colidirem, senao false
      */
@@ -102,7 +103,8 @@ public class Poligono extends Figura {
     }
 
     /**
-     * verifica a colisao do poligono com um poligono dado
+     * Verifica a colisao do poligono com um poligono dado
+     * 
      * @param that poligono dado
      * @return true se colidirem, senao false
      */
@@ -125,7 +127,8 @@ public class Poligono extends Figura {
     }
 
     /**
-     * cria um novo array de pontos baseado nos pontos do poligono e na sua alteracao de posicao dx e dy
+     * Cria um novo array de pontos baseado nos pontos do poligono e na sua alteracao de posicao dx e dy
+     * 
      * @param dx diferenca de posicao no eixo x
      * @param dy diferenca de posicao no eixo y
      * @return array de Ponto com os novos pontos
@@ -139,7 +142,8 @@ public class Poligono extends Figura {
     }
 
     /**
-     * cria um novo poligono sendo este a translacao do recetor
+     * Cria um novo poligono sendo este a translacao do recetor
+     * 
      * @param dx diferenca de posicao no eixo x
      * @param dy diferenca de posicao no eixo y
      * @return novo poligono
@@ -150,16 +154,25 @@ public class Poligono extends Figura {
         return new Poligono(pts);
     }
 
+    /** 
+     * Retorna um novo círculo obtido através da translação do centro pelo ponto p
+     * 
+     * @param p
+     * @return novo poligono
+     */
     @Override
     public Figura translacao(Point p){
         Point[] pts = translacaoPontos(p.x(), p.y());
         return new Poligono(pts);
     }
 
+    /**
+     * Retorna o centroid do polígono
+     */
     @Override
     public Point centroid(){
 
-        Poligono p = this; //se quiseres podes apagar todos os `p` ou trocar por `this`
+        Poligono p = this;
 
         double area = 0;
         for(int i = 0; i < p.pontos.length; i++){
@@ -195,6 +208,13 @@ public class Poligono extends Figura {
         return new Point(xc, yc);
     }
 
+    /**
+     * Escala o polígono multiplicando a posição de cada ponto pelo fator de escala s.
+     * Isso resulta em um novo polígono proporcionalmente maior ou menor, dependendo do valor de s.
+     * 
+     * @param s fator de escala (s > 1 aumenta o tamanho, 0 < s < 1 reduz o tamanho)
+     * @return novo polígono escalado
+     */
     @Override
     public Figura scale(double s){
         Point[] pts = new Point[pontos.length];
@@ -206,6 +226,13 @@ public class Poligono extends Figura {
         return new Poligono(pts);
     }
 
+    /**
+     * Rotaciona o polígono em torno da origem por um ângulo r (em radianos).
+     * Cada ponto do polígono será rotacionado individualmente usando a transformação de rotação.
+     * 
+     * @param r ângulo de rotação em radianos (positivo para sentido anti-horário, negativo para horário)
+     * @return novo polígono rotacionado
+     */
     @Override
     public Figura rotate(double r){
         Point[] pts = new Point[pontos.length];
