@@ -1,0 +1,159 @@
+@startuml
+title UML - Projeto Java Game Engine
+
+'------------------ Interfaces ------------------
+package "Interfaces" {
+  interface IGameObject {
+    + name() : String
+    + transform() : Transform
+    + collider() : Collider
+  }
+  interface ITransform {
+    + move(p: Point, layer: int) : void
+    + rotate(r: double) : void
+    + scale(s: double) : void
+    + position() : Point
+    + layer() : int
+    + angle() : double
+    + scale() : double
+  }
+  interface ICollider {
+    + centroid() : Point
+  }
+}
+
+'------------------ Classes ------------------
+package "Classes" {
+  abstract class Figura {
+    - tipoFig : int
+    + Figura(tipo: int)
+    + centroid() : Point
+    + scale(r: double) : Figura
+    + rotate(r: double) : Figura
+    + translacao(dx: double, dy: double) : Figura
+    + translacao(p: Point) : Figura
+    + toString() : String
+  }
+  
+  class Point {
+    - x : double
+    - y : double
+    + Point(x: double, y: double)
+    + x() : double
+    + y() : double
+    + X() : int
+    + Y() : int
+    + equals(that: Point) : boolean
+    + distancia(that: Point) : double
+    + translacao(dx: double, dy: double) : Point
+    + sum(that: Point) : Point
+    + colinear(a: Point, b: Point, c: Point) : boolean
+    + flipSign() : Point
+    + scale(s: double) : Point
+    + rotate(deg: double) : Point
+    + vetor(that: Point) : Point
+    + vetorPI(v1: Point, v2: Point) : double
+    + vetorPE(v1: Point, v2: Point) : double
+    + toString() : String
+  }
+  
+  class Transform {
+    - layer : int
+    - rotacao : double
+    - escala : double
+    + Transform(x: double, y: double, layer: int, angle: double, scale: double)
+    + move(p: Point, layer: int) : void
+    + rotate(r: double) : void
+    + scale(s: double) : void
+    + position() : Point
+    + layer() : int
+    + angle() : double
+    + scale() : double
+    + toString() : String
+  }
+  Transform ..|> ITransform
+
+  class Segmento {
+    + Segmento(p1: Point, p2: Point)
+    + p1() : Point
+    + p2() : Point
+    + intersecao(that: Segmento) : boolean
+  }
+  
+  class Poligono {
+    - tipoPol : int
+    + Poligono(arr: Point[])
+    + Poligono(arr: Point[], tipo: int)
+    + pontos() : Point[]
+    + segmentos() : Segmento[]
+    + contemOPonto(p: Point) : boolean
+    + colisaoCirculo(c: Circulo) : boolean
+    + colisaoPoligono(p: Poligono) : boolean
+    + translacao(dx: double, dy: double) : Poligono
+    + translacao(p: Point) : Figura
+    + centroid() : Point
+    + scale(s: double) : Figura
+    + rotate(r: double) : Figura
+    + toString() : String
+  }
+  Poligono --|> Figura
+  
+  class Circulo {
+    - raio : Double
+    - centro : Point
+    + Circulo(c: Point, r: Double)
+    + centro() : Point
+    + raio() : Double
+    + translacao(dx: double, dy: double) : Circulo
+    + translacao(p: Point) : Figura
+    + intersetaSegmento(s: Segmento) : boolean
+    + colisaoCirculo(c: Circulo) : boolean
+    + colisaoPoligono(p: Poligono) : boolean
+    + centroid() : Point
+    + scale(r: double) : Figura
+    + rotate(r: double) : Figura
+    + toString() : String
+  }
+  Circulo --|> Figura
+  
+  class Collider {
+    - scale : double
+    - layer : int
+    + Collider(fig: Figura, transform: Transform)
+    + move(p: Point, layer: int) : void
+    + rotate(r: double) : void
+    + scale(s: double) : void
+    + centroid() : Point
+    + toString() : String
+  }
+  Collider ..|> ICollider
+  
+  class GameObject {
+    - name : String
+    + GameObject(name: String, x: double, y: double, layer: int, angle: double, scale: double, fig: Figura)
+    + move(p: Point, layer: int) : void
+    + rotate(r: double) : void
+    + scale(s: double) : void
+    + name() : String
+    + transform() : Transform
+    + collider() : Collider
+  }
+  GameObject ..|> IGameObject
+
+  ' Associações: Todas as setas com Point são invertidas para que partam do Point
+  ' Em vez de: Transform "1" ..> "1" Point : position
+  Point ..> Transform : position
+  ' Poligono: seta de pontos com Point
+  Poligono *.. "n" Point : pontos
+  ' Segmento: seta de Point para Segmento
+  Point ..> Segmento : points
+  ' Circulo: seta de Point para Circulo (centro)
+  Point ..> Circulo : centro
+  ' Collider: seta de Point para Collider (centroid)
+  Point ..> Collider : (centroid)
+  
+  ' Outras associações permanecem
+  GameObject "1" .. "1" Transform : has
+  GameObject "1" .. "1" Collider : has
+}
+@enduml
