@@ -157,4 +157,14 @@ public class Circulo extends Figura {
     public String toString() {
         return String.format("%s %.2f", centro.toString(), raio);
     }
+
+    @Override
+    public boolean colisao(Figura that) {
+        if (that.tipoFig == 1) { // Círculo vs Círculo
+            return this.colisaoCirculo((Circulo) that);
+        } else if (that.tipoFig == 0) { // Círculo vs Polígono
+            return this.colisaoPoligono((Poligono) that);
+        }
+        return false;
+    }
 }

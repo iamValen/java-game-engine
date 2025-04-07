@@ -1,4 +1,4 @@
-import static utili.util.*;
+import static util.util.*;
 
 /**
  * Realiza todas as operacoes sobre Poligonos
@@ -122,6 +122,16 @@ public class Poligono extends Figura {
                 if(this.segmentos[i].intersecao(that.segmentos[j]))
                     return true;
             }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean colisao(Figura that) {
+        if (that.tipoFig == 0) { // Polígono vs Polígono
+            return this.colisaoPoligono((Poligono) that);
+        } else if (that.tipoFig == 1) { // Polígono vs Círculo
+            return this.colisaoCirculo((Circulo) that);
         }
         return false;
     }

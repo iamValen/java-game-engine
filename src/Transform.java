@@ -1,5 +1,6 @@
 /**
  * Contém toda a informaçao da posicao de um GameObject
+ * 
  * @author Alexandre Menino a83974
  * @author Grégory Endrio Leite a90952
  * @author Valentim Khakhitva a81785
@@ -10,7 +11,7 @@ public class Transform implements ITransform {
     private int layer;
     private double rotacao;
     private double escala;
-    
+
     /**
      * Construtor da classe Transform.
      * 

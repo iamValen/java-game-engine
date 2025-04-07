@@ -1,4 +1,4 @@
-import static utili.util.*;
+import static util.util.*;
 
 /**
  * Realiza todas as operacoes sobre segmentos de reta

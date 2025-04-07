@@ -69,4 +69,7 @@ public abstract class Figura {
      * @return nova figura transladada
      */
     public abstract Figura translacao(Point p);
+
+
+    public abstract boolean colisao(Figura that);
 }
