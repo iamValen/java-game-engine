@@ -42,9 +42,10 @@ public class Main {
             double vScale = Double.parseDouble(velocityData[4]);
 
             GameObject go = new GameObject(name, x, y, layer, angle, scale, figura);
-            go.transform().move(new Point(vx, vy), vLayer);
-            go.transform().rotate(vAngle);
-            go.transform().scale(vScale);
+            go.posSpeed = new Point(vx, vy);
+            go.layerSpeed = vLayer;
+            go.rotationSpeed = vAngle;
+            go.scaleSpeed = vScale;
 
             engine.add(go);
         }

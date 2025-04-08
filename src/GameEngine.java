@@ -20,6 +20,10 @@ public class GameEngine {
             layers.put(go.transform().layer(), goLayer);
         }
         goLayer.add(go);
+        // <-
+        // dar replace por
+        // layers.computeIfAbsent(go.transform().layer(), k -> new ArrayList<>()).add(go);
+        // ???
     }
 
     /**
@@ -29,10 +33,15 @@ public class GameEngine {
      */
     public void destroy(GameObject go) {
         ArrayList<GameObject> goLayer = layers.get(go.transform().layer());
-        goLayer.remove(go);
+        if (goLayer != null) {
+            goLayer.remove(go);
+        }
         gameObjects.remove(go);
+        // <-
+        // dar replace por
+        // layers.getOrDefault(go.transform().layer(), new ArrayList<>()).remove(go);
+        // ???
     }
-
 
     public void generateNextFrame(){
         for(GameObject go : gameObjects){

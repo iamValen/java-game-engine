@@ -62,20 +62,23 @@ public class GameObject implements IGameObject {
         transform.scale(s);
     }
 
-    
+    /**
+     * Atualiza o estado do GameObject.
+     * TODO: USAMOS IStO?
+     */
     public void update(){
         collider.updateFig();
     }
 
-
-    public void generateNextFrame(){
+    /**
+     * Atualiza o estado do GameObject para o próximo frame.
+     */
+    public void generateNextFrame() {
         transform.move(posSpeed, (int) layerSpeed);
         transform.rotate(rotationSpeed);
         transform.scale(scaleSpeed);
         collider.updateFig();
     }
-
-
 
     /**
      * Retorna o nome do objeto.
