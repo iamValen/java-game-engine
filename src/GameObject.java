@@ -69,7 +69,7 @@ public class GameObject implements IGameObject {
 
 
     public void generateNextFrame(){
-        transform.move(posSpeed, layerSpeed);
+        transform.move(posSpeed, (int) layerSpeed);
         transform.rotate(rotationSpeed);
         transform.scale(scaleSpeed);
         collider.updateFig();
