@@ -1,8 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 public class GameEngine {
     private final List<GameObject> gameObjects = new ArrayList<>();
+    public HashMap<Integer, ArrayList<GameObject>> layers = new HashMap<>();
+
 
     /**
      * Adiciona um GameObject à lista.
@@ -11,6 +14,12 @@ public class GameEngine {
      */
     public void add(GameObject go) {
         gameObjects.add(go);
+        ArrayList goLayer = layers.get(go.transform().layer());
+        if(goLayer == null){
+            goLayer = new ArrayList<gameObject>();
+            layers.put(go.transform().layer(), goLayer);
+        }
+        goLayer.add(go);
     }
 
     /**
@@ -19,8 +28,31 @@ public class GameEngine {
      * @param go GameObject a ser removido.
      */
     public void destroy(GameObject go) {
+        ArrayList goLayer = layers.get(go.transform().layer());
+        goLayer.remove(go);
         gameObjects.remove(go);
     }
+
+
+    public void generateNextFrame(){
+        for(GameObject go : gameObjects){
+            if(go.layerSpeed != 0){
+                layers.get(go.transform().layer()).remove(go);
+                go.generateNextFrame();
+                ArrayList newLayer = layers.get(go.transform().layer());
+                if(newLayer == null){
+                    newLayer = new ArrayList<gameObject>();
+                    layers.put(go.transform().layer(), goLayer);
+                }
+                newLayer.add(go);
+            }
+            else{
+                go.generateNextFrame();
+            }
+        }
+    }
+
+
 
     /**
      * Atualiza os GameObjects em cada frame.
@@ -29,11 +61,7 @@ public class GameEngine {
      */
     public void simulateFrames(int frames) {
         for (int frame = 0; frame < frames; frame++) {
-            for (GameObject go : gameObjects) {
-                go.move(go.transform().position(), go.transform().layer());
-                go.rotate(go.transform().angle());
-                go.scale(go.transform().scale());
-            }
+            generateNextFrame();
         }
     }
 

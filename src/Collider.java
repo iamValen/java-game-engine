@@ -1,37 +1,47 @@
 public class Collider implements ICollider {
     private Figura fig;
     private final Transform transform;
+    private Point centroid;
+    private double angle;
+    private double scale;
+
 
     Collider(Figura fig, Transform transform) {
+        this.fig = fig;
         this.transform = transform;
-        this.fig = fig.translacao(fig.centroid().flipSign()); // Move para a posição (0,0)
+        this.centroid = fig.centroid();
+        this.angle = 0;
+        this.scale = 1;
         updateFig();
     }
 
-    private void updateFig() {
-        fig = fig.translacao(fig.centroid().flipSign()); // Move para a origem
-        fig = fig.rotate(transform.angle()); // Aplica rotação
-        fig = fig.scale(transform.scale()); // Aplica escala
-        fig = fig.translacao(transform.position()); // Move para a posição correta
+    public void updateFig() {
+        fig = fig.translacao(centroid.flipSign()); // Move para a origem
+        fig = fig.rotate(transform.angle() - angle); // Aplica rotação
+        angle = transform.angle();
+        fig = fig.scale(transform.scale() / scale); // Aplica escala
+        scale = transform.scale();
+        centroid = transform.position();
+        fig = fig.translacao(centroid); // Move para a posição correta
     }
 
-    public void move(Point p, int layer) {
-        transform.move(p, layer);
-        updateFig();
-    }
+    // public void move(Point p, int layer) {
+    //     transform.move(p, layer);
+    //     updateFig();
+    // }
 
-    public void rotate(double r) {
-        transform.rotate(r);
-        updateFig();
-    }
+    // public void rotate(double r) {
+    //     transform.rotate(r);
+    //     updateFig();
+    // }
 
-    public void scale(double s) {
-        transform.scale(s);
-        updateFig();
-    }
+    // public void scale(double s) {
+    //     transform.scale(s);
+    //     updateFig();
+    // }
 
     public Point centroid() {
-        return transform.position();
+        return centroid;
     }
 
     /**

@@ -9,6 +9,11 @@ public class GameObject implements IGameObject {
     private String name;
     private Transform transform;
     private Collider collider;
+    
+    public Point posSpeed;
+    public double layerSpeed;
+    public double rotationSpeed;
+    public double scaleSpeed;
 
     /**
      * Construtor da classe GameObject.
@@ -37,7 +42,6 @@ public class GameObject implements IGameObject {
      */
     public void move(Point p, int s){
         transform.move(p, s);
-        collider.move(p, s);
     }
 
     /**
@@ -47,7 +51,6 @@ public class GameObject implements IGameObject {
      */
     public void rotate(double r){
         transform.rotate(r);
-        collider.rotate(r);
     }
 
     /**
@@ -57,8 +60,22 @@ public class GameObject implements IGameObject {
      */
     public void scale(double s){
         transform.scale(s);
-        collider.scale(s);
     }
+
+    
+    public void update(){
+        collider.updateFig();
+    }
+
+
+    public void generateNextFrame(){
+        transform.move(posSpeed, layerSpeed);
+        transform.rotate(rotationSpeed);
+        transform.scale(scaleSpeed);
+        collider.updateFig();
+    }
+
+
 
     /**
      * Retorna o nome do objeto.
