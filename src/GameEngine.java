@@ -78,47 +78,12 @@ public class GameEngine {
         }
     }
 
-    /** Usado no gameEngine
-     * Detecta colisões entre os GameObjects dentro da mesma camada.
-     * 
-     * @return Lista de colisões no formato "GameObject1 GameObject2".
-     */
-    public ArrayList<String> detectCollisions() {
-        ArrayList<String> collisions = new ArrayList<>();
-
-        for (int layer : layers.keySet()) {
-            ArrayList<GameObject> objectsInLayer = layers.get(layer);
-            if (objectsInLayer == null || objectsInLayer.size() < 2) continue;
-
-            for (int i = 0; i < objectsInLayer.size(); i++) {
-                GameObject go1 = objectsInLayer.get(i);
-                StringBuilder collisionInfo = new StringBuilder(go1.name());
-                boolean hasCollision = false;
-
-                for (int j = i + 1; j < objectsInLayer.size(); j++) {
-                    GameObject go2 = objectsInLayer.get(j);
-
-                    if (go1.collider().collidesWith(go2.collider())) {
-                        collisionInfo.append(" ").append(go2.name());
-                        hasCollision = true;
-                    }
-                }
-
-                if (hasCollision) {
-                    collisions.add(collisionInfo.toString());
-                }
-            }
-        }
-
-        return collisions;
-    }
-
-    /** Apenas usado para o N
+    /** 
      * Detecta colisões entre os GameObjects, mas não considera a camada.
      * 
      * @return Lista de colisões no formato "GameObject1 GameObject2".
      */
-    public ArrayList<String> detectCollisions2(){
+    public ArrayList<String> detectCollisions(){
         ArrayList<String> out = new ArrayList<>();
         for(GameObject go : gameObjects){
             boolean flag = false;

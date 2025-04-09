@@ -51,7 +51,7 @@ public class MainN {
         }
 
         engine.simulateFrames(frames);
-        List<String> collisions = engine.detectCollisions2();
+        List<String> collisions = engine.detectCollisions();
 
         for (String collision : collisions) {
             System.out.println(collision);
