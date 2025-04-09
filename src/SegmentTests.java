@@ -1,12 +1,12 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-public class SegmentoTests {
+public class SegmentTests {
 
     @Test
     public void testConstructor0(){
         assertThrows(IllegalArgumentException.class, () -> {
-                new Segmento(
+                new Segment(
                     new Point(1, 3),
                     new Point(1,3)
                 );
@@ -16,7 +16,7 @@ public class SegmentoTests {
     @Test
     public void testConstructor1(){
         assertDoesNotThrow(() -> {
-                new Segmento(
+                new Segment(
                     new Point(0, 0),
                     new Point(1,0)
                 );
@@ -28,18 +28,18 @@ public class SegmentoTests {
     @Test
     public void testIntersecao0(){
         assertEquals(false,
-            new Segmento(new Point(1, 0), new Point(1,2))
-            .intersecao(
-                new Segmento(new Point(3, 1), new Point(5,1))
+            new Segment(new Point(1, 0), new Point(1,2))
+            .intersects(
+                new Segment(new Point(3, 1), new Point(5,1))
             )
         );
     }
     @Test
     public void testIntersecao1(){
         assertEquals(false,
-            new Segmento(new Point(1, 1), new Point(1,2))
-            .intersecao(
-                new Segmento(new Point(1, 3), new Point(1,4))
+            new Segment(new Point(1, 1), new Point(1,2))
+            .intersects(
+                new Segment(new Point(1, 3), new Point(1,4))
             )
         );
     }

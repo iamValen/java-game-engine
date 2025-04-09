@@ -11,7 +11,7 @@ public class GameObject implements IGameObject {
     private Collider collider;
     
     public Point posSpeed;
-    public double layerSpeed;
+    public int layerSpeed;
     public double rotationSpeed;
     public double scaleSpeed;
 
@@ -28,7 +28,7 @@ public class GameObject implements IGameObject {
      */
     GameObject(String name,
                double x, double y, int layer, double angle, double scale,
-               Figura fig) {
+               Figure fig) {
         this.name = name;
         transform = new Transform(x, y, layer, angle, scale);
         collider = new Collider(fig, transform);
@@ -74,7 +74,7 @@ public class GameObject implements IGameObject {
      * Atualiza o estado do GameObject para o próximo frame.
      */
     public void generateNextFrame() {
-        transform.move(posSpeed, (int) layerSpeed);
+        transform.move(posSpeed, layerSpeed);
         transform.rotate(rotationSpeed);
         transform.scale(scaleSpeed);
         collider.updateFig();
@@ -105,5 +105,9 @@ public class GameObject implements IGameObject {
      */
     public Collider collider(){
         return collider;
+    }
+
+    public boolean colision(GameObject that){
+        return this.collider.collidesWith(that.collider);
     }
 }

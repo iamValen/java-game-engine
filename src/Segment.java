@@ -6,7 +6,7 @@ import static util.util.*;
  * @version 4.0  22/03/2025
  * @inv 2 pontos nao formam um segmento de reta
  */
-public class Segmento {
+public class Segment {
     private final Point p1;
     private final Point p2;
 
@@ -16,7 +16,7 @@ public class Segmento {
      * @param p1 um extremo do segmento de reta
      * @param p2 o outro extremo do segmento de reta
      */
-    public Segmento(Point p1, Point p2){
+    public Segment(Point p1, Point p2){
         this.p1 = p1;
         this.p2 = p2;
         check(p1, p2);
@@ -39,7 +39,7 @@ public class Segmento {
      * @param that segmento dado
      * @return true se os segmentos se intersetarem, senao false
      */
-    public boolean intersecao(Segmento that){
+    public boolean intersects(Segment that){
         Point AB, CD, AC, AD, CA, CB;
         AB = this.p1.vetor(this.p2);
         CD = that.p1.vetor(that.p2);

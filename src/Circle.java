@@ -7,9 +7,9 @@
  * @author Valentim Khakhitva a81785
  * @version 28/03/2025
  */
-public class Circulo extends Figura {
-    private final Point centro;
-    private final Double raio;
+public class Circle extends Figure {
+    private final Point center;
+    private final Double radius;
 
     /**
      * Cria um círculo dados um ponto e um raio.
@@ -17,10 +17,10 @@ public class Circulo extends Figura {
      * @param c ponto correspondente ao centro do círculo
      * @param r raio do círculo
      */
-    public Circulo(Point c, Double r){
+    public Circle(Point c, Double r){
         super(1);
-        this.centro = c;
-        this.raio = r;
+        this.center = c;
+        this.radius = r;
     }
 
     /**
@@ -28,8 +28,8 @@ public class Circulo extends Figura {
      * 
      * @return o ponto que representa o centro
      */
-    public Point centro(){ 
-        return centro; 
+    public Point center(){ 
+        return center; 
     }
 
     /**
@@ -37,8 +37,8 @@ public class Circulo extends Figura {
      * 
      * @return o valor do raio
      */
-    public Double raio(){ 
-        return raio; 
+    public Double radius(){ 
+        return radius; 
     }
 
     /**
@@ -50,9 +50,9 @@ public class Circulo extends Figura {
      * @return novo círculo com o centro transladado e mesmo raio
      */
     @Override
-    public Circulo translacao(double dx, double dy){
-        Point c = this.centro.translacao(dx, dy);
-        return new Circulo(c, raio);
+    public Circle translation(double dx, double dy){
+        Point c = this.center.translacao(dx, dy);
+        return new Circle(c, radius);
     }
 
     /**
@@ -62,9 +62,9 @@ public class Circulo extends Figura {
      * @return novo círculo com o centro transladado e mesmo raio
      */
     @Override
-    public Figura translacao(Point p) {
-        Point c = this.centro.sum(p);
-        return new Circulo(c, raio);
+    public Figure translation(Point p) {
+        Point c = this.center.sum(p);
+        return new Circle(c, radius);
     }
 
     /**
@@ -73,20 +73,20 @@ public class Circulo extends Figura {
      * @param s segmento a ser testado
      * @return true se o segmento intersetar o círculo, senao false
      */
-    public boolean intersetaSegmento(Segmento s){
+    public boolean intersetaSegmento(Segment s){
         Point AB = s.p1().vetor(s.p2());
-        Point AC = s.p1().vetor(this.centro);
+        Point AC = s.p1().vetor(this.center);
         double t = Point.vetorPI(AB, AC) / Point.vetorPI(AB, AB);
         if(t <= 0){
-            if(s.p1().distancia(this.centro) <= this.raio)
+            if(s.p1().distance(this.center) <= this.radius)
                 return true;
         }
         if(t >= 1){
-            if(s.p2().distancia(this.centro) <= this.raio)
+            if(s.p2().distance(this.center) <= this.radius)
                 return true;
         }
         if(0 < t && t < 1){
-            if (new Point(s.p1(), s.p2(), t).distancia(this.centro) <= this.raio)
+            if (new Point(s.p1(), s.p2(), t).distance(this.center) <= this.radius)
                 return true;
         }
         return false;
@@ -98,8 +98,8 @@ public class Circulo extends Figura {
      * @param that outro círculo a ser testado para colisão
      * @return true se os círculos colidirem, senao false
      */
-    public boolean colisaoCirculo(Circulo that){
-        if(that.centro.distancia(this.centro) < that.raio + this.raio)
+    public boolean colisaoCirculo(Circle that){
+        if(that.center.distance(this.center) < that.radius + this.radius)
             return true;
         return false;
     }
@@ -110,12 +110,12 @@ public class Circulo extends Figura {
      * @param that polígono a ser testado para colisão
      * @return true se houver colisão entre o círculo e o polígono, senao false
      */
-    public boolean colisaoPoligono(Poligono that){
+    public boolean collisionPolygon(Polygon that){
         for(int i = 0; i < that.segmentos().length; i++){
             if(intersetaSegmento(that.segmentos()[i]))
                 return true;
         }
-        if(that.contemOPonto(this.centro)){
+        if(that.containsPoint(this.center)){
             return true;
         }
         return false;
@@ -128,7 +128,7 @@ public class Circulo extends Figura {
      */
     @Override
     public Point centroid(){
-        return centro;
+        return center;
     }
 
     /**
@@ -138,8 +138,8 @@ public class Circulo extends Figura {
      * @return novo círculo com o raio escalado
      */
     @Override
-    public Figura scale(double r){
-        return new Circulo(this.centro, this.raio * r);
+    public Figure scale(double r){
+        return new Circle(this.center, this.radius * r);
     }
 
     /**
@@ -149,22 +149,27 @@ public class Circulo extends Figura {
      * @return este mesmo círculo, pois a rotação não o altera
      */
     @Override
-    public Figura rotate(double r){
+    public Figure rotate(double r){
         return this;
+    }
+
+    /**
+     * Verifica se este círculo colide com outra figura dada
+     * 
+     * @param that outra figura
+     */
+    @Override
+    public boolean collision(Figure that) {
+        if (that.tipoFig == 1) { // Círculo vs Círculo
+            return this.colisaoCirculo((Circle) that);
+        } else if (that.tipoFig == 0) { // Círculo vs Polígono
+            return this.collisionPolygon((Polygon) that);
+        }
+        return false;
     }
 
     @Override
     public String toString() {
-        return String.format("%s %.2f", centro.toString(), raio);
-    }
-
-    @Override
-    public boolean colisao(Figura that) {
-        if (that.tipoFig == 1) { // Círculo vs Círculo
-            return this.colisaoCirculo((Circulo) that);
-        } else if (that.tipoFig == 0) { // Círculo vs Polígono
-            return this.colisaoPoligono((Poligono) that);
-        }
-        return false;
+        return String.format("%s %.2f", center.toString(), radius);
     }
 }

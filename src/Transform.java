@@ -7,10 +7,10 @@
  * @version 28/03/2025
  */
 public class Transform implements ITransform {
-    private Point posicao;
+    private Point position;
     private int layer;
-    private double rotacao;
-    private double escala;
+    private double angle, angleOld;
+    private double scale, scaleOld;
 
     /**
      * Construtor da classe Transform.
@@ -22,10 +22,12 @@ public class Transform implements ITransform {
      * @param scale Fator de escala inicial.
      */
     Transform(double x, double y, int layer, double rotation, double scale){
-        this.posicao = new Point(x,y);
+        this.position = new Point(x,y);
         this.layer = layer;
-        this.rotacao = rotation;
-        this.escala = scale;
+        this.angle = rotation;
+        this.scale = scale;
+        angleOld = 0;
+        scaleOld = 1;
     }
 
     /**
@@ -36,7 +38,7 @@ public class Transform implements ITransform {
      */
     public void move(Point dpos, int dlayer){
         layer+=dlayer;
-        posicao = posicao.translacao(dpos.x(), dpos.y());
+        position = position.translacao(dpos.x(), dpos.y());
     }
 
     /**
@@ -45,8 +47,8 @@ public class Transform implements ITransform {
      * @param dTheta Ângulo em graus a adicionar à rotação.
      */
     public void rotate(double dTheta){
-        rotacao+=dTheta;
-        rotacao%=360;
+        angle+=dTheta;
+        angle%=360;
     }
 
     /**
@@ -55,7 +57,7 @@ public class Transform implements ITransform {
      * @param dScale Fator de escala a adicionar.
      */
     public void scale(double dScale){
-        escala+=dScale;
+        scale+=dScale;
     }
 
     /**
@@ -64,7 +66,7 @@ public class Transform implements ITransform {
      * @return Ponto representando a posição do objeto.
      */
     public Point position(){
-        return posicao;
+        return position;
     }
 
     /**
@@ -82,7 +84,16 @@ public class Transform implements ITransform {
      * @return Ângulo em graus.
      */
     public double angle(){
-        return rotacao;
+        return angle;
+    }
+
+    /**
+     * Retorna o ângulo de rotação anterior do objeto.
+     * 
+     * @return Ângulo em graus.
+     */
+    public double angleOld(){
+        return angleOld;
     }
 
     /**
@@ -91,11 +102,20 @@ public class Transform implements ITransform {
      * @return Fator de escala.
      */
     public double scale(){
-        return escala;
+        return scale;
+    }
+
+    /**
+     * Retorna o fator de escala anterior do objeto.
+     * 
+     * @return Fator de escala.
+     */
+    public double scaleOld(){
+        return scaleOld;
     }
 
     @Override
     public String toString(){
-        return String.format("%s %d %.2f %.2f", posicao.toString(), layer, rotacao, escala);
+        return String.format("%s %d %.2f %.2f", position.toString(), layer, angle, scale);
     }
 }

@@ -83,7 +83,7 @@ public class Point {
      * @param that outro ponto
      * @return a distancia entre os pontos
      */
-    public double distancia(Point that){
+    public double distance(Point that){
         return Math.sqrt((this.x - that.x) * (this.x - that.x) + (this.y - that.y) * (this.y - that.y));
     }
 
@@ -117,7 +117,7 @@ public class Point {
      * @param c ponto c
      * @return true se forem colineares, senao false
      */
-    public static boolean colinear(Point a, Point b, Point c){
+    public static boolean collinear(Point a, Point b, Point c){
         Point AB,BC;
         AB = a.vetor(b);
         BC = b.vetor(c);

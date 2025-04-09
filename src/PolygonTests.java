@@ -1,7 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-public class PoligonoTests{
+public class PolygonTests{
 
     @Test
     public void testConstructor0(){
@@ -10,7 +10,7 @@ public class PoligonoTests{
         pts[1] = new Point(2, 2);
         pts[2] = new Point(2, 1);
         pts[3] = new Point(1, 2);
-        assertThrows(IllegalArgumentException.class, ()-> {new Poligono(pts);});
+        assertThrows(IllegalArgumentException.class, ()-> {new Polygon(pts);});
     }
     @Test
     public void testConstructor1(){
@@ -19,7 +19,7 @@ public class PoligonoTests{
         pts[1] = new Point(2, 2);
         pts[2] = new Point(4, 4);
         pts[3] = new Point(3, 1);
-        assertThrows(IllegalArgumentException.class, () -> {new Poligono(pts);});
+        assertThrows(IllegalArgumentException.class, () -> {new Polygon(pts);});
     }
 
 
@@ -30,8 +30,8 @@ public class PoligonoTests{
         pts[1] = new Point(4, 8);
         pts[2] = new Point(8, 8);
         pts[3] = new Point(8, 4);
-        Poligono p = new Poligono(pts);
-        assertThrows(IllegalArgumentException.class, () -> {p.translacao(-5, 3);});
+        Polygon p = new Polygon(pts);
+        assertThrows(IllegalArgumentException.class, () -> {p.translation(-5, 3);});
     }
     @Test
     public void testTranslacao1(){
@@ -40,8 +40,8 @@ public class PoligonoTests{
         pts[1] = new Point(4, 8);
         pts[2] = new Point(8, 8);
         pts[3] = new Point(8, 4);
-        Poligono p = new Poligono(pts);
-        assertEquals(p.toString(), p.translacao(5, 6).translacao(-5, -6).toString());
+        Polygon p = new Polygon(pts);
+        assertEquals(p.toString(), p.translation(5, 6).translation(-5, -6).toString());
     }
 
 
@@ -52,8 +52,8 @@ public class PoligonoTests{
         pts[1] = new Point(4, 8);
         pts[2] = new Point(8, 8);
         pts[3] = new Point(8, 4);
-        Poligono p = new Poligono(pts);
-        assertEquals(false, p.contemOPonto(pts[0].translacao(3, 0)));
+        Polygon p = new Polygon(pts);
+        assertEquals(false, p.containsPoint(pts[0].translacao(3, 0)));
     }
     @Test
     public void testContemOPoint1(){
@@ -62,8 +62,8 @@ public class PoligonoTests{
         pts[1] = new Point(4, 8);
         pts[2] = new Point(8, 8);
         pts[3] = new Point(8, 4);
-        Poligono p = new Poligono(pts);
-        assertEquals(false, p.contemOPonto(pts[0].translacao(3, 0)));
+        Polygon p = new Polygon(pts);
+        assertEquals(false, p.containsPoint(pts[0].translacao(3, 0)));
     }
 
 
@@ -75,9 +75,9 @@ public class PoligonoTests{
         pts[2] = new Point(8, 8);
         pts[3] = new Point(8, 4);
         assertEquals(true,
-        new Poligono(pts)
-            .colisaoCirculo(
-                new Circulo(new Point(4,4), 2.)
+        new Polygon(pts)
+            .collisionCircle(
+                new Circle(new Point(4,4), 2.)
             )
         );
     }
@@ -89,9 +89,9 @@ public class PoligonoTests{
         pts[2] = new Point(8, 8);
         pts[3] = new Point(8, 4);
         assertEquals(true,
-        new Poligono(pts)
-            .colisaoCirculo(
-                new Circulo(new Point(3,6), 2.)
+        new Polygon(pts)
+            .collisionCircle(
+                new Circle(new Point(3,6), 2.)
             )
         );
     }
@@ -104,8 +104,8 @@ public class PoligonoTests{
         pts[1] = new Point(4, 8);
         pts[2] = new Point(8, 8);
         pts[3] = new Point(8, 4);
-        Poligono p1 = new Poligono(pts);
-        assertEquals(false, p1.colisaoPoligono(p1.translacao(4, 2)));
+        Polygon p1 = new Polygon(pts);
+        assertEquals(false, p1.collisionPolygon(p1.translation(4, 2)));
     }
     @Test
     public void testColisaoPoligono1(){
@@ -114,13 +114,13 @@ public class PoligonoTests{
         pts[1] = new Point(4, 8);
         pts[2] = new Point(8, 8);
         pts[3] = new Point(8, 4);
-        Poligono p1 = new Poligono(pts);
+        Polygon p1 = new Polygon(pts);
         pts[0] = new Point(5, 9);
         pts[1] = new Point(7, 9);
         pts[2] = new Point(7, 3);
         pts[3] = new Point(5, 3);
-        Poligono p2 = new Poligono(pts);
-        assertEquals(true, p1.colisaoPoligono(p2));
+        Polygon p2 = new Polygon(pts);
+        assertEquals(true, p1.collisionPolygon(p2));
     }
 
 
@@ -131,7 +131,7 @@ public class PoligonoTests{
         pts[1] = new Point(4, 8);
         pts[2] = new Point(8, 8);
         pts[3] = new Point(8, 4);
-        Poligono p1 = new Poligono(pts);
+        Polygon p1 = new Polygon(pts);
         assertEquals("Poligono de 4 vertices: [(4,4), (4,8), (8,8), (8,4)]", p1.toString());
     }
     @Test
@@ -140,7 +140,7 @@ public class PoligonoTests{
         pts[0] = new Point(50, 70);
         pts[1] = new Point(2, 8);
         pts[2] = new Point(30, 1);
-        Poligono p1 = new Poligono(pts);
+        Polygon p1 = new Polygon(pts);
         assertEquals("Poligono de 3 vertices: [(50,70), (2,8), (30,1)]", p1.toString());
     }
 }

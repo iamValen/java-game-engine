@@ -23,11 +23,11 @@ public class PointTests{
 
     @Test
     public void testDistancia0(){
-        assertEquals(new Point(3,2).distancia(new Point(0, 0)), Math.sqrt(3*3+2*2));
+        assertEquals(new Point(3,2).distance(new Point(0, 0)), Math.sqrt(3*3+2*2));
     }
     @Test
     public void testDistancia1(){
-        assertEquals(new Point(8,10).distancia(new Point(5, 6)), 5);
+        assertEquals(new Point(8,10).distance(new Point(5, 6)), 5);
     }
 
     @Test
@@ -40,14 +40,14 @@ public class PointTests{
     }
 
     @Test void testColinear0(){
-        assertEquals(true, Point.colinear(
+        assertEquals(true, Point.collinear(
             new Point(4, 7),
             new Point(1, 2),
             new Point(7, 12)
         ));
     }
     @Test void testColinear1(){
-        assertEquals(true, Point.colinear(
+        assertEquals(true, Point.collinear(
             new Point(6, 7),
             new Point(14, 15),
             new Point(101, 102)

@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Main {
+public class MainN {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int frames = Integer.parseInt(scanner.nextLine());
@@ -18,12 +18,12 @@ public class Main {
             double scale = Double.parseDouble(transformData[4]);
 
             String[] colliderData = scanner.nextLine().split(" ");
-            Figura figura;
+            Figure figura;
             if (colliderData.length == 3) {
                 double cx = Double.parseDouble(colliderData[0]);
                 double cy = Double.parseDouble(colliderData[1]);
                 double radius = Double.parseDouble(colliderData[2]);
-                figura = new Circulo(new Point(cx, cy), radius);
+                figura = new Circle(new Point(cx, cy), radius);
             } else {
                 Point[] points = new Point[colliderData.length / 2];
                 for (int j = 0; j < colliderData.length; j += 2) {
@@ -31,7 +31,7 @@ public class Main {
                     double py = Double.parseDouble(colliderData[j + 1]);
                     points[j / 2] = new Point(px, py);
                 }
-                figura = new Poligono(points);
+                figura = new Polygon(points);
             }
 
             String[] velocityData = scanner.nextLine().split(" ");
@@ -51,7 +51,7 @@ public class Main {
         }
 
         engine.simulateFrames(frames);
-        List<String> collisions = engine.detectCollisions();
+        List<String> collisions = engine.detectCollisions2();
 
         for (String collision : collisions) {
             System.out.println(collision);

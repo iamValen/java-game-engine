@@ -6,7 +6,7 @@
  * @author Alexandre Menino a83974
  * @version 28/03/2025
  */
-public abstract class Figura {
+public abstract class Figure {
     public final int tipoFig;
     /*
      * tipoFig indica o tipo da figura:
@@ -19,7 +19,7 @@ public abstract class Figura {
      * 
      * @param tipo inteiro que representa o tipo da figura (0 para Polígono, 1 para Círculo)
      */
-    protected Figura(int tipo){
+    protected Figure(int tipo){
         this.tipoFig = tipo;
     }
 
@@ -36,7 +36,7 @@ public abstract class Figura {
      * @param r fator de escala a ser aplicado
      * @return nova figura escalada
      */
-    public abstract Figura scale(double r);
+    public abstract Figure scale(double r);
 
     /**
      * Retorna uma nova figura que resulta da rotação da figura atual por um ângulo dado.
@@ -44,7 +44,7 @@ public abstract class Figura {
      * @param r ângulo em graus para rotação (no sentido anti-horário)
      * @return nova figura rotacionada
      */
-    public abstract Figura rotate(double r);
+    public abstract Figure rotate(double r);
 
     /**
      * Retorna uma representação em String da figura.
@@ -60,7 +60,7 @@ public abstract class Figura {
      * @param dy valor a ser adicionado à coordenada y
      * @return nova figura transladada
      */
-    public abstract Figura translacao(double dx, double dy);
+    public abstract Figure translation(double dx, double dy);
 
     /**
      * Retorna uma nova figura que resulta da translação da figura atual pelo vetor representado pelo ponto p.
@@ -68,8 +68,8 @@ public abstract class Figura {
      * @param p ponto que representa o vetor de translação
      * @return nova figura transladada
      */
-    public abstract Figura translacao(Point p);
+    public abstract Figure translation(Point p);
 
 
-    public abstract boolean colisao(Figura that);
+    public abstract boolean collision(Figure that);
 }

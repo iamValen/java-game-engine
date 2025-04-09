@@ -1,10 +1,27 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 
 public class GameEngine {
-    private final List<GameObject> gameObjects = new ArrayList<>();
+    private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     public HashMap<Integer, ArrayList<GameObject>> layers = new HashMap<>();
+    
+    /**
+     * Retorna a lista de GameObjects.
+     * 
+     * @return Lista de GameObjects.
+     */
+    public ArrayList<GameObject> gameObjects(){
+        return gameObjects;
+    }
+
+    /**
+     * Retorna o mapa de layers com os gameobjects.
+     * 
+     * @return Lista de GameObjects.
+     */
+    public HashMap<Integer, ArrayList<GameObject>> layers(){
+        return layers;
+    }
 
 
     /**
@@ -20,10 +37,6 @@ public class GameEngine {
             layers.put(go.transform().layer(), goLayer);
         }
         goLayer.add(go);
-        // <-
-        // dar replace por
-        // layers.computeIfAbsent(go.transform().layer(), k -> new ArrayList<>()).add(go);
-        // ???
     }
 
     /**
@@ -32,15 +45,8 @@ public class GameEngine {
      * @param go GameObject a ser removido.
      */
     public void destroy(GameObject go) {
-        ArrayList<GameObject> goLayer = layers.get(go.transform().layer());
-        if (goLayer != null) {
-            goLayer.remove(go);
-        }
+        layers.getOrDefault(go.transform().layer(), new ArrayList<>()).remove(go);
         gameObjects.remove(go);
-        // <-
-        // dar replace por
-        // layers.getOrDefault(go.transform().layer(), new ArrayList<>()).remove(go);
-        // ???
     }
 
     public void generateNextFrame(){
@@ -72,13 +78,13 @@ public class GameEngine {
         }
     }
 
-    /**
+    /** Usado no gameEngine
      * Detecta colisões entre os GameObjects dentro da mesma camada.
      * 
      * @return Lista de colisões no formato "GameObject1 GameObject2".
      */
-    public List<String> detectCollisions() {
-        List<String> collisions = new ArrayList<>();
+    public ArrayList<String> detectCollisions() {
+        ArrayList<String> collisions = new ArrayList<>();
 
         for (int layer : layers.keySet()) {
             ArrayList<GameObject> objectsInLayer = layers.get(layer);
@@ -105,5 +111,30 @@ public class GameEngine {
         }
 
         return collisions;
+    }
+
+    /** Apenas usado para o N
+     * Detecta colisões entre os GameObjects, mas não considera a camada.
+     * 
+     * @return Lista de colisões no formato "GameObject1 GameObject2".
+     */
+    public ArrayList<String> detectCollisions2(){
+        ArrayList<String> out = new ArrayList<>();
+        for(GameObject go : gameObjects){
+            boolean flag = false;
+            StringBuilder sb = new StringBuilder(go.name());
+            ArrayList<GameObject> arr = layers.get(go.transform().layer());
+            for(GameObject go2 : arr){
+                if(go == go2)
+                    continue;
+                if(go.colision(go2)){
+                    sb.append(" " + go2.name());
+                    flag = true;
+                }
+            }
+            if(flag)
+                out.add(sb.toString());
+        }
+        return out;
     }
 }

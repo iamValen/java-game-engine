@@ -4,5 +4,6 @@
 - GameEngineTests
 - UML
 
-## Optional
-- Meter lista de objetos na mesma layer (eficiência)
+# UML
+- falta trocar os tracejados, menos das interfaces
+- adicionar os losangulos (preenchido - é criado dentro da classe onde tem o losangulo)

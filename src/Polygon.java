@@ -6,9 +6,9 @@ import static util.util.*;
  * @version 1.0 22/03/2025
  * @inv invariante e um poligono com pontos seguidos colineares ou com segmentos que se intersetam
  */
-public class Poligono extends Figura {
+public class Polygon extends Figure {
     protected final Point[] pontos;
-    protected final Segmento[] segmentos;
+    protected final Segment[] segmentos;
     @SuppressWarnings("unused")
     private final int tipoPol;
     /*
@@ -23,12 +23,12 @@ public class Poligono extends Figura {
      * @param arr array de pontos que formam o poligono
      * @param tipo tipo do poligono
      */
-    protected Poligono(Point[] arr, int tipo){
+    protected Polygon(Point[] arr, int tipo){
         super(0);
         this.tipoPol = tipo;
-        segmentos = new Segmento[arr.length];
+        segmentos = new Segment[arr.length];
         for(int i = 0; i < arr.length; i++){
-            segmentos[i] = new Segmento(arr[i], arr[(i+1)%arr.length]);
+            segmentos[i] = new Segment(arr[i], arr[(i+1)%arr.length]);
         }
         pontos = arr;
         checkPol();
@@ -39,7 +39,7 @@ public class Poligono extends Figura {
      * 
      * @param arr array de Ponto
      */
-    public Poligono(Point[] arr){
+    public Polygon(Point[] arr){
         this(arr, 0);
     }
 
@@ -51,22 +51,22 @@ public class Poligono extends Figura {
         if(pontos.length < 3) throw new IllegalArgumentException("Poligono:vi");
 
         for(int i = 0; i < pontos.length; i++) {
-            if(Point.colinear(pontos[i], pontos[(i+1)%pontos.length], pontos[(i+2)%pontos.length]))
+            if(Point.collinear(pontos[i], pontos[(i+1)%pontos.length], pontos[(i+2)%pontos.length]))
                 throw new IllegalArgumentException("Poligono:vi");
         }
 
         for(int i = 0; i < pontos.length; i++){
             for(int j = i+2; j < pontos.length; j++){
-                Segmento a = segmentos[i];
-                Segmento b = segmentos[j%pontos.length];
-                if(a.intersecao(b)){
+                Segment a = segmentos[i];
+                Segment b = segmentos[j%pontos.length];
+                if(a.intersects(b)){
                     throw new IllegalArgumentException("Poligono:vi");
                 }
             }
         }
     }
 
-    public Segmento[] segmentos(){ return segmentos; }
+    public Segment[] segmentos(){ return segmentos; }
 
     public Point[] pontos(){ return pontos; }
 
@@ -76,7 +76,7 @@ public class Poligono extends Figura {
      * @param p ponto dado
      * @return true se estiver dentro, senao false
      */
-    public boolean contemOPonto(Point p){
+    public boolean containsPoint(Point p){
         Point AP;
         Point AB;
         int sign[] = new int[this.pontos.length];
@@ -98,8 +98,8 @@ public class Poligono extends Figura {
      * @param that circulo dado
      * @return true se colidirem, senao false
      */
-    public boolean colisaoCirculo(Circulo that){
-        return that.colisaoPoligono(this);
+    public boolean collisionCircle(Circle that){
+        return that.collisionPolygon(this);
     }
 
     /**
@@ -108,18 +108,18 @@ public class Poligono extends Figura {
      * @param that poligono dado
      * @return true se colidirem, senao false
      */
-    public boolean colisaoPoligono(Poligono that){
+    public boolean collisionPolygon(Polygon that){
         for(int i = 0; i < this.pontos.length; i++){
-            if(that.contemOPonto(this.pontos[i]))
+            if(that.containsPoint(this.pontos[i]))
                 return true;
         }
         for(int j = 0; j < that.pontos.length; j++){
-            if(this.contemOPonto(that.pontos[j]))
+            if(this.containsPoint(that.pontos[j]))
                 return true;
         }
         for(int i = 0; i < this.segmentos.length; i++){
             for(int j = 0; j < that.segmentos.length; j++){
-                if(this.segmentos[i].intersecao(that.segmentos[j]))
+                if(this.segmentos[i].intersects(that.segmentos[j]))
                     return true;
             }
         }
@@ -127,11 +127,11 @@ public class Poligono extends Figura {
     }
 
     @Override
-    public boolean colisao(Figura that) {
+    public boolean collision(Figure that) {
         if (that.tipoFig == 0) { // Polígono vs Polígono
-            return this.colisaoPoligono((Poligono) that);
+            return this.collisionPolygon((Polygon) that);
         } else if (that.tipoFig == 1) { // Polígono vs Círculo
-            return this.colisaoCirculo((Circulo) that);
+            return this.collisionCircle((Circle) that);
         }
         return false;
     }
@@ -143,7 +143,7 @@ public class Poligono extends Figura {
      * @param dy diferenca de posicao no eixo y
      * @return array de Ponto com os novos pontos
      */
-    protected  Point[] translacaoPontos(double dx, double dy){
+    protected  Point[] translatePoints(double dx, double dy){
         Point[] out = new Point[this.pontos.length];
         for(int i = 0; i < out.length; i++){
             out[i] = this.pontos[i].translacao(dx, dy);
@@ -159,9 +159,9 @@ public class Poligono extends Figura {
      * @return novo poligono
      */
     @Override
-    public Poligono translacao(double dx, double dy){
-        Point[] pts = translacaoPontos(dx, dy);
-        return new Poligono(pts);
+    public Polygon translation(double dx, double dy){
+        Point[] pts = translatePoints(dx, dy);
+        return new Polygon(pts);
     }
 
     /** 
@@ -171,9 +171,9 @@ public class Poligono extends Figura {
      * @return novo poligono
      */
     @Override
-    public Figura translacao(Point p){
-        Point[] pts = translacaoPontos(p.x(), p.y());
-        return new Poligono(pts);
+    public Polygon translation(Point p){
+        Point[] pts = translatePoints(p.x(), p.y());
+        return new Polygon(pts);
     }
 
     /**
@@ -182,7 +182,7 @@ public class Poligono extends Figura {
     @Override
     public Point centroid(){
 
-        Poligono p = this;
+        Polygon p = this;
 
         double area = 0;
         for(int i = 0; i < p.pontos.length; i++){
@@ -226,14 +226,14 @@ public class Poligono extends Figura {
      * @return novo polígono escalado
      */
     @Override
-    public Figura scale(double s){
+    public Figure scale(double s){
         Point[] pts = new Point[pontos.length];
 
         for(int i = 0; i < pontos.length; i++){
             pts[i] = pontos[i].scale(s);
         }
 
-        return new Poligono(pts);
+        return new Polygon(pts);
     }
 
     /**
@@ -244,14 +244,14 @@ public class Poligono extends Figura {
      * @return novo polígono rotacionado
      */
     @Override
-    public Figura rotate(double r){
+    public Figure rotate(double r){
         Point[] pts = new Point[pontos.length];
 
         for(int i = 0; i < pontos.length; i++){
             pts[i] = pontos[i].rotate(r);
         }
 
-        return new Poligono(pts);
+        return new Polygon(pts);
     }
 
     @Override

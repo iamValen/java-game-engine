@@ -21,12 +21,12 @@ public class MainL {
 
         String[] colliderTokens = sc.nextLine().trim().split("\\s+");
         sc.close();
-        Figura fig;
+        Figure fig;
         if(colliderTokens.length == 3) {
             double cx = Double.parseDouble(colliderTokens[0]);
             double cy = Double.parseDouble(colliderTokens[1]);
             double r = Double.parseDouble(colliderTokens[2]);
-            fig = new Circulo(new Point(cx, cy), r);
+            fig = new Circle(new Point(cx, cy), r);
         }
         else {
             int nVertices = colliderTokens.length / 2;
@@ -36,7 +36,7 @@ public class MainL {
                 double vy = Double.parseDouble(colliderTokens[2*i+1]);
                 points[i] = new Point(vx, vy);
             }
-            fig = new Poligono(points);
+            fig = new Polygon(points);
         }
 
         GameObject gameObj = new GameObject(name, x, y, layer, angle, scale, fig);

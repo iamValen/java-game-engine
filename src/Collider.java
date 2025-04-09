@@ -1,45 +1,33 @@
 public class Collider implements ICollider {
-    private Figura fig;
+    private Figure fig;
     private final Transform transform;
     private Point centroid;
-    private double angle;
-    private double scale;
 
 
-    Collider(Figura fig, Transform transform) {
+    Collider(Figure fig, Transform transform) {
         this.fig = fig;
         this.transform = transform;
         this.centroid = fig.centroid();
-        this.angle = 0;
-        this.scale = 1;
         updateFig();
     }
 
+    /**
+     * Atualiza a figura com base na transformação aplicada.
+     * 
+     */
     public void updateFig() {
-        fig = fig.translacao(centroid.flipSign()); // Move para a origem
-        fig = fig.rotate(transform.angle() - angle); // Aplica rotação
-        angle = transform.angle();
-        fig = fig.scale(transform.scale() / scale); // Aplica escala
-        scale = transform.scale();
+        fig = fig.translation(centroid.flipSign()); // Move para a origem
+        fig = fig.rotate(transform.angle() - transform.angleOld()); // Aplica rotação
+        fig = fig.scale(transform.scale() / transform.scaleOld()); // Aplica escala
         centroid = transform.position();
-        fig = fig.translacao(centroid); // Move para a posição correta
+        fig = fig.translation(centroid); // Move para a posição correta
     }
 
-    // public void move(Point p, int layer) {
-    //     transform.move(p, layer);
-    //     updateFig();
-    // }
-
-    // public void rotate(double r) {
-    //     transform.rotate(r);
-    //     updateFig();
-    // }
-
-    // public void scale(double s) {
-    //     transform.scale(s);
-    //     updateFig();
-    // }
-
+    /**
+     * Retorna o centroid da
+     * 
+     * @return ponto que representa o centroide da figura.
+     */
     public Point centroid() {
         return centroid;
     }
@@ -52,7 +40,7 @@ public class Collider implements ICollider {
      */
     public boolean collidesWith(ICollider other) {
         Collider that = (Collider) other;
-        return this.fig.colisao(that.fig);
+        return this.fig.collision(that.fig);
     }
 
     @Override
