@@ -91,7 +91,7 @@ public class GameEngine {
      * 
      * @return Lista de colisões.
      */
-    public ArrayList<String> detectCollisions2() {
+    public ArrayList<String> detectCollisions() {
         ArrayList<String> collisions = new ArrayList<>();
         // Para cada layer
         for (Integer layer : layers.keySet()) {
@@ -122,7 +122,7 @@ public class GameEngine {
      * 
      * @return Lista de colisões.
      */
-    public ArrayList<String> detectCollisions(){
+    public ArrayList<String> detectCollisionsN(){
         ArrayList<String> out = new ArrayList<>();
         for(GameObject go : gameObjects){
             boolean flag = false;

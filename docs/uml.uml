@@ -1,7 +1,8 @@
 @startuml
-title UML - Projeto Java Game Engine
+left to right direction
+title Java Game Engine
 
-'------------------ Interfaces ------------------
+'================== Interfaces ==================
 package "Interfaces" {
   interface IGameObject {
     + name() : String
@@ -9,9 +10,9 @@ package "Interfaces" {
     + collider() : Collider
   }
   interface ITransform {
-    + move(p: Point, layer: int) : void
-    + rotate(r: double) : void
-    + scale(s: double) : void
+    + move(p: Point, layer: int)
+    + rotate(r: double)
+    + scale(s: double)
     + position() : Point
     + layer() : int
     + angle() : double
@@ -22,23 +23,24 @@ package "Interfaces" {
   }
 }
 
-'------------------ Classes ------------------
+'================== Classes ==================
 package "Classes" {
   abstract class Figura {
     - tipoFig : int
-    + Figura(tipo: int)
+    --
     + centroid() : Point
     + scale(r: double) : Figura
     + rotate(r: double) : Figura
-    + translacao(dx: double, dy: double) : Figura
-    + translacao(p: Point) : Figura
+    + translation(dx: double, dy: double) : Figura
+    + translation(p: Point) : Figura
     + toString() : String
+    + collision(that: Figura) : boolean
   }
   
   class Point {
     - x : double
     - y : double
-    + Point(x: double, y: double)
+    --
     + x() : double
     + y() : double
     + X() : int
@@ -59,22 +61,27 @@ package "Classes" {
   
   class Transform {
     - layer : int
-    - rotacao : double
-    - escala : double
-    + Transform(x: double, y: double, layer: int, angle: double, scale: double)
-    + move(p: Point, layer: int) : void
-    + rotate(r: double) : void
-    + scale(s: double) : void
+    - angle : double
+    - angleOld : double
+    - scale : double
+    - scaleOld : double
+    --
+    + move(p: Point, layer: int)
+    + rotate(r: double)
+    + scale(s: double)
     + position() : Point
     + layer() : int
     + angle() : double
+    + angleOld() : double
     + scale() : double
+    + scaleOld() : double
     + toString() : String
+    + update() : void
   }
   Transform ..|> ITransform
-
+  
   class Segmento {
-    + Segmento(p1: Point, p2: Point)
+    --
     + p1() : Point
     + p2() : Point
     + intersecao(that: Segmento) : boolean
@@ -82,15 +89,14 @@ package "Classes" {
   
   class Poligono {
     - tipoPol : int
-    + Poligono(arr: Point[])
-    + Poligono(arr: Point[], tipo: int)
+    --
     + pontos() : Point[]
     + segmentos() : Segmento[]
     + contemOPonto(p: Point) : boolean
-    + colisaoCirculo(c: Circulo) : boolean
+    + colisaoCirculo(c: Circle) : boolean
     + colisaoPoligono(p: Poligono) : boolean
-    + translacao(dx: double, dy: double) : Poligono
-    + translacao(p: Point) : Figura
+    + translation(dx: double, dy: double) : Poligono
+    + translation(p: Point) : Figura
     + centroid() : Point
     + scale(s: double) : Figura
     + rotate(r: double) : Figura
@@ -98,62 +104,74 @@ package "Classes" {
   }
   Poligono --|> Figura
   
-  class Circulo {
-    - raio : Double
-    - centro : Point
-    + Circulo(c: Point, r: Double)
-    + centro() : Point
-    + raio() : Double
-    + translacao(dx: double, dy: double) : Circulo
-    + translacao(p: Point) : Figura
+  class Circle {
+    - radius : double
+    --
+    + center() : Point
+    + radius() : double
+    + translation(dx: double, dy: double) : Circle
+    + translation(p: Point) : Figura
     + intersetaSegmento(s: Segmento) : boolean
-    + colisaoCirculo(c: Circulo) : boolean
+    + colisaoCirculo(c: Circle) : boolean
     + colisaoPoligono(p: Poligono) : boolean
     + centroid() : Point
     + scale(r: double) : Figura
     + rotate(r: double) : Figura
+    + collision(that: Figura) : boolean
     + toString() : String
   }
-  Circulo --|> Figura
+  Circle --|> Figura
   
   class Collider {
-    - scale : double
-    - layer : int
-    + Collider(fig: Figura, transform: Transform)
-    + move(p: Point, layer: int) : void
-    + rotate(r: double) : void
-    + scale(s: double) : void
+    - centroid : Point
+    --
+    + updateFig() : void
     + centroid() : Point
     + toString() : String
+    + collidesWith(other: ICollider) : boolean
   }
   Collider ..|> ICollider
   
   class GameObject {
     - name : String
-    + GameObject(name: String, x: double, y: double, layer: int, angle: double, scale: double, fig: Figura)
+    --
+    + posSpeed : Point
+    + layerSpeed : int
+    + rotationSpeed : double
+    + scaleSpeed : double
     + move(p: Point, layer: int) : void
     + rotate(r: double) : void
     + scale(s: double) : void
+    + generateNextFrame() : void
     + name() : String
     + transform() : Transform
     + collider() : Collider
+    + colision(that: GameObject) : boolean
   }
   GameObject ..|> IGameObject
-
-  ' Associações: Todas as setas com Point são invertidas para que partam do Point
-  ' Em vez de: Transform "1" ..> "1" Point : position
-  Point ..> Transform : position
-  ' Poligono: seta de pontos com Point
-  Poligono *.. "n" Point : pontos
-  ' Segmento: seta de Point para Segmento
-  Point ..> Segmento : points
-  ' Circulo: seta de Point para Circulo (centro)
-  Point ..> Circulo : centro
-  ' Collider: seta de Point para Collider (centroid)
-  Point ..> Collider : (centroid)
-  
-  ' Outras associações permanecem
-  GameObject "1" .. "1" Transform : has
-  GameObject "1" .. "1" Collider : has
 }
+
+'================== Associations ==================
+' Segmento "has" 2 Points (start and end)
+Segmento "1" --> "2" Point : p1,p2
+
+' Poligono "has" an array (n) of Points and an array (n) of Segmentos
+Poligono "1" --> "*" Point : pontos
+Poligono "1" --> "*" Segmento : segmentos
+
+' Circle "has" exactly 1 center Point.
+Circle "1" --> "1" Point : center
+
+' Collider holds references to 1 Figura and 1 Transform.
+Collider "1" --> "1" Figura : fig
+Collider "1" --> "1" Transform : transform
+Collider "1" --> "1" Point : centroid
+
+' Transform has 1 point '
+Transform "1" --> "1" Point : position
+
+' GameObject has 1 Transform and 1 Collider.
+GameObject "1" --> "1" Transform : transform
+GameObject "1" --> "1" Collider : collider
+
 @enduml

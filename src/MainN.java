@@ -7,7 +7,7 @@ import java.util.*;
  * @author Valentim Khakhitva a81785
  * @version 28/03/2025
  */
-public class Main {
+public class MainN {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int frames = Integer.parseInt(scanner.nextLine());
@@ -58,7 +58,7 @@ public class Main {
         }
 
         engine.simulateFrames(frames);
-        ArrayList<String> collisions = engine.detectCollisions();
+        ArrayList<String> collisions = engine.detectCollisionsN();
 
         for (String collision : collisions) {
             System.out.println(collision);
