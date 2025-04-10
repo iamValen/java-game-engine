@@ -1,9 +1,22 @@
+/**
+ * Representa o colisor de um objeto.
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 28/03/2025
+ */
 public class Collider implements ICollider {
     private Figure fig;
     private final Transform transform;
     private Point centroid;
 
-
+    /**
+     * Construtor da classe Collider.
+     * 
+     * @param fig Figura associada ao collider.
+     * @param transform Transformação associada ao collider.
+     */
     Collider(Figure fig, Transform transform) {
         this.fig = fig;
         this.transform = transform;
@@ -21,6 +34,7 @@ public class Collider implements ICollider {
         fig = fig.scale(transform.scale() / transform.scaleOld()); // Aplica escala
         centroid = transform.position();
         fig = fig.translation(centroid); // Move para a posição correta
+        transform.update();
     }
 
     /**

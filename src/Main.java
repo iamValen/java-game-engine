@@ -1,6 +1,13 @@
 import java.util.*;
 
-public class MainN {
+/**
+ * Main - N
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 28/03/2025
+ */
+public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int frames = Integer.parseInt(scanner.nextLine());
@@ -51,7 +58,7 @@ public class MainN {
         }
 
         engine.simulateFrames(frames);
-        List<String> collisions = engine.detectCollisions();
+        ArrayList<String> collisions = engine.detectCollisions();
 
         for (String collision : collisions) {
             System.out.println(collision);

@@ -30,6 +30,7 @@ public class Transform implements ITransform {
         scaleOld = 1;
     }
 
+    
     /**
      * Move o objeto para uma nova posição e camada.
      * 
@@ -113,6 +114,15 @@ public class Transform implements ITransform {
     public double scaleOld(){
         return scaleOld;
     }
+
+    /**
+     * Atualiza os valores antigos de ângulo e escala.
+     */
+    public void update(){
+        angleOld = angle;
+        scaleOld = scale;
+    }
+
 
     @Override
     public String toString(){
