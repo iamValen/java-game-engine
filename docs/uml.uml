@@ -1,6 +1,6 @@
 @startuml
 left to right direction
-title Java Game Engine
+title Java Game
 
 '================== Interfaces ==================
 package "Interfaces" {
@@ -10,9 +10,9 @@ package "Interfaces" {
     + collider() : Collider
   }
   interface ITransform {
-    + move(p: Point, layer: int)
-    + rotate(r: double)
-    + scale(s: double)
+    + move(Point p, int layer)
+    + rotate(double r)
+    + scale(double s)
     + position() : Point
     + layer() : int
     + angle() : double
@@ -21,20 +21,43 @@ package "Interfaces" {
   interface ICollider {
     + centroid() : Point
   }
+  interface IBehaviour {
+    + init() : void
+    + onEnabled() : void
+    + onDisabled() : void
+    + onDestroy() : void
+    + onUpdate(double dT, InputEvent ie) : void
+    + onCollision(ArrayList<IGameObject> gol) : void
+  }
+  interface IGameEngine {
+    + addEnabled(IGameObject go) : void
+    + addDisabled(IGameObject go) : void
+    + enable(IGameObject go) : void
+    + disable(IGameObject go) : void
+    + isEnabled(IGameObject go) : void
+    + isDisabled(IGameObject go) : void
+    + ArrayList<IGameObject> enabled() : void
+    + ArrayList<IGameObject> disabled() : void
+    + add(GameObject go) : void
+    + destroy(IGameObject go) : void 
+    + destroyAll() : void
+    + run() : void
+    + checkCollisions() : void
+  }
 }
 
-'================== Classes ==================
-package "Classes" {
+'================== Game Engine ==================
+package "Engine" {
   abstract class Figura {
     - tipoFig : int
     --
     + centroid() : Point
-    + scale(r: double) : Figura
-    + rotate(r: double) : Figura
-    + translation(dx: double, dy: double) : Figura
-    + translation(p: Point) : Figura
+    + scale(double r) : Figura
+    + rotate(double r) : Figura
+    + translation(double dx, double dy) : Figura
+    + translation(Point p) : Figura
     + toString() : String
-    + collision(that: Figura) : boolean
+    + collision(Figura that) : boolean
   }
   
   class Point {
@@ -45,17 +68,17 @@ package "Classes" {
     + y() : double
     + X() : int
     + Y() : int
-    + equals(that: Point) : boolean
-    + distancia(that: Point) : double
-    + translacao(dx: double, dy: double) : Point
-    + sum(that: Point) : Point
-    + colinear(a: Point, b: Point, c: Point) : boolean
+    + equals(Point that) : boolean
+    + distancia(Point that) : double
+    + translacao(double dx, double dy) : Point
+    + sum(Point that) : Point
+    + colinear(Point a, Point b, Point c) : boolean
     + flipSign() : Point
-    + scale(s: double) : Point
-    + rotate(deg: double) : Point
-    + vetor(that: Point) : Point
-    + vetorPI(v1: Point, v2: Point) : double
-    + vetorPE(v1: Point, v2: Point) : double
+    + scale(double s) : Point
+    + rotate(double deg) : Point
+    + vetor(Point that) : Point
+    + vetorPI(Point v1, Point v2) : double
+    + vetorPE(Point v1, Point v2) : double
     + toString() : String
   }
   
@@ -66,9 +89,9 @@ package "Classes" {
     - scale : double
     - scaleOld : double
     --
-    + move(p: Point, layer: int)
-    + rotate(r: double)
-    + scale(s: double)
+    + move(Point p, int layer)
+    + rotate(double r)
+    + scale(double s)
     + position() : Point
     + layer() : int
     + angle() : double
@@ -84,7 +107,7 @@ package "Classes" {
     --
     + p1() : Point
     + p2() : Point
-    + intersecao(that: Segmento) : boolean
+    + intersecao(Segmento that) : boolean
   }
   
   class Poligono {
@@ -92,10 +115,10 @@ package "Classes" {
     --
     + pontos() : Point[]
     + segmentos() : Segmento[]
-    + contemOPonto(p: Point) : boolean
-    + colisaoCirculo(c: Circle) : boolean
-    + colisaoPoligono(p: Poligono) : boolean
-    + translation(dx: double, dy: double) : Poligono
+    + contemOPonto(Point p) : boolean
+    + colisaoCirculo(Circle c) : boolean
+    + colisaoPoligono(Poligono p) : boolean
+    + translation(dx: double dx, dy: double) : Poligono
     + translation(p: Point) : Figura
     + centroid() : Point
     + scale(s: double) : Figura
@@ -135,20 +158,70 @@ package "Classes" {
   class GameObject {
     - name : String
     --
-    + posSpeed : Point
-    + layerSpeed : int
-    + rotationSpeed : double
-    + scaleSpeed : double
-    + move(p: Point, layer: int) : void
-    + rotate(r: double) : void
-    + scale(s: double) : void
+    + posSpeed() : Point
+    + layerSpeed() : int
+    + rotationSpeed() : double
+    + scaleSpeed() : double
+    + move(Point p, int layer) : void
+    + rotate(double r) : void
+    + scale(double s) : void
     + generateNextFrame() : void
     + name() : String
     + transform() : Transform
     + collider() : Collider
-    + colision(that: GameObject) : boolean
+    + colision(GameObject that) : boolean
   }
   GameObject ..|> IGameObject
+
+  class GameEngine {
+    - layers : HashMap<Integer, ArrayList<GameObject>>
+    --
+    + gameObjects : ArrayList<GameObject>
+    + layers : HashMap<Integer, ArrayList<GameObject>>
+    + add : void
+    + destroy : void
+    + generateNextFrame : void
+    + simulateFrames : void
+    + detectCollisions : ArrayList<String>
+  }
+  GameEngine ..|> IGameEngine
+}
+ '================== Game ==================
+package "Game" {
+  Class PlayerBehaviour {
+      
+  }
+  PlayerBehaviour ..|> IBehaviour
+  Class Enemy1Behaviour {
+    
+  }
+  Enemy1Behaviour ..|> IBehaviour
+  Class Enemy2Behaviour {
+   
+  }
+  Enemy2Behaviour ..|> IBehaviour
+  Class Enemy3Behaviour {
+    
+  }
+  Enemy3Behaviour ..|> IBehaviour
+  Class HPBehaviour {
+    
+  }
+  HPBehaviour ..|> IBehaviour
+  Class PointsBehaviour {
+    
+  }
+  PointsBehaviour ..|> IBehaviour
+
+  Class Entity {
+    - health : int
+    - attack : ArrayList<Integer>
+    --
+    + health() : int
+    + damage() : ArrayList<Integer>
+    + heal() : void
+    + damage(Entity that) : void
+  }
 }
 
 '================== Associations ==================
@@ -171,7 +244,17 @@ Collider "1" --> "1" Point : centroid
 Transform "1" --> "1" Point : position
 
 ' GameObject has 1 Transform and 1 Collider.
-GameObject "1" --> "1" Transform : transform
-GameObject "1" --> "1" Collider : collider
+GameObject "1" --> "1" ITransform : transform
+GameObject "1" --> "1" ICollider : collider
+
+' GameEngine has * GameObjects
+GameEngine "1" --> "*" GameObject : gameObjects
+
+' Some Behaviours have 1 Entity
+PlayerBehaviour "1" --> "1" Entity : entity
+Enemy1Behaviour "1" --> "1" Entity : entity
+Enemy2Behaviour "1" --> "1" Entity : entity
+Enemy3Behaviour "1" --> "1" Entity : entity
+
 
 @enduml

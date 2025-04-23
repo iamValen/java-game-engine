@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 public class ColliderTests {
     @Test
     public void testColliderWithCirculo() {
-        Transform tCircle = new Transform(10, 20, 2, 90, 2);
+        Transform tCircle = new Transform(10, 20, 2, 90, 1);
         Circle circle = new Circle(new Point(1, 1), 3.0);
         Collider colCircle = new Collider(circle, tCircle);
         String expected = "(10.00,20.00) 3.00";

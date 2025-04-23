@@ -8,7 +8,7 @@
  */
 public class Collider implements ICollider {
     private Figure fig;
-    private final Transform transform;
+    private final ITransform transform;
     private Point centroid;
 
     /**
@@ -17,7 +17,7 @@ public class Collider implements ICollider {
      * @param fig Figura associada ao collider.
      * @param transform Transformação associada ao collider.
      */
-    Collider(Figure fig, Transform transform) {
+    Collider(Figure fig, ITransform transform) {
         this.fig = fig;
         this.transform = transform;
         this.centroid = fig.centroid();

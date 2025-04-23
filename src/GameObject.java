@@ -8,8 +8,8 @@
  */
 public class GameObject implements IGameObject {
     private String name;
-    private Transform transform;
-    private Collider collider;
+    private ITransform transform;
+    private ICollider collider;
     
     public Point posSpeed;
     public int layerSpeed;
@@ -65,7 +65,6 @@ public class GameObject implements IGameObject {
 
     /**
      * Atualiza o estado do GameObject.
-     * TODO: USAMOS IStO?
      */
     public void update(){
         collider.updateFig();
@@ -95,7 +94,7 @@ public class GameObject implements IGameObject {
      * 
      * @return Objeto Transform contendo posição, rotação e escala.
      */
-    public Transform transform(){
+    public ITransform transform(){
         return transform;
     }
 
@@ -104,7 +103,7 @@ public class GameObject implements IGameObject {
      * 
      * @return O Collider associado ao objeto.
      */
-    public Collider collider(){
+    public ICollider collider(){
         return collider;
     }
 

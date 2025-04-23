@@ -43,7 +43,28 @@ public interface ITransform {
     public double angle();
 
     /**
+     * Retorna o ângulo de rotação anterior do objeto.
+     * 
+     * @return Ângulo em graus.
+     */
+    public double angleOld();
+
+    /**
      * @return the current scale factor
      */
     public double scale();
+
+    /**
+     * Retorna o fator de escala anterior do objeto.
+     * 
+     * @return Fator de escala.
+     */
+    public double scaleOld();
+
+    /**
+     * Atualiza os valores antigos de ângulo e escala.
+     */
+    public void update();
+
+    public String toString();
 }
