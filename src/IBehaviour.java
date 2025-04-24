@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public interface IBehaviour {
-    
+
     void init();
     void onEnabled();
     void onDisabled();
