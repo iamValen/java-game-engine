@@ -9,7 +9,35 @@ import java.util.HashMap;
  * @author Valentim Khakhitva a81785
  * @version 28/03/2025
  */
-public class GameEngine {
+public class GameEngine implements IGameEngine{
+
+    public static GameEngine GAMEENGINE;
+
+    public void addEnabled(IGameObject go){}
+    public void addDisabled(IGameObject go){}
+
+    public void enable(IGameObject go){}
+    public void disable(IGameObject go){}
+
+    public boolean isEnabled(IGameObject go){return false;}
+    public boolean isDisabled(IGameObject go){return false;}
+
+    public ArrayList<IGameObject> enabled(){return null;}
+    public ArrayList<IGameObject> disabled(){ return null;}
+
+    public void destroy(IGameObject go){}
+    public void destroyAll(){}
+
+    public void run(){
+        for(;;){
+            //get input
+            //get colisions
+            //for(all go's)
+            //    go.update(colisions, input)
+        }
+
+    }
+
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     public HashMap<Integer, ArrayList<GameObject>> layers = new HashMap<>();
     
@@ -92,7 +120,7 @@ public class GameEngine {
      * 
      * @return Lista de colisões.
      */
-    public ArrayList<String> detectCollisions(){
+    public ArrayList<String> checkCollisions(){
         ArrayList<String> out = new ArrayList<>();
         for(GameObject go : gameObjects){
             boolean flag = false;

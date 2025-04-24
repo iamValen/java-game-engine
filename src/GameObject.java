@@ -10,11 +10,13 @@ public class GameObject implements IGameObject {
     private String name;
     private ITransform transform;
     private ICollider collider;
-    
+    private IBehaviour behaviour;
+
     public Point posSpeed;
     public int layerSpeed;
     public double rotationSpeed;
     public double scaleSpeed;
+    public boolean isEnabled;
 
     /**
      * Construtor da classe GameObject.
@@ -34,6 +36,16 @@ public class GameObject implements IGameObject {
         transform = new Transform(x, y, layer, angle, scale);
         collider = new Collider(fig, transform);
     }
+
+    GameObject(String name,
+            double x, double y, int layer, double angle, double scale,
+            Figure fig, IBehaviour behaviour) {
+        this.name = name;
+        transform = new Transform(x, y, layer, angle, scale);
+        collider = new Collider(fig, transform);
+        this.behaviour = behaviour;
+    }
+
 
     /**
      * Move o objeto para uma nova posição e camada.
@@ -79,6 +91,15 @@ public class GameObject implements IGameObject {
         transform.scale(scaleSpeed);
         collider.updateFig();
     }
+
+
+/*
+    public void update(colisions, input){
+        if(this.behaviour != null)
+            this.behaviour.onupdate(colisions, input);
+    }
+*/
+
 
     /**
      * Retorna o nome do objeto.

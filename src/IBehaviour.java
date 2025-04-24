@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 public interface IBehaviour {
 
-    void init();
-    void onEnabled();
-    void onDisabled();
+    void oninit();
+    void onEnable();
+    void onDisable();
     void onDestroy();
-    void onUpdate(double dT, InputEvent ie);
+    // void onUpdate(double dT, InputEvent ie, colisions);
     void onCollision(ArrayList<IGameObject> gol);
 }

@@ -2,6 +2,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
+import javax.management.monitor.GaugeMonitor;
+
 import org.junit.jupiter.api.Test;
 
 public class GameEngineTests {
@@ -110,7 +112,7 @@ public class GameEngineTests {
         expected.add("Rect Square Circle");
         expected.add("Circle Square Rect");
 
-        assertEquals(expected, ge.detectCollisions());
+        assertEquals(expected, ge.checkCollisions());
 
         ge.destroy(go1);
         ge.destroy(go2);
@@ -138,6 +140,103 @@ public class GameEngineTests {
         ge.add(go5);
 
         expected = new ArrayList<>();
-        assertEquals(expected, ge.detectCollisions());
+        assertEquals(expected, ge.checkCollisions());
     }
+
+
+
+
+
+    @Test
+    public void testAddEnabled(){
+        GameEngine ge = new GameEngine();
+        Point[] pts1 = new Point[4];
+        pts1[0] = new Point(1, 1);
+        pts1[1] = new Point(1, 3);
+        pts1[2] = new Point(3, 3);
+        pts1[3] = new Point(3, 1);
+        Polygon square = new Polygon(pts1);
+        GameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square);
+        ge.addEnabled(go1);
+        assertEquals(true, ge.enabled().contains(go1));
+    }
+
+    @Test
+    public void testAddDisabled(){
+        GameEngine ge = new GameEngine();
+        Point[] pts1 = new Point[4];
+        pts1[0] = new Point(1, 1);
+        pts1[1] = new Point(1, 3);
+        pts1[2] = new Point(3, 3);
+        pts1[3] = new Point(3, 1);
+        Polygon square = new Polygon(pts1);
+        GameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square);
+        ge.addDisabled(go1);
+        assertEquals(true, ge.disabled().contains(go1));
+    }
+
+    @Test
+    public void testDisable(){
+        GameEngine ge = new GameEngine();
+        Point[] pts1 = new Point[4];
+        pts1[0] = new Point(1, 1);
+        pts1[1] = new Point(1, 3);
+        pts1[2] = new Point(3, 3);
+        pts1[3] = new Point(3, 1);
+        Polygon square = new Polygon(pts1);
+        GameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square);
+        ge.addEnabled(go1);
+        ge.disable(go1);
+        assertEquals(true, ge.isDisabled(go1));
+        assertEquals(false, ge.enabled().contains(go1));
+        assertEquals(true, ge.disabled().contains(go1));
+    }
+
+
+    @Test
+    public void testEnable(){
+        GameEngine ge = new GameEngine();
+        Point[] pts1 = new Point[4];
+        pts1[0] = new Point(1, 1);
+        pts1[1] = new Point(1, 3);
+        pts1[2] = new Point(3, 3);
+        pts1[3] = new Point(3, 1);
+        Polygon square = new Polygon(pts1);
+        GameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square);
+        ge.addDisabled(go1);
+        ge.enable(go1);
+        assertEquals(true, ge.isEnabled(go1));
+        assertEquals(true, ge.enabled().contains(go1));
+        assertEquals(false, ge.disabled().contains(go1));
+    }
+
+
+    @Test
+    public void testDestroyAll(){
+        GameEngine ge = new GameEngine();
+        Point[] pts1 = new Point[4];
+        pts1[0] = new Point(1, 1);
+        pts1[1] = new Point(1, 3);
+        pts1[2] = new Point(3, 3);
+        pts1[3] = new Point(3, 1);
+        Polygon square1 = new Polygon(pts1);
+        GameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square1);
+
+        Point[] pts2 = new Point[4];
+        pts2[0] = new Point(4, 3);
+        pts2[1] = new Point(4, 7);
+        pts2[2] = new Point(7, 7);
+        pts2[3] = new Point(7, 3);
+        Polygon square2 = new Polygon(pts2);
+        GameObject go2 = new GameObject("Rect", 2, 2, 0, 0, 1, square2);
+
+        ge.addEnabled(go1);
+        ge.addEnabled(go2);
+
+        assertEquals(false, ge.enabled().contains(go1));
+        assertEquals(false, ge.enabled().contains(go2));
+    }
+
+
+
 }

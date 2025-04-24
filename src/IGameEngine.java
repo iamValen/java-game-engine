@@ -14,8 +14,8 @@ public interface IGameEngine {
     public void enable(IGameObject go); // new
     public void disable(IGameObject go); // new
 
-    public void isEnabled(IGameObject go); // new
-    public void isDisabled(IGameObject go); // new
+    public boolean isEnabled(IGameObject go); // new
+    public boolean isDisabled(IGameObject go); // new
 
     public ArrayList<IGameObject> enabled(); // new
     public ArrayList<IGameObject> disabled(); // new
@@ -26,5 +26,5 @@ public interface IGameEngine {
 
     public void run(); // new
 
-    public void checkCollisions();
+    public ArrayList<String> checkCollisions();
 }
