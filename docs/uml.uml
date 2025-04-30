@@ -44,6 +44,9 @@ package "Interfaces" {
     + run() : void
     + checkCollisions() : void
   }
+  interface IShape {
+    
+  }
 }
 
 '================== Game Engine ==================
@@ -107,7 +110,7 @@ package "Engine" {
     --
     + p1() : Point
     + p2() : Point
-    + intersecao(Segmento that) : boolean
+    + intersection(Segmento that) : boolean
   }
   
   class Poligono {
@@ -155,8 +158,14 @@ package "Engine" {
   }
   Collider ..|> ICollider
   
+  class Shape {
+    
+  }
+  Shape ..|> IShape  
+
   class GameObject {
     - name : String
+    - isEnabled : boolean
     --
     + posSpeed() : Point
     + layerSpeed() : int
@@ -192,35 +201,47 @@ package "Game" {
       
   }
   PlayerBehaviour ..|> IBehaviour
+
   Class Enemy1Behaviour {
     
   }
   Enemy1Behaviour ..|> IBehaviour
+
   Class Enemy2Behaviour {
    
   }
   Enemy2Behaviour ..|> IBehaviour
+
   Class Enemy3Behaviour {
     
   }
   Enemy3Behaviour ..|> IBehaviour
+
   Class HPBehaviour {
     
   }
   HPBehaviour ..|> IBehaviour
+
   Class PointsBehaviour {
     
   }
   PointsBehaviour ..|> IBehaviour
 
+  Class StaticBehaviour {
+    
+  }
+  StaticBehaviour ..|> IBehaviour
+
   Class Entity {
     - health : int
     - attack : ArrayList<Integer>
+    - status : int
     --
     + health() : int
-    + damage() : ArrayList<Integer>
+    + attack() : ArrayList<Integer>
+    + status() : int
     + heal() : void
-    + damage(Entity that) : void
+    + damage(int damageTaken) : void
   }
 }
 
@@ -246,6 +267,8 @@ Transform "1" --> "1" Point : position
 ' GameObject has 1 Transform and 1 Collider.
 GameObject "1" --> "1" ITransform : transform
 GameObject "1" --> "1" ICollider : collider
+GameObject "1" --> "1" IBehaviour : behaviour
+GameObject "1" --> "1" IShape : shape
 
 ' GameEngine has * GameObjects
 GameEngine "1" --> "*" GameObject : gameObjects
