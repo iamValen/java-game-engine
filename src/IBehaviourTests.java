@@ -8,7 +8,7 @@ public class IBehaviourTests {
 
 
 
-    class testBehaviour implements IBehaviour{
+    class testBehaviour extends  ABehaviour{
         boolean onInitRan = false;
         boolean onEnableRan = false;
         boolean onDisableRan = false;

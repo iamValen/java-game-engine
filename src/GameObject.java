@@ -1,3 +1,4 @@
+
 /**
  * Representa um objeto.
  * 
@@ -7,16 +8,13 @@
  * @version 28/03/2025
  */
 public class GameObject implements IGameObject {
-    private String name;
+    private final String name;
     private ITransform transform;
+    private IShape shape;
     private ICollider collider;
     private IBehaviour behaviour;
 
-    public Point posSpeed;
-    public int layerSpeed;
-    public double rotationSpeed;
-    public double scaleSpeed;
-    public boolean isEnabled;
+
 
     /**
      * Construtor da classe GameObject.
@@ -33,72 +31,49 @@ public class GameObject implements IGameObject {
                double x, double y, int layer, double angle, double scale,
                Figure fig) {
         this.name = name;
-        transform = new Transform(x, y, layer, angle, scale);
-        collider = new Collider(fig, transform);
+        this.transform = new Transform(x, y, layer, angle, scale);
+        this.collider = new Collider(fig);
+        this.collider.setTransform(transform);
     }
 
     GameObject(String name,
             double x, double y, int layer, double angle, double scale,
             Figure fig, IBehaviour behaviour) {
         this.name = name;
-        transform = new Transform(x, y, layer, angle, scale);
-        collider = new Collider(fig, transform);
+        this.transform = new Transform(x, y, layer, angle, scale);
+        this.collider = new Collider(fig);
+        this.collider.setTransform(transform);
         this.behaviour = behaviour;
     }
 
 
-    /**
-     * Move o objeto para uma nova posição e camada.
-     * 
-     * @param p Ponto para onde o objeto será movido.
-     * @param s Quantidade a adicionar à camada.
+    /*
+     * empty constructor always use this one then insert elements later
+     * others are for testing
      */
-    public void move(Point p, int s){
-        transform.move(p, s);
+    public GameObject(String name){
+        this.name = name;
     }
-
     /**
-     * Rotaciona o objeto.
-     * 
-     * @param r Ângulo em graus pelo qual o objeto será rotacionado.
+     * always call this after initializing a GameObject
+     * collider and shape always depend on transform
+     * behaviour can depend on anything depending on implementation
+     * dont set dependable members to null
      */
-    public void rotate(double r){
-        transform.rotate(r);
-    }
-
-    /**
-     * Redimensiona o objeto.
-     * 
-     * @param s Fator de escala a aplicar.
-     */
-    public void scale(double s){
-        transform.scale(s);
-    }
-
-    /**
-     * Atualiza o estado do GameObject.
-     */
-    public void update(){
-        collider.updateFig();
-    }
-
-    /**
-     * Atualiza o estado do GameObject para o próximo frame.
-     */
-    public void generateNextFrame() {
-        transform.move(posSpeed, layerSpeed);
-        transform.rotate(rotationSpeed);
-        transform.scale(scaleSpeed);
-        collider.updateFig();
-    }
+    public void insertElements(ITransform transform, ICollider collider,
+    Shape shape, IBehaviour behaviour){
+        this.transform = transform;
+        this.collider = collider;
+        this.behaviour = behaviour;
+        this.shape = shape;
 
 
-/*
-    public void update(colisions, input){
-        if(this.behaviour != null)
-            this.behaviour.onupdate(colisions, input);
+        this.collider.setTransform(transform);
+        this.collider.onUpdate();
+
+        this.behaviour.setGO(this);
     }
-*/
+
 
 
     /**
@@ -106,8 +81,9 @@ public class GameObject implements IGameObject {
      * 
      * @return Nome do objeto.
      */
+    @Override
     public String name(){
-        return name;
+        return this.name;
     }
 
     /**
@@ -115,8 +91,9 @@ public class GameObject implements IGameObject {
      * 
      * @return Objeto Transform contendo posição, rotação e escala.
      */
+    @Override
     public ITransform transform(){
-        return transform;
+        return this.transform;
     }
 
     /**
@@ -124,11 +101,18 @@ public class GameObject implements IGameObject {
      * 
      * @return O Collider associado ao objeto.
      */
+    @Override
     public ICollider collider(){
-        return collider;
+        return this.collider;
     }
 
-    public boolean colision(GameObject that){
-        return this.collider.collidesWith(that.collider);
+    @Override
+    public  IShape shape(){
+        return this.shape;
+    }
+
+    @Override
+    public  IBehaviour behaviour(){
+        return this.behaviour;
     }
 }

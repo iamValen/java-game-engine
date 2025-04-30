@@ -6,6 +6,7 @@ public interface IBehaviour {
     void onEnable();
     void onDisable();
     void onDestroy();
-    // void onUpdate(double dT, InputEvent ie, colisions);
+    void onUpdate(double dT);
     void onCollision(ArrayList<IGameObject> gol);
+    void setGO(GameObject GO);
 }

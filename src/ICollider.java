@@ -9,19 +9,23 @@
 public interface ICollider {
     Point centroid();
 
+    public void setTransform(ITransform transform);
+
+
     /**
      * Atualiza a figura com base na transformação aplicada.
      * 
      */
-    public void updateFig();
+    public void onUpdate();
 
     /**
      * Verifica se este Collider colide com outro Collider.
      * 
-     * @param other Outro Collider a ser testado.
+     * @param that Outro Collider a ser testado.
      * @return true se houver colisão, false caso contrário.
      */
-    public boolean collidesWith(ICollider other);
+    public boolean isColliding(ICollider that);
 
+    @Override
     public String toString();
 }

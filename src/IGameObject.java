@@ -18,8 +18,17 @@ public interface IGameObject {
     ITransform transform();
 
     /**
+     * @return the Shape of the GameObject 
+     */
+    IShape shape();
+
+    /**
      * @return the Collider of the GameObject with its centroid at this.transform().position()
      */
     ICollider collider();
-    // …
+    
+    /**
+     * @return the Behaviour of the GameObject
+     */
+    IBehaviour behaviour();
 }

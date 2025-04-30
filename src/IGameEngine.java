@@ -3,8 +3,7 @@ import java.util.HashMap;
 
 public interface IGameEngine {
     
-    public ArrayList<GameObject> gameObjects();
-    public HashMap<Integer, ArrayList<GameObject>> layers();
+    public HashMap<Integer, ArrayList<IGameObject>> layers();
 
     public void generateNextFrame();
 
@@ -20,11 +19,10 @@ public interface IGameEngine {
     public ArrayList<IGameObject> enabled(); // new
     public ArrayList<IGameObject> disabled(); // new
 
-    public void add(GameObject go);
     public void destroy(IGameObject go); 
     public void destroyAll(); // new
 
     public void run(); // new
 
-    public ArrayList<String> checkCollisions();
+    public void checkCollisions();
 }
