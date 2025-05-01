@@ -1,0 +1,212 @@
+package engine;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import interfaces.IGameEngine;
+import interfaces.IGameObject;
+
+/**
+ * Classe que representa o motor de jogo, responsável por gerenciar os GameObjects e suas interações.
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 28/03/2025
+ */
+public class GameEngine implements IGameEngine{
+    /**
+     * GameEngine tem apenas uma única instância
+     * Desta maneira todos os objetos presentes no GE podem aceder ao proprio GE
+     */
+    private static GameEngine instance = null;
+
+    private final HashMap<Integer, ArrayList<IGameObject>> layers = new HashMap<>();
+    private final ArrayList<IGameObject> enabledList = new ArrayList<>();
+    private final ArrayList<IGameObject> disabledList = new ArrayList<>();
+
+    private boolean isRunning;
+
+    public boolean isRunning(){ return this.isRunning; }
+
+    private GameEngine() {
+        this.isRunning = false;
+    }
+
+    public static GameEngine getInstance() {
+        if (instance == null) {
+            instance = new GameEngine();
+        }
+        return instance;
+    }
+
+    @Override
+    public ArrayList<IGameObject> enabled(){
+        return this.enabledList;
+    }
+    
+    @Override
+    public ArrayList<IGameObject> disabled(){
+        return this.disabledList;
+    }
+
+    /**
+     * Retorna o mapa de layers com os gameobjects.
+     * 
+     * @return Lista de GameObjects.
+     */
+    @Override
+    public HashMap<Integer, ArrayList<IGameObject>> layers(){
+        return this.layers;
+    }
+
+    @Override
+    public void addEnabled(IGameObject go){
+        this.enabledList.add(go);
+        layers.computeIfAbsent(go.transform().layer(), k -> new ArrayList<>()).add(go);
+        if(go.behaviour() != null) go.behaviour().oninit();
+    }
+
+    @Override
+    public void addDisabled(IGameObject go){
+        this.disabledList.add(go);
+        if(go.behaviour() != null) go.behaviour().oninit();
+    }
+
+    @Override
+    public void enable(IGameObject go){
+        this.disabledList.remove(go);
+        this.enabledList.add(go);
+        this.layers.get(go.transform().layer()).add(go);
+        go.behaviour().onEnable();
+    }
+    
+    @Override
+    public void disable(IGameObject go){
+        this.enabledList.remove(go);
+        this.layers.get(go.transform().layer()).remove(go);
+        this.disabledList.add(go);
+        go.behaviour().onDisable();
+    }
+    
+    @Override
+    public boolean isEnabled(IGameObject go){
+        return this.enabledList.contains(go);
+    }
+    
+    @Override
+    public boolean isDisabled(IGameObject go){
+        return this.disabledList.contains(go);
+    }
+    
+    
+    
+    @Override
+    public void destroy(IGameObject go){
+        if(isEnabled(go)){
+            if(go.behaviour() != null) go.behaviour().onDestroy();
+            this.enabledList.remove(go);
+            this.layers.get(go.transform().layer()).remove(go);
+        }
+        else{
+            this.disabledList.remove(go);
+        }
+    }
+    
+    @Override
+    public void destroyAll(){
+        for(IGameObject go : this.enabledList){
+            if(go.behaviour() != null) go.behaviour().onDestroy();
+        }
+        this.layers.clear();
+        this.disabledList.clear();
+        this.enabledList.clear();
+    }
+
+
+    
+
+
+
+    @Override
+    public void run(){
+        this.isRunning = true;
+        for(;;){
+            //get input
+
+            for(IGameObject go : this.enabledList){
+                if(go.behaviour() != null)
+                    go.behaviour().onUpdate(1d/60d);
+                if(go.collider() != null)
+                    go.collider().onUpdate();
+            }
+            checkCollisions();
+        }
+    }
+
+
+    /**
+     * used for testing
+    */
+    @Override
+    public void generateNextFrame(){
+        this.isRunning = true;
+
+        for(IGameObject go : this.enabledList){
+            if(go.behaviour() != null)
+                go.behaviour().onUpdate(1d/60d);
+            if(go.collider() != null)
+                go.collider().onUpdate(); 
+        }
+        checkCollisions();
+        this.isRunning = false;
+    }
+
+    /**
+     * Atualiza os GameObjects em cada frame.
+     * 
+     * @param frames Número de frames a simular.
+     */
+    public void simulateFrames(int frames) {
+        for (int frame = 0; frame < frames; frame++) {
+            generateNextFrame();
+        }
+    }
+
+    /** 
+     * Detecta colisoes entre os GameObjects na mesma layer.
+     * 
+     */
+    @SuppressWarnings("unused") //for lambda parameter in computeIfAbsent
+    @Override
+    public void checkCollisions(){
+        HashMap<IGameObject, ArrayList<IGameObject>> collisionMap = new HashMap<>();
+        for(ArrayList<IGameObject> gol : layers.values()){ //itera as layers
+    
+            for(int i = 0; i < gol.size(); i++){          //nested loop para iterar pares de GameOBjects na mesma layer
+    
+                IGameObject goA = gol.get(i);
+                if(goA.collider() == null)
+                    continue;
+    
+                for(int j = i+1; j < gol.size(); j++){
+    
+                    IGameObject goB = gol.get(j);
+                    if(goB.collider() == null)
+                        continue;
+    
+                    if(goA.collider().isColliding(goB.collider())){
+                        collisionMap.computeIfAbsent(goA, k -> new ArrayList<>()).add(goB);
+                        collisionMap.computeIfAbsent(goB, k -> new ArrayList<>()).add(goA);
+                    }
+    
+                }
+            }
+    
+            // quando acabar de iterar a layer chama o onCollision dos GameObjects dessa layer
+            for(IGameObject go : gol){
+                if(go.behaviour() != null && collisionMap.get(go) != null)
+                    go.behaviour().onCollision(collisionMap.get(go));
+            }
+        }
+    }
+}
