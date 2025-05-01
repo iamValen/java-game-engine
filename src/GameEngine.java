@@ -11,96 +11,147 @@ import java.util.HashMap;
  */
 public class GameEngine implements IGameEngine{
 
-    public static GameEngine GAMEENGINE;
-
-    public void addEnabled(IGameObject go){}
-    public void addDisabled(IGameObject go){}
-
-    public void enable(IGameObject go){}
-    public void disable(IGameObject go){}
-
-    public boolean isEnabled(IGameObject go){return false;}
-    public boolean isDisabled(IGameObject go){return false;}
-
-    public ArrayList<IGameObject> enabled(){return null;}
-    public ArrayList<IGameObject> disabled(){ return null;}
-
-    public void destroy(IGameObject go){}
-    public void destroyAll(){}
-
-    public void run(){
-        for(;;){
-            //get input
-            //get colisions
-            //for(all go's)
-            //    go.update(colisions, input)
-        }
-
+    public static GameEngine GAMEENGINE = null;
+    private boolean isRunning;
+    public boolean isRunning(){
+        return this.isRunning;
     }
 
-    private final ArrayList<GameObject> gameObjects = new ArrayList<>();
-    public HashMap<Integer, ArrayList<GameObject>> layers = new HashMap<>();
-    
+    private final HashMap<Integer, ArrayList<IGameObject>> layers = new HashMap<>();
+    private final ArrayList<IGameObject> enabledList = new ArrayList<>();
+    private final ArrayList<IGameObject> disabledList = new ArrayList<>();
+
     /**
-     * Retorna a lista de GameObjects.
-     * 
-     * @return Lista de GameObjects.
+     * call this instead of new GameEngine before we make this class singleton
      */
-    public ArrayList<GameObject> gameObjects(){
-        return gameObjects;
+    public static GameEngine GameEngineConstructor(){
+        GameEngine out = new GameEngine();
+        GameEngine.GAMEENGINE = out;
+        return  out;
     }
+
+    private GameEngine() {
+        this.isRunning = false;
+    }
+
+    @Override
+    public void addEnabled(IGameObject go){
+        this.enabledList.add(go);
+        this.layers.get(go.transform().layer()).add(go);
+        go.behaviour().oninit();
+    }
+
+    @Override
+    public void addDisabled(IGameObject go){
+        this.disabledList.add(go);
+        go.behaviour().oninit();
+    }
+
+    @Override
+    public void enable(IGameObject go){
+        this.disabledList.remove(go);
+        this.enabledList.add(go);
+        this.layers.get(go.transform().layer()).add(go);
+        go.behaviour().onEnable();
+    }
+    
+    @Override
+    public void disable(IGameObject go){
+        this.enabledList.remove(go);
+        this.layers.get(go.transform().layer()).remove(go);
+        this.disabledList.add(go);
+        go.behaviour().onDisable();
+    }
+    
+    @Override
+    public boolean isEnabled(IGameObject go){
+        return this.enabledList.contains(go);
+    }
+    
+    @Override
+    public boolean isDisabled(IGameObject go){
+        return this.disabledList.contains(go);
+    }
+    
+    @Override
+    public ArrayList<IGameObject> enabled(){
+        return this.enabledList;
+    }
+    
+    @Override
+    public ArrayList<IGameObject> disabled(){
+        return this.disabledList;
+    }
+    
+    @Override
+    public void destroy(IGameObject go){
+        if(isEnabled(go)){
+            go.behaviour().onDestroy();
+            this.enabledList.remove(go);
+            this.layers.get(go.transform().layer()).remove(go);
+        }
+        else{
+            this.disabledList.remove(go);
+        }
+    }
+    
+    @Override
+    public void destroyAll(){
+        for(IGameObject GO : this.enabledList){
+            GO.behaviour().onDestroy();
+        }
+        this.layers.clear();
+        this.disabledList.clear();
+        this.enabledList.clear();
+    }
+
 
     /**
      * Retorna o mapa de layers com os gameobjects.
      * 
      * @return Lista de GameObjects.
      */
-    public HashMap<Integer, ArrayList<GameObject>> layers(){
-        return layers;
+    @Override
+    public HashMap<Integer, ArrayList<IGameObject>> layers(){
+        return this.layers;
     }
 
 
-    /**
-     * Adiciona um GameObject à lista.
-     * 
-     * @param go GameObject a ser adicionado.
-     */
-    public void add(GameObject go) {
-        gameObjects.add(go);
-        ArrayList<GameObject> goLayer = layers.get(go.transform().layer());
-        if(goLayer == null){
-            goLayer = new ArrayList<GameObject>();
-            layers.put(go.transform().layer(), goLayer);
+
+    @Override
+    public void run(){
+        this.isRunning = true;
+        for(;;){
+            //get input
+
+            for(IGameObject GO : this.enabledList){
+                if(GO.behaviour() != null)
+                    GO.behaviour().onUpdate(1d/60d);
+                if(GO.collider() != null)
+                    GO.collider().onUpdate();
+            }
+            checkCollisions();
         }
-        goLayer.add(go);
     }
+
 
     /**
-     * Remove um GameObject da lista.
-     * 
-     * @param go GameObject a ser removido.
-     */
-    public void destroy(GameObject go) {
-        layers.getOrDefault(go.transform().layer(), new ArrayList<>()).remove(go);
-        gameObjects.remove(go);
-    }
-
+     * used for testing
+    */
+    @Override
     public void generateNextFrame(){
-        for(GameObject go : gameObjects){
-            if(go.layerSpeed != 0){
-                layers.get(go.transform().layer()).remove(go);
-                go.generateNextFrame();
-                ArrayList<GameObject> goLayer = layers.get(go.transform().layer());
-                if(goLayer == null){
-                    goLayer = new ArrayList<GameObject>();
-                    layers.put(go.transform().layer(), goLayer);
-                }
-                goLayer.add(go);
-            }
-            else{
-                go.generateNextFrame();
-            }
-        }
+        this.isRunning = true;
+
+        for(IGameObject GO : this.enabledList)
+            if(GO.behaviour() != null)
+                GO.behaviour().onUpdate(1d/60d);
+
+        for(IGameObject GO : this.enabledList)
+            if(GO.collider() != null)
+                GO.collider().onUpdate();
+
+        checkCollisions();
+        this.isRunning = false;
     }
 
     /**
@@ -115,28 +166,32 @@ public class GameEngine implements IGameEngine{
     }
 
     /** 
-     * Detecta colisões entre os GameObjects, mas não considera a camada.
-     * (Usado para o N)
+     * Detecta colisoes entre os GameObjects na mesma layer.
      * 
-     * @return Lista de colisões.
      */
-    public ArrayList<String> checkCollisions(){
-        ArrayList<String> out = new ArrayList<>();
-        for(GameObject go : gameObjects){
-            boolean flag = false;
-            StringBuilder sb = new StringBuilder(go.name());
-            ArrayList<GameObject> arr = layers.get(go.transform().layer());
-            for(GameObject go2 : arr){
-                if(go == go2)
-                    continue;
-                if(go.colision(go2)){
-                    sb.append(" " + go2.name());
-                    flag = true;
+    @SuppressWarnings("unused") //for lambda parameter in computeIfAbsent
+    @Override
+    public void checkCollisions(){
+        HashMap<IGameObject, ArrayList<IGameObject>> collisionMap = new HashMap<>();
+        for(ArrayList<IGameObject> GOArr : layers.values()){ //itera as layers
+
+            for(int i = 0; i < GOArr.size(); i++){          //nested loop para iterar pares
+                for(int j = i+1; j < GOArr.size(); j++){   //de GameOBjects na mesma layer
+
+                    IGameObject GOA = GOArr.get(i);
+                    IGameObject GOB = GOArr.get(j);
+                    if(GOA.collider().isColliding(GOB.collider())){
+                        collisionMap.computeIfAbsent(GOA, k -> new ArrayList<>()).add(GOB);
+                        collisionMap.computeIfAbsent(GOB, k -> new ArrayList<>()).add(GOA);
+                    }
+
                 }
             }
-            if(flag)
-                out.add(sb.toString());
+
+            // quando acabar de iterar a layer chama o onCollision dos GameObjects dessa layer
+            for(IGameObject GO : GOArr){
+                GO.behaviour().onCollision(collisionMap.get(GO));
+            }
         }
-        return out;
     }
 }

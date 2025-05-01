@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
-public class PlayerBehaviour implements IBehaviour{
-    GameObject go;
+public class PlayerBehaviour extends ABehaviour{
+
     int state;
 
     public PlayerBehaviour(GameObject go){}

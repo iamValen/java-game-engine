@@ -8,42 +8,62 @@
  */
 public class Collider implements ICollider {
     private Figure fig;
-    private final ITransform transform;
+    private boolean needsTransform;
+    private ITransform transform;
     private Point centroid;
+    private double angleOld;
+    private double scaleOld;
 
     /**
      * Construtor da classe Collider.
      * 
      * @param fig Figura associada ao collider.
-     * @param transform Transformação associada ao collider.
      */
-    Collider(Figure fig, ITransform transform) {
+    Collider(Figure fig){
         this.fig = fig;
-        this.transform = transform;
         this.centroid = fig.centroid();
-        updateFig();
+        this.needsTransform = true;
+        this.angleOld = 0;
+        this.scaleOld = 1;
     }
 
     /**
-     * Atualiza a figura com base na transformação aplicada.
+     * this is called by the GameObject when the collider is inserted onto it
+     * DO NOT CALL IT BEFORE THAT OR A METEOR WILL FALL ON YOU
+     * you shouldnt ever call this method anyway
+     */
+    @Override
+    public void setTransform(ITransform transform){
+        if(this.needsTransform){
+            this.transform = transform;
+            this.onUpdate();
+            this.needsTransform = false;
+        }
+    }
+
+    /**
+     * Atualiza a figura com base nos dados do transform
      * 
      */
-    public void updateFig() {
-        fig = fig.translation(centroid.flipSign()); // Move para a origem
-        fig = fig.rotate(transform.angle() - transform.angleOld()); // Aplica rotação
-        fig = fig.scale(transform.scale() / transform.scaleOld()); // Aplica escala
-        centroid = transform.position();
-        fig = fig.translation(centroid); // Move para a posição correta
-        transform.update();
+    @Override
+    public void onUpdate(){
+        this.fig = fig.translation(centroid.flipSign()); // Move para a origem
+        this.fig = fig.rotate(transform.angle() - this.angleOld); // Aplica rotação
+        this.angleOld = transform.angle();
+        this.fig = fig.scale(transform.scale() / this.scaleOld); // Aplica escala
+        this.scaleOld = transform.scale();
+        this.centroid = transform.position();
+        this.fig = fig.translation(this.centroid); // Move para a posição correta
     }
 
     /**
-     * Retorna o centroid da
+     * Retorna o centroid da figura
      * 
      * @return ponto que representa o centroide da figura.
      */
+    @Override
     public Point centroid() {
-        return centroid;
+        return this.centroid;
     }
 
     /**
@@ -52,7 +72,8 @@ public class Collider implements ICollider {
      * @param other Outro Collider a ser testado.
      * @return true se houver colisão, false caso contrário.
      */
-    public boolean collidesWith(ICollider other) {
+    @Override
+    public boolean isColliding(ICollider other) {
         Collider that = (Collider) other;
         return this.fig.collision(that.fig);
     }

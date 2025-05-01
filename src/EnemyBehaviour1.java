@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
-public class EnemyBehaviour1 implements IBehaviour {
-    GameObject go;
+public class EnemyBehaviour1 extends ABehaviour {
 
     GameObject vision;
     GameObject atackRange;
@@ -15,11 +14,6 @@ public class EnemyBehaviour1 implements IBehaviour {
      * negative for left
      */
 
-    public EnemyBehaviour1(GameObject go){}
-    /*
-     * recieves the game object that created this instance
-     * recieves stats except position because thats on transform 
-     */
 
     public void oninit(){}
     /*
@@ -50,7 +44,7 @@ public class EnemyBehaviour1 implements IBehaviour {
      * executes onCollision 
      */
 
-    private void customAI(){}
+    private void onUpdate(){}
     /*
      * if it is in an atacking sequence
      *     continues the atacking sequence
@@ -67,10 +61,11 @@ public class EnemyBehaviour1 implements IBehaviour {
      */
      //this logic terrible because the enemy will have no sense of spacing but who cares 
 
+
     public void onCollision(ArrayList<IGameObject> gol){}
     /*
-    // * verifies colisions of itself with at least: player, enemies, player atacks, solid objects
-    * enemies and player cause turn arround
-    * solid objects push enemies away from them
-    */
+     * verifies colisions of itself with at least: player, enemies, player atacks, solid objects
+     * enemies and player cause turn arround
+     * solid objects push enemies away from them
+     */
 }

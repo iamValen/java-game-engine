@@ -184,7 +184,7 @@ public class GameEngineTests {
         pts1[2] = new Point(3, 3);
         pts1[3] = new Point(3, 1);
         Polygon square = new Polygon(pts1);
-        GameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square);
+        IGameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square);
         ge.addEnabled(go1);
         ge.disable(go1);
         assertEquals(true, ge.isDisabled(go1));
