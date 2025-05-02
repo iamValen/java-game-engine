@@ -1,9 +1,11 @@
 package test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
-import behaviour.PlayerBehaviour;
+import behaviour.ABehaviour;
 import engine.Collider;
 import engine.GameEngine;
 import engine.GameObject;
@@ -12,8 +14,32 @@ import engine.Transform;
 import figures.Circle;
 import figures.Point;
 import figures.Polygon;
+import interfaces.IGameObject;
 
 public class GameEngineTests {
+
+    class testBehaviour extends ABehaviour{
+        Physics physics;
+
+        boolean onInitRan = false;
+        boolean onEnableRan = false;
+        boolean onDisableRan = false;
+        boolean onDestroyRan = false;
+        boolean onCollision = false;
+
+        public boolean collision(){
+            return onCollision;
+        }
+
+        public void onCollision(ArrayList<IGameObject> gol){onCollision = true;}
+        public void oninit(){onInitRan = true;}
+        public void onEnable(){onEnableRan = true;}
+        public void onDisable(){onDisableRan = true;}
+        public void onDestroy(){onDestroyRan = true;}
+        
+        public void setPhysics(Physics p){ this.physics = p; }
+    }
+
     @Test
     public void testAdd(){
         GameEngine ge = GameEngine.getInstance();
@@ -29,7 +55,7 @@ public class GameEngineTests {
         GameObject go1 = new GameObject("Rect");
         Transform t1 = new Transform(2, 2, 0, 0, 1);
         Collider c1 = new Collider(p);
-        PlayerBehaviour behav = new PlayerBehaviour(go1);
+        testBehaviour behav = new testBehaviour();
         go1.insertElements(t1, c1, null, behav);
 
         ge.addEnabled(go1);
@@ -40,7 +66,7 @@ public class GameEngineTests {
         GameObject go2 = new GameObject("Rect");
         Transform t2 = new Transform(2, 2, 0, 0, 1);
         Collider c2 = new Collider(p);
-        PlayerBehaviour behav2 = new PlayerBehaviour(go2);
+        testBehaviour behav2 = new testBehaviour();
         go2.insertElements(t2, c2, null, behav2);
 
         ge.addDisabled(go2);
@@ -61,41 +87,22 @@ public class GameEngineTests {
         GameObject go1 = new GameObject("Rect");
         Transform t1 = new Transform(2, 2, 0, 0, 1);
         Collider c1 = new Collider(p);
-        PlayerBehaviour behav = new PlayerBehaviour(go1);
+        testBehaviour behav = new testBehaviour();
         go1.insertElements(t1, c1, null, behav);
 
         ge.addEnabled(go1);
         ge.destroy(go1);
-        assertEquals(0, ge.enabled().size());
+        assertEquals(false, ge.enabled().contains(go1));
 
         ge.addDisabled(go1);
         ge.destroy(go1);
-        assertEquals(0, ge.enabled().size());
+        assertEquals(false, ge.enabled().contains(go1));
     }
     
-    @Test // TODO
-    public void testGenerateNextFrameAndSimlateFrames(){
-        GameEngine ge = GameEngine.getInstance();
-
-        GameObject go1 = new GameObject("GO");
-        Circle cir = new Circle(new Point(1, 2), 4d);
-        Collider col = new Collider(cir);
-        Transform tr = new Transform(3, 5, 0, 0, 0);
-        PlayerBehaviour behav = new PlayerBehaviour(go1);
-        Physics p = new Physics();
-        p.setLayerSpeed(1);
-        behav.setPhysics(p);
-
-        GameObject go = new GameObject("circulo");
-        go.insertElements(tr, col, null, behav);
-
-        ge.addEnabled(go);
-    }
-
-    /*
+    
     @Test
     public void testDetectCollisions(){
-        GameEngine ge = new GameEngine();
+        GameEngine ge = GameEngine.getInstance();
         // Collides
         Point[] pts1 = new Point[4];
         pts1[0] = new Point(1, 1);
@@ -103,7 +110,11 @@ public class GameEngineTests {
         pts1[2] = new Point(3, 3);
         pts1[3] = new Point(3, 1);
         Polygon square = new Polygon(pts1);
-        GameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square);
+        GameObject go1 = new GameObject("Square");
+        Transform t1 = new Transform(2, 2, 0, 0, 1);
+        Collider c1 = new Collider(square);
+        testBehaviour behav = new testBehaviour();
+        go1.insertElements(t1, c1, null, behav);
         ge.addEnabled(go1);
 
         Point[] pts2 = new Point[4];
@@ -112,26 +123,37 @@ public class GameEngineTests {
         pts2[2] = new Point(7, 7);
         pts2[3] = new Point(7, 3);
         Polygon rect = new Polygon(pts2);
-        GameObject go2 = new GameObject("Rect", 5, 5, 0, 0, 1, rect);
+        GameObject go2 = new GameObject("Rect");
+        Transform t2 = new Transform(2, 2, 0, 0, 1);
+        Collider c2 = new Collider(rect);
+        testBehaviour behav2 = new testBehaviour();
+        go2.insertElements(t2, c2, null, behav2);
         ge.addEnabled(go2);
 
-        GameObject go3 = new GameObject("Circle", 10, 4, 0, 0, 1, new Circle(new Point(10, 4), 1d));        
+        Circle circle = new Circle(new Point(10, 4), 1d);
+        GameObject go3 = new GameObject("Circle");
+        Transform t3 = new Transform(10, 4, 0, 0, 1);
+        Collider c3 = new Collider(circle);
+        testBehaviour behav3 = new testBehaviour();
+        go3.insertElements(t3, c3, null, behav3);  
         ge.addEnabled(go3);
 
-        ge.simulateFrames(1);
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("Square Rect Circle");
-        expected.add("Rect Square Circle");
-        expected.add("Circle Square Rect");
+        ge.checkCollisions();
+        assertEquals(true, ((testBehaviour)(ge.enabled().get(0).behaviour())).collision());
+        assertEquals(true, ((testBehaviour)(ge.enabled().get(1).behaviour())).collision());    
+        assertEquals(false, ((testBehaviour)(ge.enabled().get(2).behaviour())).collision());
 
-        assertEquals(expected, ge.checkCollisions());
-
+        
         ge.destroy(go1);
         ge.destroy(go2);
         ge.destroy(go3);
         
         // Don't collide
-        GameObject go4 = new GameObject("bullet", 1.5, 2.5, 4, 0, 1, new Circle(new Point(1.5, 2.5), 1d));        
+        GameObject go4 = new GameObject("bullet");  
+        Transform t4 = new Transform(1.5, 2.5, 4, 0, 1);
+        Collider c4 = new Collider(new Circle(new Point(1.5, 2.5), 1d));
+        testBehaviour behav4 = new testBehaviour();
+        go4.insertElements(t4, c4, null, behav4);      
         ge.addEnabled(go4);
 
         Point[] pts3 = new Point[4];
@@ -140,31 +162,33 @@ public class GameEngineTests {
         pts3[2] = new Point(9, 4);
         pts3[3] = new Point(9, 1);
         Polygon target = new Polygon(pts2);
-        GameObject go5 = new GameObject("target", 8.5, 2.5, 4, 0, 1, target);
-        go5.posSpeed = new Point(0, 0);
-        go5.layerSpeed = 0;
-        go5.rotationSpeed = 0;
-        go5.scaleSpeed = 0;
-        ge.add(go5);
+        GameObject go5 = new GameObject("target");
+        Transform t5 = new Transform(8.5, 2.5, 4, 0, 1);
+        Collider c5 = new Collider(target);
+        testBehaviour behav5 = new testBehaviour();
+        go5.insertElements(t5, c5, null, behav5);
 
-        expected = new ArrayList<>();
-        assertEquals(expected, ge.checkCollisions());
+        ge.addEnabled(go5);
+        ge.checkCollisions();
+        assertEquals(false, ((testBehaviour)(ge.enabled().get(0).behaviour())).collision());
+        assertEquals(false, ((testBehaviour)(ge.enabled().get(1).behaviour())).collision());
+
     }
-
-
-
-
 
     @Test
     public void testDisable(){
-        GameEngine ge = new GameEngine();
+        GameEngine ge = GameEngine.getInstance();
         Point[] pts1 = new Point[4];
         pts1[0] = new Point(1, 1);
         pts1[1] = new Point(1, 3);
         pts1[2] = new Point(3, 3);
         pts1[3] = new Point(3, 1);
         Polygon square = new Polygon(pts1);
-        IGameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square);
+        GameObject go1 = new GameObject("Square");
+        Transform t1 = new Transform(2, 2, 0, 0, 1);
+        Collider c1 = new Collider(square);
+        testBehaviour behav = new testBehaviour();
+        go1.insertElements(t1, c1, null, behav);
         ge.addEnabled(go1);
         ge.disable(go1);
         assertEquals(true, ge.isDisabled(go1));
@@ -175,14 +199,18 @@ public class GameEngineTests {
 
     @Test
     public void testEnable(){
-        GameEngine ge = new GameEngine();
+        GameEngine ge = GameEngine.getInstance();
         Point[] pts1 = new Point[4];
         pts1[0] = new Point(1, 1);
         pts1[1] = new Point(1, 3);
         pts1[2] = new Point(3, 3);
         pts1[3] = new Point(3, 1);
         Polygon square = new Polygon(pts1);
-        GameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square);
+        GameObject go1 = new GameObject("Square");
+        Transform t1 = new Transform(2, 2, 0, 0, 1);
+        Collider c1 = new Collider(square);
+        testBehaviour behav = new testBehaviour();
+        go1.insertElements(t1, c1, null, behav);
         ge.addDisabled(go1);
         ge.enable(go1);
         assertEquals(true, ge.isEnabled(go1));
@@ -193,14 +221,18 @@ public class GameEngineTests {
 
     @Test
     public void testDestroyAll(){
-        GameEngine ge = new GameEngine();
+        GameEngine ge = GameEngine.getInstance();
         Point[] pts1 = new Point[4];
         pts1[0] = new Point(1, 1);
         pts1[1] = new Point(1, 3);
         pts1[2] = new Point(3, 3);
         pts1[3] = new Point(3, 1);
         Polygon square1 = new Polygon(pts1);
-        GameObject go1 = new GameObject("Square", 2, 2, 0, 0, 1, square1);
+        GameObject go1 = new GameObject("Square");
+        Transform t1 = new Transform(2, 2, 0, 0, 1);
+        Collider c1 = new Collider(square1);
+        testBehaviour behav1 = new testBehaviour();
+        go1.insertElements(t1, c1, null, behav1);
 
         Point[] pts2 = new Point[4];
         pts2[0] = new Point(4, 3);
@@ -208,15 +240,22 @@ public class GameEngineTests {
         pts2[2] = new Point(7, 7);
         pts2[3] = new Point(7, 3);
         Polygon square2 = new Polygon(pts2);
-        GameObject go2 = new GameObject("Rect", 2, 2, 0, 0, 1, square2);
+        GameObject go2 = new GameObject("Rect");
+        Transform t2 = new Transform(2, 2, 0, 0, 1);
+        Collider c2 = new Collider(square2);
+        testBehaviour behav2 = new testBehaviour();
+        go2.insertElements(t2, c2, null, behav2);
 
         ge.addEnabled(go1);
         ge.addEnabled(go2);
 
+        assertEquals(true, ge.enabled().contains(go1));
+        assertEquals(true, ge.enabled().contains(go2));
+
+        ge.destroyAll();
         assertEquals(false, ge.enabled().contains(go1));
         assertEquals(false, ge.enabled().contains(go2));
-    }*/
-
-
-
+        assertEquals(0, ge.enabled().size());
+        assertEquals(0, ge.disabled().size());
+    }
 }

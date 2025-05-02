@@ -11,6 +11,9 @@ import engine.GameObject;
 import figures.Point;
 import figures.Polygon;
 import interfaces.IGameObject;
+import engine.Transform;
+import engine.Collider;
+import engine.GameObject;
 
 public class IBehaviourTests {
 
@@ -33,7 +36,11 @@ public class IBehaviourTests {
         pts1[2] = new Point(3, 3);
         pts1[3] = new Point(3, 1);
         Polygon square1 = new Polygon(pts1);
-        return new GameObject("Square", 2, 2, 0, 0, 1, square1, behaviour);
+        GameObject go1 = new GameObject("Square");
+        Transform t1 = new Transform(2, 2, 0, 0, 1);
+        Collider c1 = new Collider(square1);
+        go1.insertElements(t1, c1, null, behaviour);
+        return go1;
     }
 
     @Test

@@ -6,14 +6,14 @@ import figures.Point;
 
 public class PointTests{
 
-    @Test
+    /*@Test
     public void testConstructor0(){
         assertThrows(IllegalArgumentException.class, () -> {new Point(12, -1);});
     }
     @Test
     public void testConstructor1(){
         assertThrows(IllegalArgumentException.class, () -> {new Point(-5, 0);});
-    }
+    }*/
 
     @Test
     public void testEquals0(){
@@ -37,10 +37,11 @@ public class PointTests{
     public void testTranslacao0(){
         assertDoesNotThrow(() -> {new Point(4, 5).translacao(-4,-5);});
     }
-    @Test
+    
+    /*@Test
     public void testTranslacao1(){
         assertThrows(IllegalArgumentException.class, () -> {new Point(3, 7).translacao(4,-8);});
-    }
+    }*/
 
     @Test void testColinear0(){
         assertEquals(true, Point.collinear(

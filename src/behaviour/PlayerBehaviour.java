@@ -19,8 +19,8 @@ public class PlayerBehaviour extends ABehaviour{
 
     }
 
-    public void setPhysics(Physics p){
-        this.physics = p;
+    Physics physics(){
+        return this.physics;
     }
 
     public void oninit(){}

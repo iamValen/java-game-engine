@@ -62,7 +62,7 @@ public class GameEngine implements IGameEngine{
     @Override
     public void addEnabled(IGameObject go){
         this.enabledList.add(go);
-        layers.computeIfAbsent(go.transform().layer(), k -> new ArrayList<>()).add(go);
+        this.layers.computeIfAbsent(go.transform().layer(), k -> new ArrayList<>()).add(go);
         if(go.behaviour() != null) go.behaviour().oninit();
     }
 
@@ -76,7 +76,7 @@ public class GameEngine implements IGameEngine{
     public void enable(IGameObject go){
         this.disabledList.remove(go);
         this.enabledList.add(go);
-        this.layers.get(go.transform().layer()).add(go);
+        this.layers.computeIfAbsent(go.transform().layer(), k -> new ArrayList<>()).add(go);
         go.behaviour().onEnable();
     }
     

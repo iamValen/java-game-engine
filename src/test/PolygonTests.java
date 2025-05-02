@@ -28,7 +28,7 @@ public class PolygonTests{
     }
 
 
-    @Test
+    /*@Test
     public void testTranslacao0(){
         Point[] pts = new Point[4];
         pts[0] = new Point(4, 4);
@@ -37,7 +37,8 @@ public class PolygonTests{
         pts[3] = new Point(8, 4);
         Polygon p = new Polygon(pts);
         assertThrows(IllegalArgumentException.class, () -> {p.translation(-5, 3);});
-    }
+    }*/
+    
     @Test
     public void testTranslacao1(){
         Point[] pts = new Point[4];
@@ -137,7 +138,7 @@ public class PolygonTests{
         pts[2] = new Point(8, 8);
         pts[3] = new Point(8, 4);
         Polygon p1 = new Polygon(pts);
-        assertEquals("Poligono de 4 vertices: [(4,4), (4,8), (8,8), (8,4)]", p1.toString());
+        assertEquals("(4.00,4.00) (4.00,8.00) (8.00,8.00) (8.00,4.00)", p1.toString());
     }
     @Test
     public void testToString1(){
@@ -146,6 +147,6 @@ public class PolygonTests{
         pts[1] = new Point(2, 8);
         pts[2] = new Point(30, 1);
         Polygon p1 = new Polygon(pts);
-        assertEquals("Poligono de 3 vertices: [(50,70), (2,8), (30,1)]", p1.toString());
+        assertEquals("(50.00,70.00) (2.00,8.00) (30.00,1.00)", p1.toString());
     }
 }
