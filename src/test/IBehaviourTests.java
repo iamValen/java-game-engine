@@ -13,7 +13,6 @@ import figures.Polygon;
 import interfaces.IGameObject;
 import engine.Transform;
 import engine.Collider;
-import engine.GameObject;
 
 public class IBehaviourTests {
 

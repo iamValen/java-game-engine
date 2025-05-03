@@ -1,14 +1,20 @@
 package behaviour;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import engine.GameEngine;
 import engine.GameObject;
+import engine.InputManager;
 import engine.Physics;
+import figures.Point;
 import interfaces.IGameObject;
+import interfaces.ITransform;
 
 public class PlayerBehaviour extends ABehaviour{
 
     int state;
     Physics physics;
+    private static final double SPEED = 200; // pixels por segundo
 
     /*
     * recieves the game object that created this instance
@@ -48,10 +54,17 @@ public class PlayerBehaviour extends ABehaviour{
      * executes onCollision 
      */
 
-    public void onUpdate(double dT){
-        if(physics.LayerSpeed() != null){
-            
-        }
+    @Override
+    public void onUpdate(double dt) {
+        ITransform t = go.transform();
+        double dx = 0, dy = 0;
+
+        if (InputManager.isKeyDown(KeyEvent.VK_W)) dy -= 10;
+        if (InputManager.isKeyDown(KeyEvent.VK_S)) dy += 10;
+        if (InputManager.isKeyDown(KeyEvent.VK_A)) dx -= 10;
+        if (InputManager.isKeyDown(KeyEvent.VK_D)) dx += 10;
+        
+        t.move(new Point(dx, dy), 0);
     }
 
 

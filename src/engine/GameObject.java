@@ -1,4 +1,6 @@
 package engine;
+import java.awt.Graphics;
+
 import behaviour.IBehaviour;
 import figures.Figure;
 import interfaces.ICollider;
@@ -66,7 +68,7 @@ public class GameObject implements IGameObject {
      * dont set dependable members to null
      */
     public void insertElements(ITransform transform, ICollider collider,
-    Shape shape, IBehaviour behaviour){
+    IShape shape, IBehaviour behaviour){
         this.transform = transform;
         this.collider = collider;
         this.behaviour = behaviour;
@@ -118,4 +120,21 @@ public class GameObject implements IGameObject {
     public  IBehaviour behaviour(){
         return this.behaviour;
     }
+
+    @Override
+    public void render(Graphics g) {
+        // 1) determine screen position
+        ITransform t = this.transform();
+        int x = (int) t.position().x();
+        int y = (int) t.position().y();
+    
+        // 2) draw via the shape, if one is attached
+        IShape shape = this.shape();
+        if (shape != null) {
+            shape.render(g, x, y);
+        } else {
+            System.out.println("WARNING: NULL Shape");
+        }
+    }
+    
 }

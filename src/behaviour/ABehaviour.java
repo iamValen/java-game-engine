@@ -7,7 +7,7 @@ import interfaces.IGameObject;
 public abstract class ABehaviour implements IBehaviour{
 
     private boolean needsGO = true; 
-    protected GameObject myGO;
+    protected GameObject go;
 
     @Override
     public void oninit(){}
@@ -42,7 +42,7 @@ public abstract class ABehaviour implements IBehaviour{
     @Override
     public final void setGO(GameObject GO){
         if(this.needsGO){
-            this.myGO = GO;
+            this.go = GO;
             this.needsGO = false;
         }
     }

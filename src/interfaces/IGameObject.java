@@ -1,4 +1,6 @@
 package interfaces;
+import java.awt.Graphics;
+
 import behaviour.IBehaviour;
 
 /**
@@ -34,4 +36,6 @@ public interface IGameObject {
      * @return the Behaviour of the GameObject
      */
     IBehaviour behaviour();
+
+    public void render(Graphics g);
 }

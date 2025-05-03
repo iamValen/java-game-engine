@@ -1,9 +1,14 @@
 package engine;
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import gui.Loader;
 import interfaces.IGameEngine;
 import interfaces.IGameObject;
+import interfaces.IShape;
 
 /**
  * Classe que representa o motor de jogo, responsável por gerenciar os GameObjects e suas interações.
@@ -25,6 +30,7 @@ public class GameEngine implements IGameEngine{
     private final ArrayList<IGameObject> disabledList = new ArrayList<>();
 
     private boolean isRunning;
+    private Canvas renderSurface;
 
     public boolean isRunning(){ return this.isRunning; }
 
@@ -123,26 +129,76 @@ public class GameEngine implements IGameEngine{
     }
 
 
-    
-
-
-
     @Override
-    public void run(){
-        this.isRunning = true;
-        for(;;){
-            //get input
+    public void run() {
+        // Must have called setRenderSurface(canvas) first!
+        BufferStrategy bs = renderSurface.getBufferStrategy();
 
-            for(IGameObject go : this.enabledList){
-                if(go.behaviour() != null)
-                    go.behaviour().onUpdate(1d/60d);
-                if(go.collider() != null)
-                    go.collider().onUpdate();
+        // Load level once *before* entering the loop
+        new Loader().loadLevel();
+
+        isRunning = true;
+        final long frameTimeNs = 1_000_000_000L / 60; // 60 FPS cap
+        long       last        = System.nanoTime();
+
+        while (isRunning) {
+            long now   = System.nanoTime();
+            double dt  = (now - last) / 1_000_000_000.0;
+            last       = now;
+
+            // 1) UPDATE
+            for (IGameObject go : enabledList) {
+                if (go.behaviour() != null) go.behaviour().onUpdate(dt);
+                if (go.collider()  != null) go.collider().onUpdate();
             }
             checkCollisions();
+
+            // 2) RENDER
+            Graphics g = bs.getDrawGraphics();
+            // clear the back‑buffer
+            g.setColor(java.awt.Color.WHITE);
+            g.fillRect(0, 0, renderSurface.getWidth(), renderSurface.getHeight());
+
+            // draw all GameObjects via your GameObject.render(g)
+            for (IGameObject go : enabledList) {
+                ((GameObject) go).render(g);
+            }
+
+            g.dispose();    // release this Graphics
+            bs.show();      // flip buffers
+
+            // 3) SLEEP to cap frame rate
+            long elapsed = System.nanoTime() - now;
+            long toSleep = (frameTimeNs - elapsed) / 1_000_000;
+            if (toSleep > 0) {
+                try { Thread.sleep(toSleep); }
+                catch (InterruptedException ignored) {}
+            }
+        }
+        //System.out.println(elapsed/1000);
+    }
+
+    public void render(Graphics g) {
+        for (IGameObject go : enabledList) {
+            int x = (int)go.transform().position().x();
+            int y = (int)go.transform().position().y();
+            IShape shape = go.shape();
+            if (shape != null) {
+                shape.render(g, x, y);
+            }
         }
     }
 
+
+    /**
+     * Call this once from your GUI, *after* the Canvas is visible.
+     * It prepares buffering for rendering.
+     */
+    public void setRenderSurface(Canvas canvas) {
+        this.renderSurface = canvas;
+        // create the double buffer on the Canvas
+        this.renderSurface.createBufferStrategy(2);
+    }
 
     /**
      * used for testing

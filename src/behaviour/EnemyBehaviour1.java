@@ -1,6 +1,7 @@
 package behaviour;
 import java.util.ArrayList;
 
+import engine.GameEngine;
 import engine.GameObject;
 import interfaces.IGameObject;
 
@@ -9,6 +10,10 @@ public class EnemyBehaviour1 extends ABehaviour {
     GameObject vision;
     GameObject atackRange;
     //both will have a null behaviour and their position will be controlled by the enemy's position
+
+    public EnemyBehaviour1(GameObject go) {
+        
+    }
 
     int state;
     /*
@@ -66,7 +71,15 @@ public class EnemyBehaviour1 extends ABehaviour {
      //this logic terrible because the enemy will have no sense of spacing but who cares 
 
 
-    public void onCollision(ArrayList<IGameObject> gol){}
+    public void onCollision(ArrayList<IGameObject> gol){
+        for(IGameObject go : gol){
+            if(go.name().equals("Player")){
+                System.out.println("enemy collides with player");
+                GameEngine.getInstance().disable(go);
+
+            }
+        }
+    }
     /*
      * verifies colisions of itself with at least: player, enemies, player atacks, solid objects
      * enemies and player cause turn arround
