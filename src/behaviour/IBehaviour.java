@@ -1,8 +1,6 @@
 package behaviour;
-import java.util.ArrayList;
-
-import engine.GameObject;
 import interfaces.IGameObject;
+import java.util.ArrayList;
 
 public interface IBehaviour {
 
@@ -12,5 +10,5 @@ public interface IBehaviour {
     void onDestroy();
     void onUpdate(double dT);
     void onCollision(ArrayList<IGameObject> gol);
-    void setGO(GameObject GO);
+    void setGO(IGameObject GO);
 }

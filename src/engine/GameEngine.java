@@ -1,14 +1,13 @@
 package engine;
+import gui.Loader;
+import interfaces.IGameEngine;
+import interfaces.IGameObject;
+import interfaces.IShape;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import gui.Loader;
-import interfaces.IGameEngine;
-import interfaces.IGameObject;
-import interfaces.IShape;
 
 /**
  * Classe que representa o motor de jogo, responsável por gerenciar os GameObjects e suas interações.
@@ -65,6 +64,7 @@ public class GameEngine implements IGameEngine{
         return this.layers;
     }
 
+    @SuppressWarnings("unused") // por causa do k
     @Override
     public void addEnabled(IGameObject go){
         this.enabledList.add(go);
@@ -78,6 +78,8 @@ public class GameEngine implements IGameEngine{
         if(go.behaviour() != null) go.behaviour().oninit();
     }
 
+
+    @SuppressWarnings("unused") // por causa do k
     @Override
     public void enable(IGameObject go){
         this.disabledList.remove(go);
@@ -85,7 +87,7 @@ public class GameEngine implements IGameEngine{
         this.layers.computeIfAbsent(go.transform().layer(), k -> new ArrayList<>()).add(go);
         go.behaviour().onEnable();
     }
-    
+
     @Override
     public void disable(IGameObject go){
         this.enabledList.remove(go);
@@ -103,9 +105,10 @@ public class GameEngine implements IGameEngine{
     public boolean isDisabled(IGameObject go){
         return this.disabledList.contains(go);
     }
-    
-    
-    
+
+
+    //vamos sempre chamar o onDestroy e e ele que decide se executa
+    //caso o objeto esteja enabled ou disabled
     @Override
     public void destroy(IGameObject go){
         if(isEnabled(go)){

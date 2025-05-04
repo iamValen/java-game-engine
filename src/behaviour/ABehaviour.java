@@ -1,13 +1,11 @@
 package behaviour;
-import java.util.ArrayList;
-
-import engine.GameObject;
 import interfaces.IGameObject;
+import java.util.ArrayList;
 
 public abstract class ABehaviour implements IBehaviour{
 
     private boolean needsGO = true; 
-    protected GameObject go;
+    protected IGameObject go;
 
     @Override
     public void oninit(){}
@@ -40,7 +38,7 @@ public abstract class ABehaviour implements IBehaviour{
      * you shouldnt ever call this method anyway
      */
     @Override
-    public final void setGO(GameObject GO){
+    public final void setGO(IGameObject GO){
         if(this.needsGO){
             this.go = GO;
             this.needsGO = false;

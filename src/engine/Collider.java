@@ -14,7 +14,6 @@ import interfaces.ITransform;
  */
 public class Collider implements ICollider {
     private Figure fig;
-    private boolean needsTransform;
     private ITransform transform;
     private Point centroid;
     private double angleOld;
@@ -28,7 +27,7 @@ public class Collider implements ICollider {
     public Collider(Figure fig){
         this.fig = fig;
         this.centroid = fig.centroid();
-        this.needsTransform = true;
+        this.transform = null;
         this.angleOld = 0;
         this.scaleOld = 1;
     }
@@ -40,10 +39,9 @@ public class Collider implements ICollider {
      */
     @Override
     public void setTransform(ITransform transform){
-        if(this.needsTransform){
+        if(this.transform == null){
             this.transform = transform;
             this.onUpdate();
-            this.needsTransform = false;
         }
     }
 
@@ -79,9 +77,13 @@ public class Collider implements ICollider {
      * @return true se houver colisão, false caso contrário.
      */
     @Override
-    public boolean isColliding(ICollider other) {
-        Collider that = (Collider) other;
-        return this.fig.collision(that.fig);
+    public boolean isColliding(ICollider that) {
+        return this.fig.collision(that.getHitbox());
+    }
+
+    @Override
+    public Figure getHitbox(){
+        return this.fig;
     }
 
     @Override

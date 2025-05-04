@@ -1,5 +1,6 @@
 package interfaces;
 
+import figures.Figure;
 import figures.Point;
 
 /**
@@ -29,6 +30,14 @@ public interface ICollider {
      * @return true se houver colisão, false caso contrário.
      */
     public boolean isColliding(ICollider that);
+
+
+    /**
+     * retorna a figura para que possam ser implementados
+     * diferentes colliders e evita typecasts
+     * @return a figura que representa a hitbox
+     */
+    public Figure getHitbox();
 
     @Override
     public String toString();
