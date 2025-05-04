@@ -1,15 +1,13 @@
 package behaviour;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-
-import engine.GameEngine;
 import engine.GameObject;
 import engine.InputManager;
 import engine.Physics;
 import figures.Point;
 import interfaces.IGameObject;
 import interfaces.ITransform;
-
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+@SuppressWarnings("unused")
 public class PlayerBehaviour extends ABehaviour{
 
     int state;
@@ -29,17 +27,20 @@ public class PlayerBehaviour extends ABehaviour{
         return this.physics;
     }
 
+    @Override
     public void oninit(){}
     /*
      * a bunch of stuff would be initialized with the player i guess
      */
-
+    @Override
     public void onDestroy(){}
     /*
      * idk probably show game over screen
      */
     
+    @Override
     public void onEnable(){}
+    @Override
     public void onDisable(){}
     /*
      * i dont think the player is suposed to be enabled or disabled
@@ -56,18 +57,18 @@ public class PlayerBehaviour extends ABehaviour{
 
     @Override
     public void onUpdate(double dt) {
-        ITransform t = go.transform();
+        ITransform t = myGo.transform();
         double dx = 0, dy = 0;
 
-        if (InputManager.isKeyDown(KeyEvent.VK_W)) dy -= 10;
-        if (InputManager.isKeyDown(KeyEvent.VK_S)) dy += 10;
-        if (InputManager.isKeyDown(KeyEvent.VK_A)) dx -= 10;
-        if (InputManager.isKeyDown(KeyEvent.VK_D)) dx += 10;
-        
+        if (InputManager.isKeyDown(KeyEvent.VK_W)) dy -= 500*dt;
+        if (InputManager.isKeyDown(KeyEvent.VK_S)) dy += 500*dt;
+        if (InputManager.isKeyDown(KeyEvent.VK_A)) dx -= 500*dt;
+        if (InputManager.isKeyDown(KeyEvent.VK_D)) dx += 500*dt;
+        System.out.println(dt);
         t.move(new Point(dx, dy), 0);
     }
 
-
+    @Override
     public void onCollision(ArrayList<IGameObject> gol){}
     /*
     * verifies colisions of itself with everything

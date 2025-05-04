@@ -1,8 +1,8 @@
 package engine;
+import interfaces.IShape;
 import java.awt.Graphics;
 
-import interfaces.IShape;
-
 public class Shape implements IShape {
+    @Override
     public void render(Graphics g, int x, int y){}
 }

@@ -54,9 +54,6 @@ public class Segment {
         double s3 = Math.signum(tol(Point.vetorPE(CD, CA)));
         double s4 = Math.signum(tol(Point.vetorPE(CD, CB)));
 
-        if(s1 != s2 && s3 != s4 && s1 != 0 && s2 != 0 && s3 != 0 && s4 != 0)
-            return true;
-
-        return false;
+        return(s1 != s2 && s3 != s4 && s1 != 0 && s2 != 0 && s3 != 0 && s4 != 0);
     }
 }

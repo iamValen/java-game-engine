@@ -1,20 +1,20 @@
 package gui;
 
+import engine.GameEngine;
+import engine.InputManager;
+import java.awt.Canvas;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import java.awt.Canvas;
-import engine.InputManager;
-import engine.GameEngine;
 
 public class GUI extends Canvas {
 
-    private static final int WIDTH  = 1920;
-    private static final int HEIGHT = 1080;
+    private static final int WIDTHT  = 1920;
+    private static final int HEIGHTT = 1080;
     private final GameEngine engine;
 
     public GUI() {
         // define tamanho do Canvas
-        setSize(WIDTH, HEIGHT);
+        setSize(WIDTHT, HEIGHTT);
         setIgnoreRepaint(true);   // painting controlado pela BufferStrategy
         setFocusable(true);       // permite receber KeyEvents
 
@@ -47,6 +47,7 @@ public class GUI extends Canvas {
     }
 
     public static void main(String[] args) {
-        new GUI();
+        GUI gui = new GUI();
+        gui.engine.equals((Object)0);
     }
 }

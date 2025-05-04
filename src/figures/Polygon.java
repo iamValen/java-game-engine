@@ -110,19 +110,19 @@ public class Polygon extends Figure {
      * @return true se colidirem, senao false
      */
     public boolean collisionPolygon(Polygon that){
-        for(int i = 0; i < this.pontos.length; i++){
-            if(that.containsPoint(this.pontos[i]))
-                return true;
-        }
-        for(int j = 0; j < that.pontos.length; j++){
-            if(this.containsPoint(that.pontos[j]))
-                return true;
-        }
-        for(int i = 0; i < this.segmentos.length; i++){
-            for(int j = 0; j < that.segmentos.length; j++){
-                if(this.segmentos[i].intersects(that.segmentos[j]))
+        for(Segment s1 : this.segmentos){
+            for(Segment s2 : that.segmentos){
+                if(s1.intersects(s2))
                     return true;
             }
+        }
+        for(Point p : this.pontos){
+            if(that.containsPoint(p))
+                return true;
+        }
+        for(Point p : that.pontos){
+            if(this.containsPoint(p))
+                return true;
         }
         return false;
     }
@@ -131,10 +131,11 @@ public class Polygon extends Figure {
     public boolean collision(Figure that) {
         if (that.tipoFig == 0) { // Polígono vs Polígono
             return this.collisionPolygon((Polygon) that);
-        } else if (that.tipoFig == 1) { // Polígono vs Círculo
+        }
+        if (that.tipoFig == 1) { // Polígono vs Círculo
             return this.collisionCircle((Circle) that);
         }
-        return false;
+        return that.collision(this);
     }
 
     /**

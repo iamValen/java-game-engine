@@ -52,6 +52,7 @@ public abstract class Figure {
      * 
      * @return String que representa a figura
      */
+    @Override
     public abstract String toString();
 
     /**

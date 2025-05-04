@@ -1,16 +1,16 @@
 package behaviour;
-import java.util.ArrayList;
-
 import engine.GameEngine;
 import engine.GameObject;
+import figures.Point;
 import interfaces.IGameObject;
-
+import java.util.ArrayList;
+@SuppressWarnings("unused")
 public class EnemyBehaviour1 extends ABehaviour {
 
-    GameObject vision;
-    GameObject atackRange;
+    private GameObject vision;
+    private GameObject atackRange;
     //both will have a null behaviour and their position will be controlled by the enemy's position
-
+    private final Point speed = new Point(-10, 0);
     public EnemyBehaviour1(GameObject go) {
         
     }
@@ -23,21 +23,22 @@ public class EnemyBehaviour1 extends ABehaviour {
      * negative for left
      */
 
-
+    @Override
     public void oninit(){}
     /*
      * adds vision and atackRange to game object list
      * we might need a public static reference to the GameEngine to do that
      * which isnt as retarded as you may think
      */
-
+    @Override
     public void onDestroy(){}
     /*
      * spawn other game objects like health pick ups and increase points
      * destroys vision and atackRange
      */
-    
+    @Override
     public void onEnable(){}
+    @Override
     public void onDisable(){}
     /*
      * i dont think the enemies are suposed to be enabled or disabled yet
@@ -52,8 +53,11 @@ public class EnemyBehaviour1 extends ABehaviour {
      * adds speed to position
      * executes onCollision 
      */
+    @Override
+    public void onUpdate(double dT){
 
-    private void onUpdate(){}
+        myGo.transform().move(speed, 0);
+    }
     /*
      * if it is in an atacking sequence
      *     continues the atacking sequence
@@ -70,7 +74,7 @@ public class EnemyBehaviour1 extends ABehaviour {
      */
      //this logic terrible because the enemy will have no sense of spacing but who cares 
 
-
+    @Override
     public void onCollision(ArrayList<IGameObject> gol){
         for(IGameObject go : gol){
             if(go.name().equals("Player")){

@@ -31,10 +31,8 @@ public class Point {
      * @param t variavel da equaçao parametrica
      */
     Point(Point p1, Point p2, double t){
-        double x = p1.x + t* (p2.x-p1.x);
-        double y = p1.y + t* (p2.y-p1.y);
-        this.x = x;
-        this.y = y;
+        this.x = p1.x + t* (p2.x-p1.x);
+        this.y = p1.y + t* (p2.y-p1.y);
     }
 
 
@@ -73,9 +71,7 @@ public class Point {
      * @return true se forem iguais, senao false
      */
     public boolean equals(Point that){
-        if (tolEquals(this.x, that.x) && tolEquals(this.y, that.y))
-            return true;
-        return false;
+        return (tolEquals(this.x, that.x) && tolEquals(this.y, that.y));
     }
 
     /**
@@ -122,9 +118,7 @@ public class Point {
         Point AB,BC;
         AB = a.vetor(b);
         BC = b.vetor(c);
-        if(tol(vetorPE(AB, BC)) == 0)
-            return true;
-        return false;
+        return(tol(vetorPE(AB, BC)) == 0);
     }
 
     /**

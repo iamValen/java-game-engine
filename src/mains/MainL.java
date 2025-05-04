@@ -1,11 +1,10 @@
 package mains;
-import java.util.Scanner;
-
 import engine.GameObject;
 import figures.Circle;
 import figures.Figure;
 import figures.Point;
 import figures.Polygon;
+import java.util.Scanner;
 
 /**
  * Main - L

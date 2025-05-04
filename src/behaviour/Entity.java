@@ -1,4 +1,6 @@
 package behaviour;
+
+@SuppressWarnings("unused")
 public class Entity {
     int health;
 

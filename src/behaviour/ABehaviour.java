@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class ABehaviour implements IBehaviour{
 
     private boolean needsGO = true; 
-    protected IGameObject go;
+    protected IGameObject myGo;
 
     @Override
     public void oninit(){}
@@ -40,7 +40,7 @@ public abstract class ABehaviour implements IBehaviour{
     @Override
     public final void setGO(IGameObject GO){
         if(this.needsGO){
-            this.go = GO;
+            this.myGo = GO;
             this.needsGO = false;
         }
     }

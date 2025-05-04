@@ -1,5 +1,5 @@
 package mains;
-import behaviour.TestBehaviour;
+import test.IBehaviourTests.TestBehaviour;
 import engine.Collider;
 import engine.GameEngine;
 import engine.GameObject;

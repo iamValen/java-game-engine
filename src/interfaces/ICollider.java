@@ -33,8 +33,8 @@ public interface ICollider {
 
 
     /**
-     * retorna a figura para que possam ser implementados
-     * diferentes colliders e evita typecasts
+     * retorna a figura para que possam ser usadas 
+     * diferentes implementacoes de ICollider
      * @return a figura que representa a hitbox
      */
     public Figure getHitbox();

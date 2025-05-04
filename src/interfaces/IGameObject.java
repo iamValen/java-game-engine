@@ -1,7 +1,6 @@
 package interfaces;
-import java.awt.Graphics;
-
 import behaviour.IBehaviour;
+import java.awt.Graphics;
 
 /**
  * Interface do GameObject.

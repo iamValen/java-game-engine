@@ -15,7 +15,7 @@ public class Loader {
     public void loadLevel() {
         GameEngine engine = GameEngine.getInstance();
 
-        GameObject test = new GameObject("Test");
+        GameObject test = new GameObject("Player");
         Transform t1 = new Transform(400, 300, 0, 0, 1);
         Collider c1 = new Collider(new Circle(new Point(400, 300), 20d));
         PlayerBehaviour b1 = new PlayerBehaviour(test);
@@ -25,7 +25,7 @@ public class Loader {
         engine.addEnabled(test);
 
 
-        GameObject test1 = new GameObject("Test");
+        GameObject test1 = new GameObject("Enemy");
         Transform t2 = new Transform(100, 300, 0, 0, 1);
         Collider c2 = new Collider(new Circle(new Point(100, 300), 20d));
         EnemyBehaviour1 b2 = new EnemyBehaviour1(test1);
@@ -33,6 +33,19 @@ public class Loader {
         test1.insertElements(t2, c2, shape2, b2);
 
         engine.addEnabled(test1);
+
+        // lag test
+        // o lag n vem das colisoes como podem ver
+        for(int i = 0; i < 30; i++){
+            GameObject test3 = new GameObject("Enemy");
+            Transform t3 = new Transform(40 + i*200, 700, 0, 0, 1);
+            Collider c3 = new Collider(new Circle(new Point(100, 300), 20d));
+            EnemyBehaviour1 b3 = new EnemyBehaviour1(test1);
+            IShape shape3 = new TestShape(60);
+            test3.insertElements(t3, c3, shape3, b3);
+
+            engine.addEnabled(test3);
+        }
 
         System.out.println("Player loaded");
     }

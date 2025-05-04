@@ -1,12 +1,11 @@
 package engine;
-import java.awt.Graphics;
-
 import behaviour.IBehaviour;
 import figures.Figure;
 import interfaces.ICollider;
 import interfaces.IGameObject;
 import interfaces.IShape;
 import interfaces.ITransform;
+import java.awt.Graphics;
 
 /**
  * Representa um objeto.
@@ -34,18 +33,18 @@ public class GameObject implements IGameObject {
      * @param scale Fator de escala inicial.
      * @param fig Figura associada ao objeto.
      */
-    GameObject(String name,
-               double x, double y, int layer, double angle, double scale,
-               Figure fig) {
+    public GameObject(String name,
+    double x, double y, int layer, double angle, double scale,
+    Figure fig) {
         this.name = name;
         this.transform = new Transform(x, y, layer, angle, scale);
         this.collider = new Collider(fig);
         this.collider.setTransform(transform);
     }
 
-    GameObject(String name,
-            double x, double y, int layer, double angle, double scale,
-            Figure fig, IBehaviour behaviour) {
+    public GameObject(String name,
+    double x, double y, int layer, double angle, double scale,
+    Figure fig, IBehaviour behaviour) {
         this.name = name;
         this.transform = new Transform(x, y, layer, angle, scale);
         this.collider = new Collider(fig);
@@ -74,11 +73,12 @@ public class GameObject implements IGameObject {
         this.behaviour = behaviour;
         this.shape = shape;
 
-
-        this.collider.setTransform(transform);
+        if(collider != null)
+            this.collider.setTransform(transform);
         this.collider.onUpdate();
 
-        this.behaviour.setGO(this);
+        if(behaviour != null)
+            this.behaviour.setGO(this);
     }
 
     /**
@@ -129,9 +129,9 @@ public class GameObject implements IGameObject {
         int y = (int) t.position().y();
     
         // 2) draw via the shape, if one is attached
-        IShape shape = this.shape();
-        if (shape != null) {
-            shape.render(g, x, y);
+        IShape Tshape = this.shape();
+        if (Tshape != null) {
+            Tshape.render(g, x, y);
         } else {
             System.out.println("WARNING: NULL Shape");
         }

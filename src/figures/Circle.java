@@ -100,9 +100,7 @@ public class Circle extends Figure {
      * @return true se os círculos colidirem, senao false
      */
     public boolean colisaoCirculo(Circle that){
-        if(that.center.distance(this.center) < that.radius + this.radius)
-            return true;
-        return false;
+        return(that.center.distance(this.center) < that.radius + this.radius);
     }
 
     /**
@@ -112,14 +110,13 @@ public class Circle extends Figure {
      * @return true se houver colisão entre o círculo e o polígono, senao false
      */
     public boolean collisionPolygon(Polygon that){
-        for(int i = 0; i < that.segmentos().length; i++){
-            if(intersetaSegmento(that.segmentos()[i]))
+        for(Segment s : that.segmentos()){
+            if(this.intersetaSegmento(s))
                 return true;
         }
-        if(that.containsPoint(this.center)){
+        if(this.center.distance(that.pontos[0]) <= this.radius)
             return true;
-        }
-        return false;
+        return(that.containsPoint(this.center));
     }
 
     /**
@@ -129,18 +126,18 @@ public class Circle extends Figure {
      */
     @Override
     public Point centroid(){
-        return center;
+        return new Point(center.x(), center.y());
     }
 
     /**
      * Retorna uma nova figura (círculo) escalada pelo fator r.
      * 
-     * @param r fator de escala a ser aplicado no raio
+     * @param s fator de escala a ser aplicado no raio
      * @return novo círculo com o raio escalado
      */
     @Override
-    public Figure scale(double r){
-        return new Circle(this.center, this.radius * r);
+    public Figure scale(double s){
+        return new Circle(this.center.scale(s), this.radius * s);
     }
 
     /**
@@ -151,7 +148,7 @@ public class Circle extends Figure {
      */
     @Override
     public Figure rotate(double r){
-        return this;
+        return new Circle(this.center.rotate(r), this.radius);
     }
 
     /**
@@ -166,7 +163,7 @@ public class Circle extends Figure {
         } else if (that.tipoFig == 0) { // Círculo vs Polígono
             return this.collisionPolygon((Polygon) that);
         }
-        return false;
+        return that.collision(this);
     }
 
     @Override
