@@ -3,8 +3,7 @@ import interfaces.IGameObject;
 import java.util.ArrayList;
 
 public abstract class ABehaviour implements IBehaviour{
-
-    private boolean needsGO = true; 
+ 
     protected IGameObject myGo;
 
     @Override
@@ -39,10 +38,8 @@ public abstract class ABehaviour implements IBehaviour{
      */
     @Override
     public final void setGO(IGameObject GO){
-        if(this.needsGO){
+        if(this.myGo == null){
             this.myGo = GO;
-            this.needsGO = false;
         }
     }
-
 }

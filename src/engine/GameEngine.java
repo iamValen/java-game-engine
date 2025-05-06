@@ -32,7 +32,6 @@ public class GameEngine implements IGameEngine{
     private final ArrayList<IGameObject> toAddEnabled = new ArrayList<>();
     private final ArrayList<IGameObject> toAddDisabled = new ArrayList<>();
     private final ArrayList<IGameObject> toDestroy = new ArrayList<>();
-    private boolean toDestroyAll = false;
     private final int TARGET_FPS = 60; 
 
     private boolean isRunning;
@@ -118,7 +117,12 @@ public class GameEngine implements IGameEngine{
     
     @Override
     public void destroyAll(){
-        toDestroyAll = true;
+        for(IGameObject GO : enabledList){
+            toDestroy.add(GO);
+        }
+        for(IGameObject GO : disabledList){
+            toDestroy.add(GO);
+        }
     }
 
     @SuppressWarnings("unused") //k
@@ -152,19 +156,13 @@ public class GameEngine implements IGameEngine{
         }
         toAddDisabled.clear();
 
-        if(toDestroyAll){
-            enabledList.clear();
-            disabledList.clear();
-            layers.clear();
-            toDestroyAll = false;
+
+        for(IGameObject go : toDestroy){
+            if(this.enabledList.remove(go))
+                this.layers.get(go.transform().layer()).remove(go);
+            this.disabledList.remove(go);
         }
-        else{
-            for(IGameObject go : toDestroy){
-                if(this.enabledList.remove(go))
-                    this.layers.get(go.transform().layer()).remove(go);
-                this.disabledList.remove(go);
-            }
-        }
+
         toDestroy.clear();
     }
 

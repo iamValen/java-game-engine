@@ -18,7 +18,7 @@ public class GameObjectTests {
         GameObject go1 = new GameObject("Alien01");
         Transform t1 = new Transform(1, 2, 1, 0, 1);
         Collider c1 = new Collider(circle);
-        go1.insertElements(t1, c1, null, new PlayerBehaviour(go1));
+        go1.insertElements(t1, c1, null, new PlayerBehaviour());
         assertEquals("Alien01", go1.name());
         assertEquals("(1.00,2.00) 1 0.00 1.00", go1.transform().toString());
         assertEquals("(1.00,2.00) 3.00", go1.collider().toString());
@@ -27,7 +27,7 @@ public class GameObjectTests {
         GameObject go2 = new GameObject("Alien02");
         t1 = new Transform(3, 7, 2, 45.6, 2);
         c1 = new Collider(circle);
-        go2.insertElements(t1, c1, null, new PlayerBehaviour(go2));
+        go2.insertElements(t1, c1, null, new PlayerBehaviour());
         assertEquals("Alien02", go2.name());
         assertEquals("(3.00,7.00) 2 45.60 2.00", go2.transform().toString());
         // Com escala 2, raio: 3*2 = 6.00; centro ajustado para (3,7)
@@ -41,7 +41,7 @@ public class GameObjectTests {
         GameObject go1 = new GameObject("PlayerOne");
         Transform t2 = new Transform(5, 9, 0, 90, 2);
         Collider c2 = new Collider(poly);
-        go1.insertElements(t2, c2, null, new PlayerBehaviour(go1));
+        go1.insertElements(t2, c2, null, new PlayerBehaviour());
         assertEquals("PlayerOne", go1.name());
         assertEquals("(5.00,9.00) 0 90.00 2.00", go1.transform().toString());
         String expected = "(9.00,7.00) (1.00,7.00) (1.00,11.00) (9.00,11.00)";

@@ -1,17 +1,16 @@
 package behaviour;
 import engine.GameEngine;
-import engine.GameObject;
 import figures.Point;
 import interfaces.IGameObject;
 import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class EnemyBehaviour1 extends ABehaviour {
 
-    private GameObject vision;
-    private GameObject atackRange;
+    private IGameObject vision;
+    private IGameObject atackRange;
     //both will have a null behaviour and their position will be controlled by the enemy's position
     private final Point speed = new Point(-10, 0);
-    public EnemyBehaviour1(GameObject go) {
+    public EnemyBehaviour1() {
         
     }
 

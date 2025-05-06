@@ -1,5 +1,4 @@
 package behaviour;
-import engine.GameObject;
 import engine.InputManager;
 import engine.Physics;
 import figures.Point;
@@ -19,7 +18,7 @@ public class PlayerBehaviour extends ABehaviour{
     * recieves stats except position because thats on transform
     * puts go on the static reference
     */
-    public PlayerBehaviour(GameObject go){
+    public PlayerBehaviour(){
 
     }
 
