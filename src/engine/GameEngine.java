@@ -39,6 +39,15 @@ public class GameEngine implements IGameEngine{
 
     public boolean isRunning(){ return this.isRunning; }
 
+    public int getScreenWidth() {
+        return renderSurface.getWidth();
+    }
+
+    public int getScreenHeight() {
+        return renderSurface.getHeight();
+    }
+
+
     private GameEngine() {
         this.isRunning = false;
     }

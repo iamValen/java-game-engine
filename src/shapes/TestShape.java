@@ -1,4 +1,4 @@
-package engine;
+package shapes;
 
 import interfaces.IShape;
 import java.awt.Color;

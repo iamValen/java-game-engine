@@ -2,12 +2,15 @@ package gui;
 
 import behaviour.*;
 import engine.Collider;
+import engine.GameEngine;
 import engine.GameObject;
-import engine.TestShape;
 import engine.Transform;
 import figures.Circle;
 import figures.Point;
+import figures.Polygon;
 import interfaces.*;
+import shapes.BlockShape;
+import shapes.TestShape;
 
 /**
  * os objetos vao ser todos criados aqui
@@ -51,6 +54,34 @@ public class ObjectCreator {
         out.insertElements(transform, collider, shape, behaviour);
 
         return out;
+    }
+
+    public static IGameObject floor() {
+        GameEngine ge = GameEngine.getInstance();
+
+        GameObject out = new GameObject("floor");
+
+
+        int groundHeight = ge.getScreenHeight() / 12;
+
+
+        Transform t2 = new Transform(ge.getScreenWidth() / 2, (ge.getScreenHeight() - groundHeight / 2), 0, 0, 1);
+        Point p1 = new Point(0, ge.getScreenHeight());
+        Point p2 = new Point(ge.getScreenWidth(), ge.getScreenHeight());
+        Point p3 = new Point(ge.getScreenWidth(), ge.getScreenHeight() - groundHeight);
+        Point p4 = new Point(0, ge.getScreenHeight() - groundHeight);
+        Point[] points = {p1, p2, p3, p4};
+        Polygon rect = new Polygon(points);
+        Collider c2 = new Collider(rect);
+        StaticBehaviour b2 = new StaticBehaviour();
+        IShape shape2 = new BlockShape(ge.getScreenWidth(), groundHeight);
+        out.insertElements(t2, c2, shape2, b2);
+
+        return out;
+    }
+
+    public static IGameObject block(double x, double y) {
+        return null;
     }
 
 }

@@ -8,8 +8,8 @@ import javax.swing.SwingUtilities;
 
 public class GUI extends Canvas {
 
-    private static final int WIDTHT  = 1920;
-    private static final int HEIGHTT = 1080;
+    private static final int WIDTHT  = 1440;
+    private static final int HEIGHTT = 810;
     private final GameEngine engine;
 
     public GUI() {
@@ -24,7 +24,7 @@ public class GUI extends Canvas {
 
         // obtém instância do motor
         engine = GameEngine.getInstance();
-
+        System.out.println("blica");
         // Cria e exibe a janela no EDT
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Game Engine Window");
@@ -39,7 +39,8 @@ public class GUI extends Canvas {
             engine.setRenderSurface(this);
 
             // carrega o nível e inicia o loop do motor
-            Loader.loadLevel(1, 0);
+            Loader.loadLevel(1, 1);
+
             new Thread(engine::run, "EngineThread").start();
             
             //engine.run(); // não funfa

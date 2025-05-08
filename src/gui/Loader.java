@@ -13,22 +13,21 @@ public class Loader {
 
     private static void level1(){
 
-        IGameObject player = ObjectCreator.Player(400, 300);
+        IGameObject player = ObjectCreator.Player(500, 300);
         engine.addEnabled(player);
 
 
         IGameObject enemy = ObjectCreator.Enemy1(100, 300);
         engine.addEnabled(enemy);
 
-        // lag test
-        // o lag n vem das colisoes como podem ver
-        for(int i = 0; i < 300; i++){
-            enemy = ObjectCreator.Enemy1(i*200, 800);
-            engine.addEnabled(enemy);
-        }
-
         IGameObject ls = ObjectCreator.loading_screen(1000, 500, 2, 1);
         engine.addEnabled(ls);
+
+        IGameObject floor = ObjectCreator.floor();
+        engine.addEnabled(floor);
+
+        System.out.println("level1 loaded");
+
     }
 
     private static  void level2(){
@@ -65,7 +64,7 @@ public class Loader {
         catch(IllegalAccessException IAE){
             System.out.println("IllegalAccessException how are you seeing this wtf");
         }
-        catch(InvocationTargetException e){
+        catch(InvocationTargetException ITE){
             System.out.println("InvocationTargetException how are you seeing this wtf");
         }
     }
