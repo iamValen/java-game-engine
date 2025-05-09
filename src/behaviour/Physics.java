@@ -1,5 +1,6 @@
 package behaviour;
-import figures.Point;
+import figures.*;
+import interfaces.IGameObject;
 
 /**
  * very basic implementation of physics
@@ -15,10 +16,10 @@ public class Physics {
     private double rotationSpeed;
     private double scaleSpeed;
 
-    private final double gravity = 125;
+    private final Point gravity = new Point(0, 160);
 
     public Physics(){
-        accel = new Point(0, gravity);
+        accel = gravity;
         speed = new Point(0, 0);
     }
 
@@ -28,9 +29,9 @@ public class Physics {
 
         this.speed = speed.sum(accel.scale(dT));
 
-        this.speed = speed.scale(0.8* dT*(1/0.016666)); //atrito
+        this.speed = speed.scale(0.85 / (dT/0.016666)); //atrito
 
-        this.accel = new Point(0, gravity);
+        this.accel = gravity;
     }
 
     public Point Speed(){
@@ -68,5 +69,46 @@ public class Physics {
     
     public void setLayerSpeed(int layerSpeed){
         this.layerSpeed = layerSpeed;
+    }
+
+    /**
+     * evita um objeto se sobreponha com o chao
+     * @param GOm objeto q vai mover
+     * @param GOp objeto parado
+     */
+    public static void snapToFloor(IGameObject GOm, IGameObject GOp) {
+        Figure m = GOm.collider().getHitbox();
+        Figure p = GOp.collider().getHitbox();
+        double lowest = m.maxY();
+        double highest = p.minY();
+
+        GOm.transform().move(new Point(0, highest - lowest), 0);
+    }
+
+    public static void snapToCeling(IGameObject GOm, IGameObject GOp) {
+        Figure m = GOm.collider().getHitbox();
+        Figure p = GOp.collider().getHitbox();
+        double highest = m.minY();
+        double lowest = p.maxY();
+
+        GOm.transform().move(new Point(0, lowest - highest), 0);
+    }
+
+    public static void snapToWallOnTheLeft(IGameObject GOm, IGameObject GOp) {
+        Figure m = GOm.collider().getHitbox();
+        Figure p = GOp.collider().getHitbox();
+        double leftest = m.minX();
+        double rightest = p.maxX();
+
+        GOm.transform().move(new Point(rightest - leftest, 0), 0);
+    }
+
+    public static void snapToWallOnTheRight(IGameObject GOm, IGameObject GOp) {
+        Figure m = GOm.collider().getHitbox();
+        Figure p = GOp.collider().getHitbox();
+        double rightest = m.maxX();
+        double leftest = p.minX();
+
+        GOm.transform().move(new Point(leftest - rightest, 0), 0);
     }
 }

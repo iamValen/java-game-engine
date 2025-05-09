@@ -1,5 +1,4 @@
 package behaviour;
-import engine.GameEngine;
 import figures.Point;
 import interfaces.IGameObject;
 import java.util.ArrayList;
@@ -75,13 +74,7 @@ public class EnemyBehaviour1 extends ABehaviour {
 
     @Override
     public void onCollision(ArrayList<IGameObject> gol){
-        for(IGameObject go : gol){
-            if(go.name().equals("Player")){
-                System.out.println("enemy collides with player");
-                GameEngine.getInstance().disable(go);
 
-            }
-        }
     }
     /*
      * verifies colisions of itself with at least: player, enemies, player atacks, solid objects

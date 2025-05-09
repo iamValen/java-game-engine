@@ -170,4 +170,26 @@ public class Circle extends Figure {
     public String toString() {
         return String.format("%s %.2f", center.toString(), radius);
     }
+
+
+    @Override
+    public double minX() {
+        return this.center.x() - radius;
+    }
+
+    @Override
+    public double maxX() {
+        return this.center.x() + radius;
+    }
+
+    @Override
+    public double minY() {
+        return this.center.y() - radius;
+    }
+
+    @Override
+    public double maxY() {
+        return this.center.y() + radius;
+    }
+    
 }

@@ -24,7 +24,6 @@ public class GUI extends Canvas {
 
         // obtém instância do motor
         engine = GameEngine.getInstance();
-        System.out.println("blica");
         // Cria e exibe a janela no EDT
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Game Engine Window");

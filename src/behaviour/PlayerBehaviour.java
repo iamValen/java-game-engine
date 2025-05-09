@@ -1,4 +1,5 @@
 package behaviour;
+import engine.GameEngine;
 import engine.InputManager;
 import interfaces.IGameObject;
 import interfaces.ITransform;
@@ -12,6 +13,7 @@ public class PlayerBehaviour extends ABehaviour{
     private static final double SPEED = 200; // pixels por segundo
     private double deltaTime;
     private boolean isGrounded;
+    private final GameEngine engine = GameEngine.getInstance();
 
     /*
     * recieves the game object that created this instance
@@ -62,10 +64,10 @@ public class PlayerBehaviour extends ABehaviour{
         ITransform t = myGo.transform();
 
         if(isGrounded){
-            physics.setSpeed(physics.Speed().x(), 0);
-            physics.setAccel(physics.Accel().x(), 0);
+            physics.setAccel(0, 0);
 
         }
+
 
         if (InputManager.isKeyDown(KeyEvent.VK_A)){
             physics.sumAccel(-130, 0);
@@ -73,9 +75,10 @@ public class PlayerBehaviour extends ABehaviour{
         if (InputManager.isKeyDown(KeyEvent.VK_D)){
             physics.sumAccel(130, 0);
         }
-        if (InputManager.isKeyDown(KeyEvent.VK_W) && isGrounded){
-            physics.sumAccel(0, -3000);
+        if (InputManager.isKeyDown(KeyEvent.VK_W) /*&& isGrounded */){
+            physics.sumAccel(0, -400);
         }
+
         physics.update(dt);
         t.move(physics.Speed(), 0);
 
@@ -84,16 +87,38 @@ public class PlayerBehaviour extends ABehaviour{
 
     @Override
     public void onCollision(ArrayList<IGameObject> gol){
+        boolean flag = true;
         for(IGameObject go : gol){
             switch (go.name()) {
-                case ("floor") -> {
+                case("floor") -> {
+                    if(flag)
+                        Physics.snapToFloor(myGo, go);
                     isGrounded = true;
+                    flag = false;
                 }
-                case ("e") -> {}
+                case("celing") ->{
+                    if(flag)
+                        Physics.snapToCeling(myGo, go);
+                    flag = false;
+                }
+                case("rightWall") -> {
+                    if(flag)
+                        Physics.snapToWallOnTheRight(myGo, go);
+                    flag = false;
+                }
+                case("leftWall") -> {
+                    if(flag)
+                        Physics.snapToWallOnTheLeft(myGo, go);
+                    flag = false;
+                }
+                case("Enemy1") -> {
+                    System.out.println("player collides with enemy");
+                    engine.disable(myGo);
+                }
                 default -> {}
             }
         }
-        physics.update(deltaTime);
+        // physics.update(deltaTime);
     }
     /*
     * verifies colisions of itself with everything

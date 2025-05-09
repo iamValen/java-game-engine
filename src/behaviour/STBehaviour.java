@@ -16,6 +16,8 @@ public class STBehaviour extends ABehaviour {
 
     @Override
     public void onCollision(ArrayList<IGameObject> gol){
-        Loader.loadLevel(roomKey, posKey);
+        for(IGameObject go : gol)
+            if(go.name().equals("Player"))
+                Loader.loadLevel(roomKey, posKey);
     }
 }

@@ -73,10 +73,10 @@ public class GameObject implements IGameObject {
         this.behaviour = behaviour;
         this.shape = shape;
 
-        if(collider != null)
+        if(collider != null){
             this.collider.setTransform(transform);
-        this.collider.onUpdate();
-
+            this.collider.onUpdate();
+        }
         if(behaviour != null)
             this.behaviour.setGO(this);
     }

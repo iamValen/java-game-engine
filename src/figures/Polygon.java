@@ -265,4 +265,57 @@ public class Polygon extends Figure {
         sb.setLength(sb.length() - 1);
         return sb.toString();
     }
+
+
+    @Override
+    public double minX() {
+        double out = Double.MAX_VALUE;
+
+        for(Point pt : pontos()){
+            if (pt.x() < out) {
+                out = pt.x();
+            }
+        }
+
+        return out;
+    }
+
+    @Override
+    public double maxX() {
+        double out = - Double.MAX_VALUE;
+
+        for(Point pt : pontos()){
+            if (pt.x() > out) {
+                out = pt.x();
+            }
+        }
+
+        return out;
+    }
+
+    @Override
+    public double minY() {
+        double out = Double.MAX_VALUE;
+
+        for(Point pt : pontos()){
+            if (pt.y() < out) {
+                out = pt.y();
+            }
+        }
+
+        return out;
+    }
+
+    @Override
+    public double maxY() {
+        double out = - Double.MAX_VALUE;
+
+        for(Point pt : pontos()){
+            if (pt.y() > out) {
+                out = pt.y();
+            }
+        }
+
+        return out;
+    }
 }

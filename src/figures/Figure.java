@@ -74,4 +74,10 @@ public abstract class Figure {
 
 
     public abstract boolean collision(Figure that);
+
+    public abstract double minX();
+    public abstract double maxX();
+    public abstract double minY();
+    public abstract double maxY();
+
 }
