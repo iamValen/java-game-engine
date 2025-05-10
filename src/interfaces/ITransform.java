@@ -57,6 +57,12 @@ public interface ITransform {
 
 
 
+    public void setDirection(int i);
+
+
+    public int getDirection();
+
+
     @Override
     public String toString();
 }

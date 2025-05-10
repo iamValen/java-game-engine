@@ -99,4 +99,19 @@ public class ObjectCreator {
         wall.insertElements(transform, collider, null, null);
         return wall;
     }
+
+    public static IGameObject playerAttack1(int width, int height){
+
+        GameObject attack = new GameObject("playerAttack");
+        ITransform transform = new Transform(0, 0, 0, 0, 1);
+        Point[] points = new Point[4];
+        points[0] = new Point(0, 0);
+        points[1] = new Point(0, height);
+        points[2] = new Point(width, height);
+        points[3] = new Point(width, 0);
+        ICollider collider = new Collider(new Polygon(points));
+        IShape shape = new BlockShape(width, height);
+        attack.insertElements(transform, collider, shape, null);
+        return attack;
+    }
 }

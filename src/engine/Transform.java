@@ -15,6 +15,7 @@ public class Transform implements ITransform {
     private int layer;
     private double angle;
     private double scale;
+    private int direction;
 
     /**
      * Construtor da classe Transform.
@@ -32,6 +33,15 @@ public class Transform implements ITransform {
         this.scale = scale;
     }
 
+    @Override
+    public void setDirection(int i){
+        this.direction = i;
+    }
+
+    @Override
+    public int getDirection() {
+        return this.direction;
+    }
     
     /**
      * Move o objeto para uma nova posição e camada.

@@ -1,10 +1,12 @@
 package behaviour;
+import engine.GameEngine;
 import figures.Point;
 import interfaces.IGameObject;
 import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class EnemyBehaviour1 extends ABehaviour {
 
+    private final GameEngine engine = GameEngine.getInstance();
     private IGameObject vision;
     private IGameObject atackRange;
     //both will have a null behaviour and their position will be controlled by the enemy's position
@@ -74,7 +76,11 @@ public class EnemyBehaviour1 extends ABehaviour {
 
     @Override
     public void onCollision(ArrayList<IGameObject> gol){
-
+        for(IGameObject go : gol){
+            if(go.name().equals("playerAttack")){
+                engine.destroy(myGo);
+            }
+        }
     }
     /*
      * verifies colisions of itself with at least: player, enemies, player atacks, solid objects
