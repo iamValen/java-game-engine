@@ -46,6 +46,9 @@ public class Loader {
         IGameObject floor = ObjectCreator.floor();
         engine.addEnabled(floor);
 
+        enemy = ObjectCreator.Enemy1(4000, 600);
+        engine.addEnabled(enemy);
+
     }
 
 

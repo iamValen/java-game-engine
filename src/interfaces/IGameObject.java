@@ -26,6 +26,8 @@ public interface IGameObject {
      */
     IShape shape();
 
+    
+
     /**
      * @return the Collider of the GameObject with its centroid at this.transform().position()
      */

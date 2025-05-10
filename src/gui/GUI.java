@@ -37,7 +37,7 @@ public class GUI extends Canvas {
             // agora que o Canvas está visível, prepara o buffer
             engine.setRenderSurface(this);
 
-            // carrega o nível e inicia o loop do motor
+            // carrega o nível e inicia o loop do motorw
             Loader.loadLevel(1, 1);
 
             new Thread(engine::run, "EngineThread").start();

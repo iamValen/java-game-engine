@@ -10,7 +10,9 @@ public class EnemyBehaviour1 extends ABehaviour {
     private IGameObject vision;
     private IGameObject atackRange;
     //both will have a null behaviour and their position will be controlled by the enemy's position
-    private final Point speed = new Point(-10, 0);
+    private final Point speed = new Point(0, 0);
+    private Entity entity;
+
     public EnemyBehaviour1() {
         
     }
@@ -24,12 +26,9 @@ public class EnemyBehaviour1 extends ABehaviour {
      */
 
     @Override
-    public void oninit(){}
-    /*
-     * adds vision and atackRange to game object list
-     * we might need a public static reference to the GameEngine to do that
-     * which isnt as retarded as you may think
-     */
+    public void oninit(){
+        entity = new Entity(myGo, 100);
+    }
     @Override
     public void onDestroy(){}
     /*
@@ -78,7 +77,8 @@ public class EnemyBehaviour1 extends ABehaviour {
     public void onCollision(ArrayList<IGameObject> gol){
         for(IGameObject go : gol){
             if(go.name().equals("playerAttack")){
-                engine.destroy(myGo);
+                entity.damage(50);
+                entity.damageTime = System.currentTimeMillis();
             }
         }
     }

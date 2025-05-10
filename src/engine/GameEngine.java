@@ -212,7 +212,7 @@ public class GameEngine implements IGameEngine{
 
             // draw all GameObjects via your GameObject.render(g)
             for(IGameObject go : enabledList) {
-                ((GameObject) go).render(g);
+                if(go.shape() != null)((GameObject) go).render(g);
             }
 
             g.dispose();    // release this Graphics

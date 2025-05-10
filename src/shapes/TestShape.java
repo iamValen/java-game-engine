@@ -6,13 +6,18 @@ import java.awt.Graphics;
 
 public class TestShape implements IShape {
     private int size;
+    private Color color = Color.BLUE;
     
     public TestShape(int size) {
         this.size = size;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     protected void fuckYouJavaFieldCantBeFinal(){
-        size++;//just trying to get rid of warnings
+        size++;
     }
 
     public int getSize(){
@@ -21,7 +26,7 @@ public class TestShape implements IShape {
     
     @Override
     public void render(Graphics g, int x, int y) {
-        g.setColor(Color.BLUE);
+        g.setColor(color);
         g.fillRect(x - size/2, y - size/2, size, size);
     }
 }

@@ -11,13 +11,18 @@ import java.util.ArrayList;
 public class PlayerBehaviour extends ABehaviour{
 
     private final GameEngine engine = GameEngine.getInstance();
+    
     private int state;
     private final Physics physics;
+    private Entity entity;
+
     private double deltaTime;
     private long now;
+
     private boolean isGrounded;
     private long jumpStart = 0;
     private boolean stopedJumping = true;
+
     private IGameObject attack1;
     private long atackStart = 0;
 
@@ -40,6 +45,7 @@ public class PlayerBehaviour extends ABehaviour{
     @Override
     public void oninit(){
         attack1 = ObjectCreator.playerAttack1(40, 40);
+        entity = new Entity(myGo, 100);
         engine.addDisabled(attack1);
     }
     /*
@@ -75,7 +81,6 @@ public class PlayerBehaviour extends ABehaviour{
         this.deltaTime = dt;
         now = System.currentTimeMillis();
 
-
         ITransform t = myGo.transform();
 
         if(isGrounded){
@@ -104,18 +109,9 @@ public class PlayerBehaviour extends ABehaviour{
             stopedJumping = true;
         }
         if(InputManager.isKeyDown(KeyEvent.VK_E)){
-            if(engine.isDisabled(attack1) && now - atackStart > 400){
-                atackStart = System.currentTimeMillis();
-                attack1.transform().move(myGo.transform().position().sum(attack1.transform().position().flipSign()).sum(new Point(myGo.transform().getDirection()*40, 0)), 0);
-                engine.enable(attack1);
-            }
+            entity.createAttack(attack1, now);
         }
-        if(now - atackStart > 60){
-            if(engine.isEnabled(attack1))
-                engine.disable(attack1);
-        }
-
-
+        entity.disableAttack(attack1, now);
 
         physics.update(dt);
         t.move(physics.Speed(), 0);
@@ -126,32 +122,33 @@ public class PlayerBehaviour extends ABehaviour{
     @Override
     public void onCollision(ArrayList<IGameObject> gol){
         boolean flag = true;
-        for(IGameObject go : gol){
-            switch (go.name()) {
+        now = System.currentTimeMillis();
+        for(IGameObject go1 : gol){
+            switch (go1.name()) {
                 case("floor") -> {
                     if(flag)
-                        Physics.snapToFloor(myGo, go);
+                        Physics.snapToFloor(myGo, go1);
                     isGrounded = true;
                     flag = false;
                 }
                 case("celing") ->{
                     if(flag)
-                        Physics.snapToCeling(myGo, go);
+                        Physics.snapToCeling(myGo, go1);
                     flag = false;
                 }
                 case("rightWall") -> {
                     if(flag)
-                        Physics.snapToWallOnTheRight(myGo, go);
+                        Physics.snapToWallOnTheRight(myGo, go1);
                     flag = false;
                 }
                 case("leftWall") -> {
                     if(flag)
-                        Physics.snapToWallOnTheLeft(myGo, go);
+                        Physics.snapToWallOnTheLeft(myGo, go1);
                     flag = false;
                 }
                 case("Enemy1") -> {
-                    System.out.println("player collides with enemy");
-                    engine.disable(myGo);
+                    entity.damage(50);
+                    entity.damageTime = System.currentTimeMillis();
                 }
                 default -> {}
             }
