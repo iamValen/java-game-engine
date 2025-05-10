@@ -30,6 +30,9 @@ public class Loader {
         IGameObject block = ObjectCreator.block(1300,400,200,200);
         engine.addEnabled(block);
 
+        IGameObject HUDplayerHealth = ObjectCreator.healthHUD();
+        engine.addEnabled(HUDplayerHealth);
+
     }
 
     private static  void level2(){
@@ -48,6 +51,9 @@ public class Loader {
 
         enemy = ObjectCreator.Enemy1(4000, 600);
         engine.addEnabled(enemy);
+
+        IGameObject HUDplayerHealth = ObjectCreator.healthHUD();
+        engine.addEnabled(HUDplayerHealth);
 
     }
 

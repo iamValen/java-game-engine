@@ -12,6 +12,7 @@ public class TestShape implements IShape {
         this.size = size;
     }
 
+    @Override
     public void setColor(Color color) {
         this.color = color;
     }

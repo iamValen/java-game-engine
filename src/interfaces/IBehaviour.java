@@ -1,5 +1,4 @@
-package behaviour;
-import interfaces.IGameObject;
+package interfaces;
 import java.util.ArrayList;
 
 public interface IBehaviour {

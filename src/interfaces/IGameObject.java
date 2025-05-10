@@ -1,5 +1,4 @@
 package interfaces;
-import behaviour.IBehaviour;
 import java.awt.Graphics;
 
 /**

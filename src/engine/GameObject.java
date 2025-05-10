@@ -1,6 +1,6 @@
 package engine;
-import behaviour.IBehaviour;
 import figures.Figure;
+import interfaces.IBehaviour;
 import interfaces.ICollider;
 import interfaces.IGameObject;
 import interfaces.IShape;

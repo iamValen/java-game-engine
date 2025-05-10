@@ -1,7 +1,6 @@
 package behaviour;
 import engine.GameEngine;
 import engine.InputManager;
-import figures.Point;
 import gui.ObjectCreator;
 import interfaces.IGameObject;
 import interfaces.ITransform;
@@ -24,7 +23,6 @@ public class PlayerBehaviour extends ABehaviour{
     private boolean stopedJumping = true;
 
     private IGameObject attack1;
-    private long atackStart = 0;
 
 
 
@@ -40,6 +38,10 @@ public class PlayerBehaviour extends ABehaviour{
 
     public Physics physics(){
         return this.physics;
+    }
+
+    public Entity entity(){
+        return this.entity;
     }
 
     @Override

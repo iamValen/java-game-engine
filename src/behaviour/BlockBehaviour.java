@@ -24,9 +24,9 @@ public class BlockBehaviour extends ABehaviour {
         @Override
         public void oninit() {
             engine.addEnabled(topHitbox);
-            engine.addEnabled(bottomHitbox);
             engine.addEnabled(leftHitbox);
             engine.addEnabled(rightHitbox);
+            engine.addEnabled(bottomHitbox);
     
         }
         @Override

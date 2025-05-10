@@ -1,10 +1,8 @@
 package behaviour;
 
 import engine.GameEngine;
-import engine.GameObject;
 import figures.Point;
 import interfaces.IGameObject;
-
 import java.awt.Color;
 
 @SuppressWarnings("unused")

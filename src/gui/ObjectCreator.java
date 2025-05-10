@@ -10,6 +10,7 @@ import figures.Point;
 import figures.Polygon;
 import interfaces.*;
 import shapes.BlockShape;
+import shapes.HUDheathShape;
 import shapes.TestShape;
 
 /**
@@ -113,5 +114,13 @@ public class ObjectCreator {
         IShape shape = new BlockShape(width, height);
         attack.insertElements(transform, collider, shape, null);
         return attack;
+    }
+
+    public static IGameObject healthHUD(){
+        GameObject healthHUD = new GameObject("healthHUD");
+        ITransform transform = new Transform(40, 70, 0, 0, 1);
+        IShape shape = new HUDheathShape();
+        healthHUD.insertElements(transform, null, shape, null);
+        return healthHUD;
     }
 }
