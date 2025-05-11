@@ -3,60 +3,48 @@ import engine.GameEngine;
 import figures.Point;
 import interfaces.IGameObject;
 import java.util.ArrayList;
-@SuppressWarnings("unused")
+
+/**
+ * Classe Abstrata ABehaviour
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 11/05/2025
+ */
 public class EnemyBehaviour1 extends ABehaviour {
 
     private final GameEngine engine = GameEngine.getInstance();
     private IGameObject vision;
-    private IGameObject atackRange;
-    //both will have a null behaviour and their position will be controlled by the enemy's position
     private final Point speed = new Point(0, 0);
     private Entity entity;
 
-    public EnemyBehaviour1() {
-        
-    }
+    public EnemyBehaviour1() {}
 
     int state;
-    /*
-     * 1 = walking right
-     * 2 = running right
-     * 3 = 1st frame of atacking sequence
-     * negative for left
-     */
+
 
     @Override
     public void oninit(){
         entity = new Entity(myGo, 100);
     }
+
     @Override
     public void onDestroy(){}
-    /*
-     * spawn other game objects like health pick ups and increase points
-     * destroys vision and atackRange
-     */
+
     @Override
     public void onEnable(){}
+    
     @Override
     public void onDisable(){}
-    /*
-     * i dont think the enemies are suposed to be enabled or disabled yet
-     * at least until we have a moving screen
-     */
 
 
-    //public void onUpdate(input, colisions){}
-    /*
-     * changes accelaration based on its ai
-     * adds acceleration to speed
-     * adds speed to position
-     * executes onCollision 
-     */
     @Override
     public void onUpdate(double dT){
 
         myGo.transform().move(speed, 0);
     }
+    // NOTAS
     /*
      * if it is in an atacking sequence
      *     continues the atacking sequence

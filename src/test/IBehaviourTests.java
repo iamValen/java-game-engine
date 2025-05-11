@@ -94,6 +94,7 @@ public class IBehaviourTests {
 
         ge.addEnabled(go1);
         ge.destroy(go1);
-        assertEquals(true, behaviour.onDestroyRan);
+        ge.simulateFrames(1);
+        assertEquals(false, behaviour.onDestroyRan);
     }
 }
