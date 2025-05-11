@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 public class EnemyBehaviour1 extends ABehaviour {
 
-    private final GameEngine engine = GameEngine.getInstance();
     private IGameObject vision;
     private final Point speed = new Point(0, 0);
     private Entity entity;

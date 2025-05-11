@@ -57,7 +57,7 @@ public class GUI extends Canvas {
             frame.setVisible(true);
 
             // Prepara o BufferStrategy para renderização eficiente
-            engine.setRenderSurface(this);
+            engine.setWindow(this);
 
             // Carrega o nível inicial (sala 1, posição 1)
             Loader.loadLevel(1, 1);

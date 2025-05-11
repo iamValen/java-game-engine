@@ -32,19 +32,19 @@ public class GameEngine implements IGameEngine{
     private final ArrayList<IGameObject> toAddEnabled = new ArrayList<>();
     private final ArrayList<IGameObject> toAddDisabled = new ArrayList<>();
     private final ArrayList<IGameObject> toDestroy = new ArrayList<>();
-    private final int TARGET_FPS = 4000; 
+    private final int TARGET_FPS = 30; 
 
     private boolean isRunning;
-    private Canvas renderSurface;
+    private Canvas window;
 
     public boolean isRunning(){ return this.isRunning; }
 
     public int getScreenWidth() {
-        return renderSurface.getWidth();
+        return window.getWidth();
     }
 
     public int getScreenHeight() {
-        return renderSurface.getHeight();
+        return window.getHeight();
     }
 
 
@@ -180,7 +180,7 @@ public class GameEngine implements IGameEngine{
     public void run(){
 
         // Must have called setRenderSurface(canvas) first!
-        BufferStrategy bs = renderSurface.getBufferStrategy();
+        BufferStrategy bs = window.getBufferStrategy();
 
         isRunning = true;
         final long frameTimeNs = 1_000_000_000L / TARGET_FPS;
@@ -202,7 +202,7 @@ public class GameEngine implements IGameEngine{
             Graphics g = bs.getDrawGraphics();
             // clear the back‑buffer
             g.setColor(java.awt.Color.WHITE);
-            g.fillRect(0, 0, renderSurface.getWidth(), renderSurface.getHeight());
+            g.fillRect(0, 0, window.getWidth(), window.getHeight());
 
             // draw all GameObjects via your GameObject.render(g)
             for(IGameObject go : enabledList) {
@@ -242,10 +242,10 @@ public class GameEngine implements IGameEngine{
      * Call this once from your GUI, *after* the Canvas is visible.
      * It prepares buffering for rendering.
      */
-    public void setRenderSurface(Canvas canvas) {
-        this.renderSurface = canvas;
+    public void setWindow(Canvas canvas) {
+        this.window = canvas;
         // create the double buffer on the Canvas
-        this.renderSurface.createBufferStrategy(2);
+        this.window.createBufferStrategy(2);
     }
 
     /**
