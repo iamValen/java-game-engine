@@ -1,12 +1,22 @@
 package behaviour;
+
 import engine.GameEngine;
 import engine.InputManager;
 import gui.ObjectCreator;
 import interfaces.IGameObject;
 import interfaces.ITransform;
+
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-@SuppressWarnings("unused")
+
+/**
+ * Comportamento responsável por carregar um novo nível.
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 11/05/2025
+ */
 public class PlayerBehaviour extends ABehaviour{
 
     private final GameEngine engine = GameEngine.getInstance();
@@ -23,9 +33,7 @@ public class PlayerBehaviour extends ABehaviour{
     private boolean stopedJumping = true;
 
     private IGameObject attack1;
-
-
-
+    
     /*
     * recieves the game object that created this instance
     * recieves stats except position because thats on transform
@@ -50,34 +58,19 @@ public class PlayerBehaviour extends ABehaviour{
         entity = new Entity(myGo, 100);
         engine.addDisabled(attack1);
     }
-    /*
-     * a bunch of stuff would be initialized with the player i guess
-     */
+
     @Override
     public void onDestroy(){
+        // Player died
         engine.destroy(attack1);
     }
-    /*
-     * idk probably show game over screen
-     */
-    
-    @Override
-    public void onEnable(){}
-    @Override
-    public void onDisable(){}
-    /*
-     * i dont think the player is suposed to be enabled or disabled
-     */
 
-
-    //public void onUpdate(input, colisions){}
     /*
      * changes accelaration based on input
      * adds acceleration to speed
      * adds speed to position
      * executes onCollision 
      */
-
     @Override
     public void onUpdate(double dt) {
         this.deltaTime = dt;
@@ -89,7 +82,6 @@ public class PlayerBehaviour extends ABehaviour{
             physics.setAccel(0, 0);
 
         }
-
 
         if (InputManager.isKeyDown(KeyEvent.VK_A)){
             physics.sumAccel(-130, 0);
@@ -155,12 +147,23 @@ public class PlayerBehaviour extends ABehaviour{
                 default -> {}
             }
         }
-        // physics.update(deltaTime);
     }
-    /*
-    * verifies colisions of itself with everything
-    * enemies and atacks cause damage taken
-    * health pickups cause heal
-    * solid objects push player away from them
-    */
+
+    /* Métodos usados para testes */
+    /**
+     * Verifica se o jogador está no chão.
+     * @return true se o jogador estiver no chão, false caso contrário.
+     */
+    public boolean isGrounded(){
+        return this.isGrounded;
+    }
+
+    /**
+     * Verifica se o jogador está no ar.
+     * @param isGrounded
+     */
+    public void setGrounded(boolean isGrounded){
+        this.isGrounded = isGrounded;
+    }
+   
 }

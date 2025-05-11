@@ -7,7 +7,7 @@ import interfaces.IShape;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class HUDheathShape implements IShape {
+public class HUDHealthBarShape implements IShape {
     GameEngine engine = GameEngine.getInstance();
 
     Color color;

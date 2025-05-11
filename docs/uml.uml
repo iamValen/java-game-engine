@@ -5,47 +5,60 @@ title Java Game
 '================== Interfaces ==================
 package "Interfaces" {
   interface IGameObject {
-    + name() : String
-    + transform() : Transform
-    + collider() : Collider
+    + String name()
+    + ITransform transform()
+    + ICollider collider()
+    + IShape shape()
+    + IBehaviour behaviour()
+    + void render()
   }
   interface ITransform {
     + move(Point p, int layer)
     + rotate(double r)
     + scale(double s)
-    + position() : Point
-    + layer() : int
-    + angle() : double
-    + scale() : double
+    + Point position()
+    + int layer()
+    + double angle()
+    + double scale()
+    + void setDirection(int i)
+    + int getDirection()
+    + String toString()
   }
   interface ICollider {
-    + centroid() : Point
+    + Point centroid()
+    + void setTransform(ITransform transform)
+    + void onUpdate()
+    + boolean isColliding(ICollider that)
+    + igure getHitbox()
+    + String toString()
   }
   interface IBehaviour {
-    + init() : void
-    + onEnabled() : void
-    + onDisabled() : void
-    + onDestroy() : void
-    + onUpdate(double dT, InputEvent ie) : void
-    + onCollision(ArrayList<IGameObject> gol) : void
+    + void oninit()
+    + void onEnable()
+    + void onDisable()
+    + void onDestroy()
+    + void onUpdate(double dT)
+    + void onCollision(ArrayList<IGameObject> gol)
+    + void setGO(IGameObject GO)
   }
   interface IGameEngine {
-    + addEnabled(IGameObject go) : void
-    + addDisabled(IGameObject go) : void
-    + enable(IGameObject go) : void
-    + disable(IGameObject go) : void
-    + isEnabled(IGameObject go) : void
-    + isDisabled(IGameObject go) : void
-    + ArrayList<IGameObject> enabled() : void
-    + ArrayList<IGameObject> disabled() : void
-    + add(GameObject go) : void
-    + destroy(IGameObject go) : void 
-    + destroyAll() : void
-    + run() : void
-    + checkCollisions() : void
+    + HashMap<Integer, ArrayList<IGameObject>> layers()
+    + ArrayList<IGameObject> enabled()
+    + ArrayList<IGameObject> disabled()
+    + void generateNextFrame()
+    + void addEnabled(IGameObject go)
+    + void addDisabled(IGameObject go)
+    + void enable(IGameObject go)
+    + void disable(IGameObject go)
+    + boolean isEnabled(IGameObject go)
+    + boolean isDisabled(IGameObject go)
+    + void destroy(IGameObject go)
+    + void run()
+    + void checkCollisions()
   }
   interface IShape {
-    
+    + oid render(Graphics g, int x, int y)
+    + void setColor(Color color)
   }
 }
 
@@ -86,23 +99,23 @@ package "Engine" {
   }
   
   class Transform {
-    - layer : int
-    - angle : double
-    - angleOld : double
-    - scale : double
-    - scaleOld : double
+    - int layer
+    - double angle
+    - double scale
+    - int direction
     --
-    + move(Point p, int layer)
-    + rotate(double r)
-    + scale(double s)
-    + position() : Point
-    + layer() : int
-    + angle() : double
-    + angleOld() : double
-    + scale() : double
-    + scaleOld() : double
-    + toString() : String
-    + update() : void
+    + Point position()
+    + int layer()
+    + double angle()
+    + double scale()
+    + int getDirection()
+    + String toString()
+    + void update() 
+    + void move(Point p, int layer)
+    + void rotate(double r)
+    + void scale(double s)
+    + void setDirection(int i)
+
   }
   Transform ..|> ITransform
   
@@ -278,6 +291,4 @@ PlayerBehaviour "1" --> "1" Entity : entity
 Enemy1Behaviour "1" --> "1" Entity : entity
 Enemy2Behaviour "1" --> "1" Entity : entity
 Enemy3Behaviour "1" --> "1" Entity : entity
-
-
 @enduml

@@ -56,10 +56,14 @@ public interface ITransform {
     public double scale();
 
 
-
+    /**
+     * @return the direction of the object
+     */
     public void setDirection(int i);
 
-
+    /**
+     * Set the direction of the object
+     */
     public int getDirection();
 
 
