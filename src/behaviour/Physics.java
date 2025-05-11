@@ -26,10 +26,9 @@ public class Physics {
 
     public void update(double  dT){
 
+        this.speed = this.speed.sum(accel.scale(dT));
 
-        this.speed = speed.sum(accel.scale(dT));
-
-        this.speed = speed.scale(0.85 / (dT/0.016666)); //atrito
+        this.speed = this.speed.scale(Math.pow(0.85, dT/0.016666)); //atrito
 
         this.accel = gravity;
     }

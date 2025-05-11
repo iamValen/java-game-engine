@@ -116,7 +116,7 @@ public class PlayerBehaviour extends ABehaviour{
         entity.disableAttack(attack1, now);
 
         physics.update(dt);
-        t.move(physics.Speed(), 0);
+        t.move(physics.Speed().scale(dt/0.016666), 0);
 
         isGrounded = false;
     }

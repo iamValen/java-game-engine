@@ -27,7 +27,7 @@ public class Entity {
         long now = System.currentTimeMillis();
         if(now - damageTime > 2000){
             this.health -= damage;
-            System.out.println("health: " + this.health);
+            // System.out.println("health: " + this.health);
             if(this.health <= 0){
                 engine.destroy(go);
             }

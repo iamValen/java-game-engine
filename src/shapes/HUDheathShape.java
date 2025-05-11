@@ -25,7 +25,6 @@ public class HUDheathShape implements IShape {
             if(go.name().equals("Player"))
                 variable = ((PlayerBehaviour)go.behaviour()).entity().getHealth();
             }
-        System.out.println(variable);
 
         g.setColor(color);
         g.fillRect(x, y - 40/2, variable, 40);
