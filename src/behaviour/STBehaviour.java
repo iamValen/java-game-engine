@@ -4,16 +4,36 @@ import gui.Loader;
 import interfaces.IGameObject;
 import java.util.ArrayList;
 
+/**
+ * Comportamento responsável por carregar um novo nível.
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 11/05/2025
+ */
 public class STBehaviour extends ABehaviour {
 
-    private final int roomKey;
-    private final int posKey;
+    private final int roomKey;  // Identificador da sala para onde será feita a transição
+    private final int posKey;   // Posição inicial dentro da nova sala
 
+    /**
+     * Construtor do comportamento de transição de sala.
+     * 
+     * @param roomKey identificador da sala a ser carregada
+     * @param posKey posição do jogador na nova sala
+     */
     public STBehaviour(int roomKey, int posKey){
         this.roomKey = roomKey;
         this.posKey = posKey;
     }
 
+    /**
+     * Método executado quando ocorre uma colisão.
+     * Se a colisão for com o jogador, carrega o novo nível correspondente.
+     * 
+     * @param gol lista de objetos com os quais ocorreu colisão
+     */
     @Override
     public void onCollision(ArrayList<IGameObject> gol){
         for(IGameObject go : gol)

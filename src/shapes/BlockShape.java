@@ -27,6 +27,4 @@ public class BlockShape implements IShape {
     public void setColor(Color color) {
 
     }
-    
-
 }

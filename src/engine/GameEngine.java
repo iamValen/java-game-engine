@@ -134,7 +134,7 @@ public class GameEngine implements IGameEngine{
         }
     }
 
-    @SuppressWarnings("unused") //k
+    @SuppressWarnings("unused")
     private void manageGO(){
 
         for(IGameObject go : toEnable){
@@ -175,18 +175,12 @@ public class GameEngine implements IGameEngine{
         toDestroy.clear();
     }
 
-
-
     @SuppressWarnings("BusyWait") //sleep in a loop
     @Override
     public void run(){
 
         // Must have called setRenderSurface(canvas) first!
         BufferStrategy bs = renderSurface.getBufferStrategy();
-
-        // Load level once *before* entering the loop
-        // new Loader().loadLevel();
-        // wtf valen ja tinhas chamado antes
 
         isRunning = true;
         final long frameTimeNs = 1_000_000_000L / TARGET_FPS;
@@ -197,14 +191,14 @@ public class GameEngine implements IGameEngine{
             double dt = (now - last) / 1_000_000_000.0;
             last = now;
 
-            // 1) UPDATE
+            // UPDATE
             for(IGameObject go : enabledList) {
                 if (go.behaviour() != null) go.behaviour().onUpdate(dt);
                 if (go.collider() != null) go.collider().onUpdate();
             }
             checkCollisions();
 
-            // 2) RENDER
+            // RENDER
             Graphics g = bs.getDrawGraphics();
             // clear the back‑buffer
             g.setColor(java.awt.Color.WHITE);
@@ -218,7 +212,7 @@ public class GameEngine implements IGameEngine{
             g.dispose();    // release this Graphics
             bs.show();      // flip buffers
 
-            // 3) SLEEP to cap frame rate
+            // SLEEP to cap frame rate
             long elapsed = System.nanoTime() - now;
             long toSleep = (frameTimeNs - elapsed) / 1_000_000;
             if (toSleep > 0) {
@@ -255,7 +249,7 @@ public class GameEngine implements IGameEngine{
     }
 
     /**
-     * used for testing
+     * 
     */
     @Override
     public void generateNextFrame(){
@@ -272,21 +266,22 @@ public class GameEngine implements IGameEngine{
     }
 
     /**
+     * Função para teste
      * Atualiza os GameObjects em cada frame.
      * 
      * @param frames Número de frames a simular.
      */
     public void simulateFrames(int frames) {
         for(int frame = 0; frame < frames; frame++) {
-            generateNextFrame();
+            manageGO();
         }
     }
 
-    /** 
+    /**  
+     * Função para teste
      * Detecta colisoes entre os GameObjects na mesma layer.
      * 
      */
-    @SuppressWarnings("unused") //k
     @Override
     public void checkCollisions(){
         for(ArrayList<IGameObject> gol : layers.values()){ //itera as layers

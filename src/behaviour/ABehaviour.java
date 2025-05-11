@@ -1,8 +1,18 @@
 package behaviour;
+
 import interfaces.IBehaviour;
 import interfaces.IGameObject;
+
 import java.util.ArrayList;
 
+/**
+ * Classe Abstrata ABehaviour
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 11/05/2025
+ */
 public abstract class ABehaviour implements IBehaviour{
  
     protected IGameObject myGo;
@@ -22,21 +32,9 @@ public abstract class ABehaviour implements IBehaviour{
     @Override
     public void onCollision(ArrayList<IGameObject> gol){}
 
-    /**
-     * its not needed to update the collider here thats done in engine however
-     * if the user changes the transform in all other methods they should call
-     * this.myGO.collider().onUpdate() before leaving that method
-     * it is also recommended to call after changing other objects' transform
-     * it is just a sugestion tho
-     */
     @Override
     public void onUpdate(double dT){}
 
-    /**
-     * this is called by the GameObject when the behaviour is inserted onto it
-     * DO NOT CALL IT BEFORE THAT OR A METEOR WILL FALL ON YOU
-     * you shouldnt ever call this method anyway
-     */
     @Override
     public final void setGO(IGameObject GO){
         if(this.myGo == null){
