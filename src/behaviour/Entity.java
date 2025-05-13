@@ -2,8 +2,8 @@ package behaviour;
 
 import engine.GameEngine;
 import figures.Point;
-import interfaces.IGameObject;
 import java.awt.Color;
+import interfaces.IGameObject;
 
 /**
  * Representa uma entidade do jogo

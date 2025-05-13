@@ -2,10 +2,10 @@ package engine;
 import figures.Figure;
 import interfaces.IBehaviour;
 import interfaces.ICollider;
-import interfaces.IGameObject;
 import interfaces.IShape;
 import interfaces.ITransform;
 import java.awt.Graphics;
+import interfaces.IGameObject;
 
 /**
  * Representa um objeto.

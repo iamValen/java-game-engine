@@ -1,8 +1,8 @@
 package behaviour;
 import engine.GameEngine;
 import figures.Point;
-import interfaces.IGameObject;
 import java.util.ArrayList;
+import interfaces.IGameObject;
 
 /**
  * Classe Abstrata ABehaviour

@@ -10,9 +10,9 @@ import engine.GameEngine;
 import engine.GameObject;
 import figures.Point;
 import figures.Polygon;
-import interfaces.IGameObject;
 import engine.Transform;
 import engine.Collider;
+import interfaces.IGameObject;
 
 public class IBehaviourTests {
 

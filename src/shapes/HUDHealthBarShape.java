@@ -22,12 +22,13 @@ public class HUDHealthBarShape implements IShape {
 
         int variable = 0;
         for(IGameObject go : engine.enabled()){
-            if(go.name().equals("Player"))
+            if(go.name().equals("Player")){
                 variable = ((PlayerBehaviour)go.behaviour()).entity().getHealth();
+                g.setColor(color);
+                g.fillRect(x, y - 40/2, variable, 40);
+                return;
             }
-
-        g.setColor(color);
-        g.fillRect(x, y - 40/2, variable, 40);
+        }
     }
     
 }

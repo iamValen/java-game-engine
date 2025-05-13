@@ -1,8 +1,8 @@
 package behaviour;
 
 import gui.Loader;
-import interfaces.IGameObject;
 import java.util.ArrayList;
+import interfaces.IGameObject;
 
 /**
  * Comportamento responsável por carregar um novo nível.

@@ -3,11 +3,11 @@ package behaviour;
 import engine.GameEngine;
 import engine.InputManager;
 import gui.ObjectCreator;
-import interfaces.IGameObject;
 import interfaces.ITransform;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import interfaces.IGameObject;
 
 /**
  * Comportamento responsável por carregar um novo nível.

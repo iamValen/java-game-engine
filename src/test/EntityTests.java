@@ -16,9 +16,9 @@ import engine.GameEngine;
 import engine.Transform;
 import figures.Circle;
 import figures.Point;
-import interfaces.IGameObject;
 import interfaces.IShape;
 import interfaces.ITransform;
+import interfaces.IGameObject;
 
 public class EntityTests {
 
