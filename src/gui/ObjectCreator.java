@@ -5,13 +5,12 @@ import engine.Collider;
 import engine.GameEngine;
 import engine.GameObject;
 import engine.Transform;
-import figures.Circle;
 import figures.Point;
 import figures.Polygon;
 import interfaces.*;
+import java.awt.Color;
 import shapes.BlockShape;
 import shapes.HUDHealthBarShape;
-import shapes.TestShape;
 
 /**
  * Classe responsável por criar e configurar todos os GameObjects do jogo.
@@ -29,6 +28,15 @@ public class ObjectCreator {
     /** Instância singleton do motor de jogo */
     private static final GameEngine ge = GameEngine.getInstance();
 
+    private static Collider squareHitbox(int width, int height){
+        Point[] pts = new Point[4];
+        pts[0] = new Point(0, 0);
+        pts[1] = new Point(0, height);
+        pts[2] = new Point(width, height);
+        pts[3] = new Point(width, 0);
+        return new Collider(new Polygon(pts));
+    }
+
     /**
      * Cria o GameObject do jogador na posição (x,y) com comportamento e forma padrão.
      * 
@@ -36,12 +44,13 @@ public class ObjectCreator {
      * @param y  coordenada Y inicial do jogador
      * @return   GameObject configurado como Player
      */
-    public static IGameObject Player(double x, double y) {
+    public static IGameObject Player(double x, double y, int layer, double rotation, double scale,
+    int width, int height){
         GameObject out = new GameObject("Player");
-        Transform transform = new Transform(x, y, 0, 0, 1);
-        Collider collider = new Collider(new Circle(new Point(400, 300), 20d));
-        PlayerBehaviour behaviour = new PlayerBehaviour();
-        IShape shape = new TestShape(40);
+        Transform transform = new Transform(x, y, layer, rotation, scale);
+        Collider collider = squareHitbox(width, height);
+        PlayerBehaviour behaviour = new PlayerBehaviour(width, height);
+        IShape shape = new BlockShape(width, height, Color.BLUE);
         out.insertElements(transform, collider, shape, behaviour);
         return out;
     }
@@ -53,12 +62,13 @@ public class ObjectCreator {
      * @param y  coordenada Y inicial do inimigo
      * @return   GameObject configurado como Enemy1
      */
-    public static IGameObject Enemy1(double x, double y) {
+    public static IGameObject Enemy1(double x, double y, int layer, double rotation, double scale,
+    int width, int height){
         GameObject out = new GameObject("Enemy1");
-        ITransform transform = new Transform(x, y, 0, 0, 1);
-        ICollider collider = new Collider(new Circle(new Point(x, y), 20d));
-        ABehaviour behaviour = new EnemyBehaviour1();
-        IShape shape = new TestShape(60);
+        ITransform transform = new Transform(x, y, layer, rotation, scale);
+        ICollider collider = squareHitbox(width, height);
+        ABehaviour behaviour = new EnemyBehaviour1(width, height);
+        IShape shape = new BlockShape(width, height, Color.BLUE);
         out.insertElements(transform, collider, shape, behaviour);
         return out;
     }
@@ -72,12 +82,13 @@ public class ObjectCreator {
      * @param posKey   identificador da posição na sala de destino
      * @return         GameObject configurado como loading_screen
      */
-    public static IGameObject loading_screen(double x, double y, int roomKey, int posKey) {
+    public static IGameObject loading_screen(double x, double y, int layer, double rotation, double scale,
+    int width, int height, int roomKey, int posKey){
         GameObject out = new GameObject("loading_screen");
-        ITransform transform = new Transform(x, y, 0, 0, 1);
-        ICollider collider = new Collider(new Circle(new Point(x, y), 20d));
+        ITransform transform = new Transform(x, y, layer, rotation, scale);
+        ICollider collider = squareHitbox(width, height);
         IBehaviour behaviour = new STBehaviour(roomKey, posKey);
-        IShape shape = new TestShape(50);
+        IShape shape = new BlockShape(50, 50, Color.BLACK);
         out.insertElements(transform, collider, shape, behaviour);
         return out;
     }
@@ -109,7 +120,7 @@ public class ObjectCreator {
         Polygon rect = new Polygon(points);
         Collider c2 = new Collider(rect);
         IBehaviour b2 = new StaticBehaviour();
-        IShape shape2 = new BlockShape(ge.getScreenWidth(), groundHeight);
+        IShape shape2 = new BlockShape(ge.getScreenWidth(), groundHeight, Color.GREEN);
         out.insertElements(t2, c2, shape2, b2);
         return out;
     }
@@ -123,11 +134,12 @@ public class ObjectCreator {
      * @param height  altura do bloco
      * @return        GameObject configurado como block
      */
-    public static IGameObject block(double x, double y, double width, double height) {
+    public static IGameObject block(double x, double y, int layer, double rotation, double scale,
+    int width, int height){
         GameObject block = new GameObject("block");
-        ITransform transform = new Transform(x, y, 0, 0, 1);
+        ITransform transform = new Transform(x, y, layer, rotation, scale);
         IBehaviour behaviour = new BlockBehaviour(x, y, width, height);
-        IShape shape = new BlockShape((int)width, (int)height);
+        IShape shape = new BlockShape(width, height, Color.GREEN);
         block.insertElements(transform, null, shape, behaviour);
         return block;
     }
@@ -142,16 +154,11 @@ public class ObjectCreator {
      * @param name    nome do GameObject (ex: "leftWall")
      * @return        GameObject configurado como parede
      */
-    public static IGameObject blockWall(double x, double y, double width, double height, String name) {
+    public static IGameObject blockWall(double x, double y, int layer, double rotation, double scale,
+    int width, int height, String name){
         GameObject wall = new GameObject(name);
-        ITransform transform = new Transform(x, y, 0, 0, 1);
-        Point[] points = new Point[] {
-            new Point(0, 0),
-            new Point(0, height),
-            new Point(width, height),
-            new Point(width, 0)
-        };
-        ICollider collider = new Collider(new Polygon(points));
+        ITransform transform = new Transform(x, y, layer, rotation, scale);
+        Collider collider = squareHitbox(width, height);
         wall.insertElements(transform, collider, null, null);
         return wall;
     }
@@ -167,14 +174,8 @@ public class ObjectCreator {
     public static IGameObject playerAttack1(int width, int height) {
         GameObject attack = new GameObject("playerAttack");
         ITransform transform = new Transform(0, 0, 0, 0, 1);
-        Point[] points = new Point[] {
-            new Point(0, 0),
-            new Point(0, height),
-            new Point(width, height),
-            new Point(width, 0)
-        };
-        ICollider collider = new Collider(new Polygon(points));
-        IShape shape = new BlockShape(width, height);
+        ICollider collider = squareHitbox(width, height);
+        IShape shape = new BlockShape(width, height, Color.GREEN);
         attack.insertElements(transform, collider, shape, null);
         return attack;
     }
@@ -187,9 +188,20 @@ public class ObjectCreator {
      */
     public static IGameObject healthHUD() {
         GameObject healthHUD = new GameObject("healthHUD");
-        ITransform transform = new Transform(40, 70, 0, 0, 1);
+        ITransform transform = new Transform(40, 70, Integer.MAX_VALUE, 0, 1);
         IShape shape = new HUDHealthBarShape();
         healthHUD.insertElements(transform, null, shape, null);
         return healthHUD;
+    }
+
+    public static IGameObject meleeAtack(double x, double y, int layer, double rotation, double scale,
+    int width, int height, long duration, Physics physics, String name){
+        GameObject attack = new GameObject(name);
+        ITransform transform = new Transform(x, y, layer, rotation, scale);
+        ICollider collider = squareHitbox(width, height);
+        IBehaviour behaviour = new meleeAttackBehaviour(duration, physics);
+        IShape shape = new BlockShape(width, height, Color.GREEN);
+        attack.insertElements(transform, collider, shape, behaviour);
+        return attack;
     }
 }

@@ -1,9 +1,8 @@
 package behaviour;
 
 import interfaces.IBehaviour;
-
-import java.util.ArrayList;
 import interfaces.IGameObject;
+import java.util.ArrayList;
 
 /**
  * Classe Abstrata ABehaviour
@@ -36,9 +35,14 @@ public abstract class ABehaviour implements IBehaviour{
     public void onUpdate(double dT){}
 
     @Override
-    public final void setGO(IGameObject GO){
+    public final void IGameObject(IGameObject GO){
         if(this.myGo == null){
             this.myGo = GO;
         }
+    }
+
+    @Override
+    public IGameObject gameObject() {
+        return myGo;
     }
 }

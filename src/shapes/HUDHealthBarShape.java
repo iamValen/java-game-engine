@@ -12,7 +12,6 @@ public class HUDHealthBarShape implements IShape {
 
     Color color;
 
-    @Override
     public void setColor(Color color) {
         this.color = color;
     }
@@ -20,7 +19,7 @@ public class HUDHealthBarShape implements IShape {
     @Override
     public void render(Graphics g, int x, int y) {
 
-        int variable = 0;
+        int variable;
         for(IGameObject go : engine.enabled()){
             if(go.name().equals("Player")){
                 variable = ((PlayerBehaviour)go.behaviour()).entity().getHealth();
@@ -30,5 +29,4 @@ public class HUDHealthBarShape implements IShape {
             }
         }
     }
-    
 }

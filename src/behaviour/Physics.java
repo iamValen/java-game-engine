@@ -124,8 +124,8 @@ public class Physics {
      * @param GOp objeto de chão estático
      */
     public static void snapToFloor(IGameObject GOm, IGameObject GOp) {
-        Figure m = GOm.collider().getHitbox();
-        Figure p = GOp.collider().getHitbox();
+        Figure m = GOm.collider().figure();
+        Figure p = GOp.collider().figure();
         double lowest  = m.maxY();
         double highest = p.minY();
         GOm.transform().move(new Point(0, highest - lowest), 0);
@@ -138,8 +138,8 @@ public class Physics {
      * @param GOp objeto de teto estático
      */
     public static void snapToCeling(IGameObject GOm, IGameObject GOp) {
-        Figure m = GOm.collider().getHitbox();
-        Figure p = GOp.collider().getHitbox();
+        Figure m = GOm.collider().figure();
+        Figure p = GOp.collider().figure();
         double highest = m.minY();
         double lowest  = p.maxY();
         GOm.transform().move(new Point(0, lowest - highest), 0);
@@ -153,8 +153,8 @@ public class Physics {
      * @param GOp parede estática à esquerda
      */
     public static void snapToWallOnTheLeft(IGameObject GOm, IGameObject GOp) {
-        Figure m = GOm.collider().getHitbox();
-        Figure p = GOp.collider().getHitbox();
+        Figure m = GOm.collider().figure();
+        Figure p = GOp.collider().figure();
         double leftest  = m.minX();
         double rightest = p.maxX();
         GOm.transform().move(new Point(rightest - leftest, 0), 0);
@@ -168,8 +168,8 @@ public class Physics {
      * @param GOp parede estática à direita
      */
     public static void snapToWallOnTheRight(IGameObject GOm, IGameObject GOp) {
-        Figure m = GOm.collider().getHitbox();
-        Figure p = GOp.collider().getHitbox();
+        Figure m = GOm.collider().figure();
+        Figure p = GOp.collider().figure();
         double rightest = m.maxX();
         double leftest  = p.minX();
         GOm.transform().move(new Point(leftest - rightest, 0), 0);

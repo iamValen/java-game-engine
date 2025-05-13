@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
  * @author Valentim Khakhitva a81785
  * @version 11/05/2025
  */
+@SuppressWarnings("unused")
 public class Loader {
     /** Instância única do motor de jogo */
     private static final GameEngine engine = GameEngine.getInstance();
@@ -25,19 +26,19 @@ public class Loader {
      * Configuração da sala 1.
      */
     private static void level1(){
-        IGameObject player = ObjectCreator.Player(500, 300);
+        IGameObject player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 40);
         engine.addEnabled(player);
 
-        IGameObject enemy = ObjectCreator.Enemy1(100, 300);
+        IGameObject enemy = ObjectCreator.Enemy1(100, 300, 0, 0, 1, 50, 50);
         engine.addEnabled(enemy);
 
-        IGameObject ls = ObjectCreator.loading_screen(1000, 600, 2, 1);
+        IGameObject ls = ObjectCreator.loading_screen(1000, 600, 0, 0, 1, 60, 60, 2, 1);
         engine.addEnabled(ls);
 
         IGameObject floor = ObjectCreator.floor();
         engine.addEnabled(floor);
         
-        IGameObject block = ObjectCreator.block(1300,400,200,200);
+        IGameObject block = ObjectCreator.block(1300,400, 0, 0, 1, 200,200);
         engine.addEnabled(block);
 
         IGameObject HUDplayerHealth = ObjectCreator.healthHUD();
@@ -48,24 +49,25 @@ public class Loader {
      * Configuração da sala 2.
      */
     private static void level2(){
-        IGameObject player = ObjectCreator.Player(400, 300);
+        IGameObject player = ObjectCreator.Player(400, 300, 0, 0, 1, 40, 40);
         engine.addEnabled(player);
 
-        IGameObject enemy = ObjectCreator.Enemy1(800, 600);
+        IGameObject enemy = ObjectCreator.Enemy1(800, 600, 0, 0, 1, 50, 50);
         engine.addEnabled(enemy);
 
-        IGameObject ls = ObjectCreator.loading_screen(1000, 600, 1, 1);
+        IGameObject ls = ObjectCreator.loading_screen(1000, 600, 0, 0, 1, 60, 60, 1, 1);
         engine.addEnabled(ls);
 
         IGameObject floor = ObjectCreator.floor();
         engine.addEnabled(floor);
 
-        enemy = ObjectCreator.Enemy1(4000, 600);
+        enemy = ObjectCreator.Enemy1(4000, 600, 0, 0, 1, 50, 50);
         engine.addEnabled(enemy);
 
         IGameObject HUDplayerHealth = ObjectCreator.healthHUD();
         engine.addEnabled(HUDplayerHealth);
     }
+
 
     /**
      * Carrega dinamicamente o nível indicado por roomKey e posiciona

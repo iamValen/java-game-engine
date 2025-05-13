@@ -12,10 +12,12 @@ import figures.Point;
  * @version 28/03/2025
  */
 public interface ICollider {
-    Point centroid();
 
-    public void setTransform(ITransform transform);
+    public ITransform transform();
 
+    public  void ITransform(ITransform transform);
+
+    public Point centroid();
 
     /**
      * Atualiza a figura com base na transformação aplicada.
@@ -31,13 +33,7 @@ public interface ICollider {
      */
     public boolean isColliding(ICollider that);
 
-
-    /**
-     * retorna a figura para que possam ser usadas 
-     * diferentes implementacoes de ICollider
-     * @return a figura que representa a hitbox
-     */
-    public Figure getHitbox();
+    public Figure figure();
 
     @Override
     public String toString();

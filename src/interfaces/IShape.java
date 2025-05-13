@@ -1,6 +1,5 @@
 package interfaces;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -20,9 +19,4 @@ public interface IShape {
      */
     public void render(Graphics g, int x, int y);
 
-    /**
-     * Altera a cor da forma.
-     * @param color Nova cor da forma.
-     */
-    public void setColor(Color color);
 }

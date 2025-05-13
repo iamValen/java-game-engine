@@ -2,8 +2,9 @@ package behaviour;
 
 import engine.GameEngine;
 import figures.Point;
-import java.awt.Color;
 import interfaces.IGameObject;
+import java.awt.Color;
+import shapes.BlockShape;
 
 /**
  * Representa uma entidade do jogo
@@ -47,8 +48,9 @@ public class Entity {
      * Se a vida cair a zero ou abaixo, destrói o GameObject associado.
      * 
      * @param damage  Quantidade de vida a subtrair
+     * @return retorna true se aplicou o dano false se nao aplicou
      */
-    public void damage(int damage){
+    public boolean damage(int damage){
         long now = System.currentTimeMillis();
         // Só permite nova aplicação de dano se passaram >2s desde o último
         if (now - damageTime > 2000) {
@@ -58,9 +60,11 @@ public class Entity {
             if (this.health <= 0) {
                 engine.destroy(go);
             }
-            go.shape().setColor(Color.RED);
+            ((BlockShape)go.shape()).setColor(Color.RED); // WARNING TYPECAST
             damageTime = now;
+            return true;
         }
+        return false;
     }
 
     /**
@@ -70,14 +74,14 @@ public class Entity {
      * @param attack1  GameObject de ataque a ativar
      * @param now      Timestamp atual (ms) para verificar cooldown
      */
-    public void createAttack(IGameObject attack1, long now){
+    public void createAttack(IGameObject attack1, int atackWidth, int atackHeight, long now){
         // Só ativa se o ataque estiver desativado e cooldown completo
         if (engine.isDisabled(attack1) && now - atackStart > 400) {
             atackStart = System.currentTimeMillis();
             // Calcula deslocamento: inverte posição local e aplica offset na direção da entidade
             Point offset = go.transform().position()
                               .sum(attack1.transform().position().flipSign())
-                              .sum(new Point(go.transform().getDirection() * 40, 0));
+                              .sum(new Point(go.transform().direction() * (40 + 1), 0));
             attack1.transform().move(offset, 0);
             engine.enable(attack1);
         }

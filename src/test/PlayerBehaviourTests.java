@@ -97,14 +97,14 @@ public class PlayerBehaviourTests {
         // Pressiona A
         pressKey(KeyEvent.VK_A);
         behaviour.onUpdate(0.1);
-        assertEquals(-1, playerGO.transform().getDirection(),
+        assertEquals(-1, playerGO.transform().direction(),
             "Ao carregar A, direção deve ser -1");
         releaseKey(KeyEvent.VK_A);
 
         // Pressiona D
         pressKey(KeyEvent.VK_D);
         behaviour.onUpdate(0.1);
-        assertEquals(1, playerGO.transform().getDirection(),
+        assertEquals(1, playerGO.transform().direction(),
             "Ao carregar D, direção deve ser 1");
         releaseKey(KeyEvent.VK_D);
     }

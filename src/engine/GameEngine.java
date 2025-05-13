@@ -1,4 +1,5 @@
 package engine;
+import figures.Point;
 import interfaces.IGameEngine;
 import interfaces.IGameObject;
 import interfaces.IShape;
@@ -32,7 +33,7 @@ public class GameEngine implements IGameEngine{
     private final ArrayList<IGameObject> toAddEnabled = new ArrayList<>();
     private final ArrayList<IGameObject> toAddDisabled = new ArrayList<>();
     private final ArrayList<IGameObject> toDestroy = new ArrayList<>();
-    private final int TARGET_FPS = 30; 
+    private final int TARGET_FPS = 600000; 
 
     private boolean isRunning;
     private Canvas window;
@@ -206,7 +207,12 @@ public class GameEngine implements IGameEngine{
 
             // draw all GameObjects via your GameObject.render(g)
             for(IGameObject go : enabledList) {
-                if(go.shape() != null)((GameObject) go).render(g);
+                if(go.shape() != null){
+                    Point p = go.transform().position();
+                    int x = p.X();
+                    int y = p.Y();
+                    go.shape().render(g, x, y);
+                }
             }
 
             g.dispose();    // release this Graphics
@@ -282,6 +288,7 @@ public class GameEngine implements IGameEngine{
      * Detecta colisoes entre os GameObjects na mesma layer.
      * 
      */
+    @SuppressWarnings("unused")
     @Override
     public void checkCollisions(){
         for(ArrayList<IGameObject> gol : layers.values()){ //itera as layers
