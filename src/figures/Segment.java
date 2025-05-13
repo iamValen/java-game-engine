@@ -49,10 +49,10 @@ public class Segment {
         CA = that.p1.vetor(this.p1);
         CB = that.p1.vetor(this.p2);
 
-        double s1 = Math.signum(tol(Point.vetorPE(AB, AC)));
-        double s2 = Math.signum(tol(Point.vetorPE(AB, AD)));
-        double s3 = Math.signum(tol(Point.vetorPE(CD, CA)));
-        double s4 = Math.signum(tol(Point.vetorPE(CD, CB)));
+        double s1 = Math.signum(tolZero(Point.vetorPE(AB, AC)));
+        double s2 = Math.signum(tolZero(Point.vetorPE(AB, AD)));
+        double s3 = Math.signum(tolZero(Point.vetorPE(CD, CA)));
+        double s4 = Math.signum(tolZero(Point.vetorPE(CD, CB)));
 
         return(s1 != s2 && s3 != s4 && s1 != 0 && s2 != 0 && s3 != 0 && s4 != 0);
     }

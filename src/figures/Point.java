@@ -118,7 +118,7 @@ public class Point {
         Point AB,BC;
         AB = a.vetor(b);
         BC = b.vetor(c);
-        return(tol(vetorPE(AB, BC)) == 0);
+        return(tolZero(vetorPE(AB, BC)) == 0);
     }
 
     /**

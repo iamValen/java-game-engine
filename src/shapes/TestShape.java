@@ -4,6 +4,9 @@ import interfaces.IShape;
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+ * this class shouldnt be used, use BlockShape instead
+ */
 public class TestShape implements IShape {
     private int size;
     private Color color = Color.BLUE;
@@ -12,7 +15,6 @@ public class TestShape implements IShape {
         this.size = size;
     }
 
-    @Override
     public void setColor(Color color) {
         this.color = color;
     }

@@ -38,12 +38,18 @@ public class Collider implements ICollider {
      * you shouldnt ever call this method anyway
      */
     @Override
-    public void setTransform(ITransform transform){
+    public void ITransform(ITransform transform){
         if(this.transform == null){
             this.transform = transform;
             this.onUpdate();
         }
     }
+
+    @Override
+    public ITransform transform(){
+        return this.transform;
+    }
+
 
     /**
      * Atualiza a figura com base nos dados do transform
@@ -78,11 +84,11 @@ public class Collider implements ICollider {
      */
     @Override
     public boolean isColliding(ICollider that) {
-        return this.fig.collision(that.getHitbox());
+        return this.fig.collision((that).figure());
     }
 
     @Override
-    public Figure getHitbox(){
+    public Figure figure(){
         return this.fig;
     }
 

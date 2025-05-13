@@ -1,5 +1,4 @@
 package interfaces;
-import java.awt.Graphics;
 
 /**
  * Interface do GameObject.
@@ -25,8 +24,6 @@ public interface IGameObject {
      */
     IShape shape();
 
-    
-
     /**
      * @return the Collider of the GameObject with its centroid at this.transform().position()
      */
@@ -36,6 +33,4 @@ public interface IGameObject {
      * @return the Behaviour of the GameObject
      */
     IBehaviour behaviour();
-
-    public void render(Graphics g);
 }

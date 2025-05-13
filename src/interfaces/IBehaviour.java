@@ -12,6 +12,10 @@ import java.util.ArrayList;
  */
 public interface IBehaviour {
 
+    public IGameObject gameObject();
+
+    public void IGameObject(IGameObject go);
+
     /**
      * Invocado quando o Behaviour é inicialmente associado a um GameObject,
      * antes de qualquer atualização ou ativação.
@@ -51,11 +55,4 @@ public interface IBehaviour {
      */
     void onCollision(ArrayList<IGameObject> gol);
 
-    /**
-     * Associa este Behaviour ao seu GameObject proprietário.
-     * É invocado logo após a criação do Behaviour e antes de oninit().
-     * 
-     * @param GO referência ao GameObject a que este Behaviour pertence
-     */
-    void setGO(IGameObject GO);
 }

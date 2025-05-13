@@ -39,7 +39,7 @@ public class Transform implements ITransform {
     }
 
     @Override
-    public int getDirection() {
+    public int direction() {
         return this.direction;
     }
     

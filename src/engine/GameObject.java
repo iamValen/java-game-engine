@@ -2,10 +2,9 @@ package engine;
 import figures.Figure;
 import interfaces.IBehaviour;
 import interfaces.ICollider;
+import interfaces.IGameObject;
 import interfaces.IShape;
 import interfaces.ITransform;
-import java.awt.Graphics;
-import interfaces.IGameObject;
 
 /**
  * Representa um objeto.
@@ -39,7 +38,7 @@ public class GameObject implements IGameObject {
         this.name = name;
         this.transform = new Transform(x, y, layer, angle, scale);
         this.collider = new Collider(fig);
-        this.collider.setTransform(transform);
+        this.collider.ITransform(transform);
     }
 
     public GameObject(String name,
@@ -48,7 +47,7 @@ public class GameObject implements IGameObject {
         this.name = name;
         this.transform = new Transform(x, y, layer, angle, scale);
         this.collider = new Collider(fig);
-        this.collider.setTransform(transform);
+        this.collider.ITransform(transform);
         this.behaviour = behaviour;
     }
 
@@ -74,11 +73,11 @@ public class GameObject implements IGameObject {
         this.shape = shape;
 
         if(collider != null){
-            this.collider.setTransform(transform);
+            this.collider.ITransform(transform);
             this.collider.onUpdate();
         }
         if(behaviour != null)
-            this.behaviour.setGO(this);
+            this.behaviour.IGameObject(this);
     }
 
     /**
@@ -120,21 +119,4 @@ public class GameObject implements IGameObject {
     public  IBehaviour behaviour(){
         return this.behaviour;
     }
-
-    @Override
-    public void render(Graphics g) {
-        // 1) determine screen position
-        ITransform t = this.transform();
-        int x = (int) t.position().x();
-        int y = (int) t.position().y();
-    
-        // 2) draw via the shape, if one is attached
-        IShape Tshape = this.shape();
-        if (Tshape != null) {
-            Tshape.render(g, x, y);
-        } else {
-            System.out.println("WARNING: NULL Shape");
-        }
-    }
-    
 }

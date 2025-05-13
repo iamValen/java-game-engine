@@ -1,8 +1,7 @@
 package behaviour;
-import engine.GameEngine;
 import figures.Point;
-import java.util.ArrayList;
 import interfaces.IGameObject;
+import java.util.ArrayList;
 
 /**
  * Classe Abstrata ABehaviour
@@ -17,10 +16,12 @@ public class EnemyBehaviour1 extends ABehaviour {
     private IGameObject vision;
     private final Point speed = new Point(0, 0);
     private Entity entity;
-
-    public EnemyBehaviour1() {}
-
     int state;
+
+    public EnemyBehaviour1(int width, int height){
+
+    }
+
 
 
     @Override
@@ -40,8 +41,6 @@ public class EnemyBehaviour1 extends ABehaviour {
 
     @Override
     public void onUpdate(double dT){
-
-        myGo.transform().move(speed, 0);
     }
     // NOTAS
     /*
@@ -64,8 +63,8 @@ public class EnemyBehaviour1 extends ABehaviour {
     public void onCollision(ArrayList<IGameObject> gol){
         for(IGameObject go : gol){
             if(go.name().equals("playerAttack")){
-                entity.damage(50);
-                entity.damageTime = System.currentTimeMillis();
+                if(entity.damage(50))
+                    entity.damageTime = System.currentTimeMillis();
             }
         }
     }

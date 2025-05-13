@@ -30,7 +30,10 @@ public interface ITransform {
     */
     public void scale(double dScale);
 
-
+    /**
+     * @return the direction of the object
+     */
+    public void setDirection(int i);
 
 
 
@@ -56,15 +59,12 @@ public interface ITransform {
     public double scale();
 
 
-    /**
-     * @return the direction of the object
-     */
-    public void setDirection(int i);
+
 
     /**
      * Set the direction of the object
      */
-    public int getDirection();
+    public int direction();
 
 
     @Override

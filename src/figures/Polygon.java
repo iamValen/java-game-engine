@@ -84,7 +84,7 @@ public class Polygon extends Figure {
         for(int i = 0; i < this.pontos.length; i++){
             AP = this.pontos[i].vetor(p);
             AB = this.pontos[i].vetor(this.pontos[(i+1)%this.pontos.length]);
-            sign[i] = (int) Math.signum(tol(Point.vetorPE(AP, AB)));
+            sign[i] = (int) Math.signum(tolZero(Point.vetorPE(AP, AB)));
         }
         for(int i = 0; i < this.pontos.length; i++){
             if(sign[i] != sign[(i+1)%this.pontos.length])

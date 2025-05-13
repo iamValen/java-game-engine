@@ -1,11 +1,9 @@
 package behaviour;
 
+import interfaces.IGameObject;
 import java.util.ArrayList;
 
-import interfaces.IBehaviour;
-import interfaces.IGameObject;
-
-public class StaticBehaviour implements IBehaviour{
+public class StaticBehaviour extends ABehaviour{
     
     @Override
     public void oninit() {
@@ -29,9 +27,5 @@ public class StaticBehaviour implements IBehaviour{
 
     @Override
     public void onDisable() {
-    }
-
-    @Override
-    public void setGO(IGameObject GO) {
     }
 }
