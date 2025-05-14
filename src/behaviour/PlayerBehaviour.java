@@ -25,12 +25,11 @@ public class PlayerBehaviour extends ABehaviour{
     private int width;
     private int height;
     private final Physics physics;
-    private Entity entity;
+    private Health health;
 
     private double deltaTime;
     private long now;
 
-    private boolean isGrounded;
     private boolean isDashing = false;
     private long jumpStart = 0;
     private long dashStart = 0;
@@ -40,8 +39,15 @@ public class PlayerBehaviour extends ABehaviour{
     private final int attackWidth = 160;
     private final int attackHeight = 100;
     private long meleeAttackStart = 0;
-    private final long attackDuration = 70;
+    private final long attackDuration = 40;
     private final long attackCooldown = 700;
+    private final int attack1Damage = 50;
+
+    private long score = 0;
+
+    public long getScore(){
+        return score;
+    }
 
     
     /*
@@ -51,7 +57,6 @@ public class PlayerBehaviour extends ABehaviour{
     */
     public PlayerBehaviour(int width, int height){
         physics = new Physics();
-        isGrounded = false;
         this.width = width;
         this.height = height;
     }
@@ -60,13 +65,13 @@ public class PlayerBehaviour extends ABehaviour{
         return this.physics;
     }
 
-    public Entity entity(){
-        return this.entity;
+    public Health entity(){
+        return this.health;
     }
 
     @Override
     public void oninit(){
-        entity = new Entity(myGo, 100);
+        health = new Health(myGo, 100);
     }
 
     @Override
@@ -88,7 +93,7 @@ public class PlayerBehaviour extends ABehaviour{
 
         ITransform t = myGo.transform();
 
-        if(isGrounded){
+        if(physics.isGrounded()){
             physics.setAccel(0, 0);
 
         }
@@ -101,8 +106,8 @@ public class PlayerBehaviour extends ABehaviour{
             physics.sumAccel(130, 0);
             myGo.transform().setDirection(1);
         }
-        if (InputManager.isKeyDown(KeyEvent.VK_D) && (isGrounded || now - jumpStart < 300)){ //jump logic
-            if(isGrounded){
+        if (InputManager.isKeyDown(KeyEvent.VK_D) && (physics.isGrounded() || now - jumpStart < 300)){ //jump logic
+            if(physics.isGrounded()){
                 jumpStart = System.currentTimeMillis();
                 stopedJumping = false;
             }
@@ -119,6 +124,8 @@ public class PlayerBehaviour extends ABehaviour{
         }
         if(isDashing && now - dashStart < 150){
             myGo.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
+            if(engine.enabled().contains(attack1))
+                attack1.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
         }
         else{
             isDashing = false;
@@ -132,14 +139,14 @@ public class PlayerBehaviour extends ABehaviour{
             double x = t.position().x() + t.direction()*(width/2 + attackWidth/2);
             double y = t.position().y();
 
-            attack1 = ObjectCreator.meleeAtack(x, y, t.layer(), t.angle(), t.scale(), attackWidth, attackHeight, attackDuration, physics, "playerAttack");
+            attack1 = ObjectCreator.meleeAtack(x, y, t.layer(), t.angle(), t.scale(), attack1Damage, attackWidth, attackHeight, attackDuration, physics, "playerAttack");
             engine.addEnabled(attack1);
         }
 
         physics.update(dt);
         t.move(physics.Speed().scale(dt/0.016666), 0);
 
-        isGrounded = false;
+        physics.setIsGrounded(false);
     }
 
     @Override
@@ -151,7 +158,7 @@ public class PlayerBehaviour extends ABehaviour{
                 case("floor") -> {
                     if(flag)
                         Physics.snapToFloor(myGo, go1);
-                    isGrounded = true;
+                    physics.setIsGrounded(true);
                     flag = false;
                 }
                 case("celing") ->{
@@ -170,12 +177,10 @@ public class PlayerBehaviour extends ABehaviour{
                     flag = false;
                 }
                 case("Enemy1") -> {
-                    if(entity.damage(50))
-                        entity.damageTime = System.currentTimeMillis();
+                    health.takeDamage(go1);
                 }
                 case("EnemyAttack") ->{
-                    if(entity.damage(50))
-                        entity.damageTime = System.currentTimeMillis();
+                    health.takeDamage(go1);
                 }
                 default -> {}
             }
@@ -188,7 +193,7 @@ public class PlayerBehaviour extends ABehaviour{
      * @return true se o jogador estiver no chão, false caso contrário.
      */
     public boolean isGrounded(){
-        return this.isGrounded;
+        return this.physics.isGrounded();
     }
 
     /**
@@ -196,6 +201,6 @@ public class PlayerBehaviour extends ABehaviour{
      * @param isGrounded
      */
     public void setGrounded(boolean isGrounded){
-        this.isGrounded = isGrounded;
+        this.physics.setIsGrounded(isGrounded);
     }
 }

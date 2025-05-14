@@ -33,4 +33,8 @@ public interface IGameObject {
      * @return the Behaviour of the GameObject
      */
     IBehaviour behaviour();
+
+    public void insertElements(ITransform transform, ICollider collider,
+    IShape shape, IBehaviour behaviour);
+
 }

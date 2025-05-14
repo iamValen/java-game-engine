@@ -1,5 +1,4 @@
 package behaviour;
-import figures.Point;
 import interfaces.IGameObject;
 import java.util.ArrayList;
 
@@ -11,22 +10,26 @@ import java.util.ArrayList;
  * @author Valentim Khakhitva a81785
  * @version 11/05/2025
  */
-public class EnemyBehaviour1 extends ABehaviour {
+public class EnemyBehaviour1 extends ADamagingBehaviour {
 
-    private IGameObject vision;
-    private final Point speed = new Point(0, 0);
-    private Entity entity;
-    int state;
+    private Health health;
+    private int state;
+    private int damage;
+    private Physics physics;
 
-    public EnemyBehaviour1(int width, int height){
-
+    public EnemyBehaviour1(int damage, int width, int height){
+        this.damage = damage;
+        this.physics = new Physics();
     }
 
-
+    @Override
+    public int getDamage(){
+        return damage;
+    }
 
     @Override
     public void oninit(){
-        entity = new Entity(myGo, 100);
+        health = new Health(myGo, 100);
     }
 
     @Override
@@ -41,6 +44,7 @@ public class EnemyBehaviour1 extends ABehaviour {
 
     @Override
     public void onUpdate(double dT){
+
     }
     // NOTAS
     /*
@@ -63,8 +67,7 @@ public class EnemyBehaviour1 extends ABehaviour {
     public void onCollision(ArrayList<IGameObject> gol){
         for(IGameObject go : gol){
             if(go.name().equals("playerAttack")){
-                if(entity.damage(50))
-                    entity.damageTime = System.currentTimeMillis();
+                health.takeDamage(go);
             }
         }
     }

@@ -43,6 +43,9 @@ public class Loader {
 
         IGameObject HUDplayerHealth = ObjectCreator.healthHUD();
         engine.addEnabled(HUDplayerHealth);
+
+        IGameObject score = ObjectCreator.score();
+        engine.addEnabled(score);
     }
 
     /**
@@ -66,6 +69,9 @@ public class Loader {
 
         IGameObject HUDplayerHealth = ObjectCreator.healthHUD();
         engine.addEnabled(HUDplayerHealth);
+
+        IGameObject score = ObjectCreator.score();
+        engine.addEnabled(score);
     }
 
 

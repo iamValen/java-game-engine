@@ -65,6 +65,7 @@ public class GameObject implements IGameObject {
      * behaviour can depend on anything depending on implementation
      * dont set dependable members to null
      */
+    @Override
     public void insertElements(ITransform transform, ICollider collider,
     IShape shape, IBehaviour behaviour){
         this.transform = transform;

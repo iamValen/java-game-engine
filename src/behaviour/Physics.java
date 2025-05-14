@@ -25,6 +25,16 @@ public class Physics {
     /** Velocidade de escala (não usada atualmente) */
     private double scaleSpeed;
 
+    private boolean isGrounded;
+
+    public void setIsGrounded(boolean bool){
+        isGrounded = bool;
+    }
+
+    public boolean isGrounded(){
+        return isGrounded;
+    }
+
     /** Vetor de gravidade aplicado quando accel é reposto */
     private final Point gravity = new Point(0, 160);
 
@@ -34,6 +44,7 @@ public class Physics {
     public Physics(){
         accel = gravity;
         speed = new Point(0, 0);
+        isGrounded = false;
     }
 
     /**

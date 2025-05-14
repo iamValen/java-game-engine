@@ -192,6 +192,8 @@ public class GameEngine implements IGameEngine{
             double dt = (now - last) / 1_000_000_000.0;
             last = now;
 
+            System.out.println(1/dt);
+
             // UPDATE
             for(IGameObject go : enabledList) {
                 if (go.behaviour() != null) go.behaviour().onUpdate(dt);

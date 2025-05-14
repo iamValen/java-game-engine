@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import behaviour.Entity;
+import behaviour.Health;
 import engine.Collider;
 import engine.GameObject;
 import engine.GameEngine;
@@ -24,7 +24,7 @@ public class EntityTests {
 
     private GameEngine engine;
     private GameObject go;
-    private Entity entity;
+    private Health entity;
 
     @BeforeEach
     public void setUp() {
@@ -46,7 +46,7 @@ public class EntityTests {
         go.insertElements(t, c, shape, null);
 
         // Instancia a Entity com 10 de vida
-        entity = new Entity(go, 10);
+        entity = new Health(go, 10);
         engine.addEnabled(go);
     }
 

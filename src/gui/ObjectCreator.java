@@ -10,7 +10,8 @@ import figures.Polygon;
 import interfaces.*;
 import java.awt.Color;
 import shapes.BlockShape;
-import shapes.HUDHealthBarShape;
+import shapes.HealthShape;
+import shapes.ScoreShape;
 
 /**
  * Classe responsável por criar e configurar todos os GameObjects do jogo.
@@ -67,7 +68,7 @@ public class ObjectCreator {
         GameObject out = new GameObject("Enemy1");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         ICollider collider = squareHitbox(width, height);
-        ABehaviour behaviour = new EnemyBehaviour1(width, height);
+        ABehaviour behaviour = new EnemyBehaviour1(50, width, height);
         IShape shape = new BlockShape(width, height, Color.BLUE);
         out.insertElements(transform, collider, shape, behaviour);
         return out;
@@ -189,19 +190,27 @@ public class ObjectCreator {
     public static IGameObject healthHUD() {
         GameObject healthHUD = new GameObject("healthHUD");
         ITransform transform = new Transform(40, 70, Integer.MAX_VALUE, 0, 1);
-        IShape shape = new HUDHealthBarShape();
+        IShape shape = new HealthShape();
         healthHUD.insertElements(transform, null, shape, null);
         return healthHUD;
     }
 
     public static IGameObject meleeAtack(double x, double y, int layer, double rotation, double scale,
-    int width, int height, long duration, Physics physics, String name){
+    int damage, int width, int height, long duration, Physics physics, String name){
         GameObject attack = new GameObject(name);
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         ICollider collider = squareHitbox(width, height);
-        IBehaviour behaviour = new meleeAttackBehaviour(duration, physics);
+        IBehaviour behaviour = new meleeAttackBehaviour(damage, duration, physics);
         IShape shape = new BlockShape(width, height, Color.GREEN);
         attack.insertElements(transform, collider, shape, behaviour);
         return attack;
+    }
+
+    public static IGameObject score(){
+        IGameObject score = new GameObject("score");
+        ITransform transform = new Transform(1400, 50, 0, 0, 1);
+        IShape shape = new ScoreShape();
+        score.insertElements(transform, null, shape, null);
+        return score;
     }
 }

@@ -7,10 +7,10 @@ import interfaces.IShape;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class HUDHealthBarShape implements IShape {
+public class HealthShape implements IShape {
     GameEngine engine = GameEngine.getInstance();
 
-    Color color;
+    Color color = Color.GREEN;
 
     public void setColor(Color color) {
         this.color = color;
