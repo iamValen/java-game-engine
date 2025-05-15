@@ -33,7 +33,8 @@ public class GameEngine implements IGameEngine{
     private final ArrayList<IGameObject> toAddEnabled = new ArrayList<>();
     private final ArrayList<IGameObject> toAddDisabled = new ArrayList<>();
     private final ArrayList<IGameObject> toDestroy = new ArrayList<>();
-    private final int TARGET_FPS = 600000; 
+    
+    private final int TARGET_FPS = 60; 
 
     private boolean isRunning;
     private Canvas window;
