@@ -1,5 +1,8 @@
 package behaviour;
+
 import interfaces.IGameObject;
+import interfaces.IBehaviour;
+
 import java.util.ArrayList;
 
 /**
@@ -68,6 +71,14 @@ public class EnemyBehaviour1 extends ADamagingBehaviour {
         for(IGameObject go : gol){
             if(go.name().equals("playerAttack")){
                 health.takeDamage(go);
+                if(health.getHealth() == 0){
+                    IGameObject other = ((meleeAttackBehaviour) go.behaviour()).getGo();
+                    if(other.name().equals("player")){
+                        PlayerBehaviour playerBehaviour = ((PlayerBehaviour) other.behaviour());
+                        playerBehaviour.addScore(500);
+                        playerBehaviour.notifyObservers();
+                    }
+                }
             }
         }
     }

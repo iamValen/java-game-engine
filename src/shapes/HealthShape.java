@@ -12,8 +12,14 @@ import java.awt.Graphics;
 public class HealthShape implements IShape, Observer {
     GameEngine engine = GameEngine.getInstance();
 
+    int observerType = 0;
     Color color = Color.GREEN;
     int health;
+
+    @Override
+    public int type(){
+        return observerType;
+    }
 
     @Override
     public void update(int health) {

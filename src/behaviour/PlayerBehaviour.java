@@ -49,15 +49,17 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     private final long attackCooldown = 700;
     private final int attack1Damage = 50;
 
-    private long score = 0;
+    private int score = 0;
     
     private List<Observer> observers = new ArrayList<>();
 
-    public long getScore(){
+    public int getScore(){
         return score;
     }
 
-    
+    public void addScore(int add){
+        score += add;
+    }
     /*
     * recieves the game object that created this instance
     * recieves stats except position because thats on transform
@@ -160,6 +162,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
             double y = t.position().y();
 
             attack1 = ObjectCreator.meleeAtack(x, y, t.layer(), t.angle(), t.scale(), attack1Damage, attackWidth, attackHeight, attackDuration, physics, "playerAttack");
+            ((meleeAttackBehaviour) attack1.behaviour()).setGo(this.myGo);
             engine.addEnabled(attack1);
         }
 
@@ -233,10 +236,11 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     public void removeObserver(Observer observer){
         observers.remove(observer);
     }
-
+    
     public void notifyObservers(){
         for (Observer observer : observers) {
-            if(observer.) observer.update(health.getHealth());
+            if(observer.type() == 0) observer.update(health.getHealth());
+            else if (observer.type() == 1) observer.update(score);
         }
     }
 }

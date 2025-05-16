@@ -1,10 +1,12 @@
 package behaviour;
 
 import engine.GameEngine;
+import interfaces.IGameObject;
 
 public class meleeAttackBehaviour extends ADamagingBehaviour{
 
     private static final GameEngine engine = GameEngine.getInstance();
+    private IGameObject go;
     private final Physics physics;
     private long start;
     private final long duration;
@@ -15,6 +17,14 @@ public class meleeAttackBehaviour extends ADamagingBehaviour{
         this.damage = damage;
         this.duration = duration;
         this.physics = physics;
+    }
+
+    public void setGo(IGameObject other){
+        this.go = other;
+    }
+
+    public IGameObject getGo(){
+        return this.go;
     }
 
     @Override

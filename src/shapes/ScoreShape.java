@@ -14,8 +14,14 @@ public class ScoreShape implements IShape, Observer {
 
     private final GameEngine engine = GameEngine.getInstance();
 
+    int observerType = 1;
     int score;
     Color color = Color.BLACK;
+
+    @Override
+    public int type(){
+        return observerType;
+    }
 
     @Override
     public void update(int score) {
@@ -29,7 +35,6 @@ public class ScoreShape implements IShape, Observer {
         Font newFont = oldFont.deriveFont(Font.BOLD, 36f);
         g.setFont(newFont);
         g.drawString(Long.toString(score), x, y);
-        long score;
     
         g.setFont(oldFont);
     }
