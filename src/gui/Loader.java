@@ -28,7 +28,7 @@ public class Loader {
     private static void level1(){
         IGameObject player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 40);
         engine.addEnabled(player);
-
+        
         IGameObject enemy = ObjectCreator.Enemy1(100, 300, 0, 0, 1, 50, 50);
         engine.addEnabled(enemy);
 
@@ -40,12 +40,6 @@ public class Loader {
         
         IGameObject block = ObjectCreator.block(1300,400, 0, 0, 1, 200,200);
         engine.addEnabled(block);
-
-        IGameObject HUDplayerHealth = ObjectCreator.healthHUD();
-        engine.addEnabled(HUDplayerHealth);
-
-        IGameObject score = ObjectCreator.score();
-        engine.addEnabled(score);
     }
 
     /**
@@ -66,12 +60,6 @@ public class Loader {
 
         enemy = ObjectCreator.Enemy1(4000, 600, 0, 0, 1, 50, 50);
         engine.addEnabled(enemy);
-
-        IGameObject HUDplayerHealth = ObjectCreator.healthHUD();
-        engine.addEnabled(HUDplayerHealth);
-
-        IGameObject score = ObjectCreator.score();
-        engine.addEnabled(score);
     }
 
 

@@ -6,8 +6,14 @@ import figures.Point;
 import gui.ObjectCreator;
 import interfaces.IGameObject;
 import interfaces.ITransform;
+import interfaces.Observable;
+import interfaces.Observer;
+import shapes.HealthShape;
+import shapes.ScoreShape;
+
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Comportamento responsável por carregar um novo nível.
@@ -17,7 +23,7 @@ import java.util.ArrayList;
  * @author Valentim Khakhitva a81785
  * @version 11/05/2025
  */
-public class PlayerBehaviour extends ABehaviour{
+public class PlayerBehaviour extends ABehaviour implements Observable{
 
     private final GameEngine engine = GameEngine.getInstance();
     
@@ -44,6 +50,8 @@ public class PlayerBehaviour extends ABehaviour{
     private final int attack1Damage = 50;
 
     private long score = 0;
+    
+    private List<Observer> observers = new ArrayList<>();
 
     public long getScore(){
         return score;
@@ -72,6 +80,18 @@ public class PlayerBehaviour extends ABehaviour{
     @Override
     public void oninit(){
         health = new Health(myGo, 100);
+
+        IGameObject healthHUD = ObjectCreator.healthHUD();
+        this.addObserver((HealthShape) healthHUD.shape());
+
+        IGameObject scoreHUD = ObjectCreator.score();
+        this.addObserver((ScoreShape) scoreHUD.shape());
+
+        notifyObservers();
+
+        engine.addEnabled(healthHUD);
+        engine.addEnabled(scoreHUD);
+
     }
 
     @Override
@@ -178,9 +198,11 @@ public class PlayerBehaviour extends ABehaviour{
                 }
                 case("Enemy1") -> {
                     health.takeDamage(go1);
+                    notifyObservers();
                 }
                 case("EnemyAttack") ->{
                     health.takeDamage(go1);
+                    notifyObservers();
                 }
                 default -> {}
             }
@@ -202,5 +224,19 @@ public class PlayerBehaviour extends ABehaviour{
      */
     public void setGrounded(boolean isGrounded){
         this.physics.setIsGrounded(isGrounded);
+    }
+
+    public void addObserver(Observer observer){
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer){
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(){
+        for (Observer observer : observers) {
+            if(observer.) observer.update(health.getHealth());
+        }
     }
 }
