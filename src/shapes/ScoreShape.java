@@ -6,11 +6,14 @@ import interfaces.Observer;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import behaviour.PlayerBehaviour;
+
 import java.awt.Font;
 
 public class ScoreShape implements IShape, Observer {
 
-    private final GameEngine engine = GameEngine.getInstance();
+    GameEngine engine = GameEngine.getInstance();
 
     int observerType = 1;
     int score;
@@ -22,8 +25,9 @@ public class ScoreShape implements IShape, Observer {
     }
 
     @Override
-    public void update(int score) {
-        this.score = score;
+    public void update(PlayerBehaviour playerB) {
+        int newScore = playerB.getScore();
+        this.score = newScore;
     }
 
     @Override

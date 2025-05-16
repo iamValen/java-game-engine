@@ -208,7 +208,7 @@ public class ObjectCreator {
 
     public static IGameObject score(){
         IGameObject score = new GameObject("score");
-        ITransform transform = new Transform(1400, 50, 0, 0, 1);
+        ITransform transform = new Transform(1400, 70, 0, 0, 1);
         IShape shape = new ScoreShape();
         score.insertElements(transform, null, shape, null);
         return score;

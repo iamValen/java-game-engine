@@ -47,7 +47,6 @@ public class GUI extends Canvas {
 
         // Executa no Event Dispatch Thread para criar a janela
         SwingUtilities.invokeLater(() -> {
-            // Cria o frame principal
             JFrame frame = new JFrame("Game Engine Window");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setResizable(false);
@@ -62,10 +61,8 @@ public class GUI extends Canvas {
             // Carrega o nível inicial (sala 1, posição 1)
             Loader.loadLevel(1, 1);
 
-            // Inicia o motor de jogo num thread separado
+            // Inicia o engine num thread separado
             new Thread(engine::run, "EngineThread").start();
-
-            // Alternativa sem thread (não recomendada): engine.run();
         });
     }
 

@@ -71,9 +71,9 @@ public class PlayerBehaviourTests {
         engine.simulateFrames(1);
         List<IGameObject> disabled = engine.disabled();
 
-        assertNotNull(behaviour.entity(),
+        assertNotNull(behaviour.health(),
             "Entity não deve ser nulo após oninit");
-        assertEquals(100, behaviour.entity().getHealth(),
+        assertEquals(100, behaviour.health().getHealth(),
             "Entity deve iniciar com 100 de vida");
     }
 

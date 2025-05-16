@@ -1,7 +1,9 @@
 package interfaces;
 
+import behaviour.PlayerBehaviour;
+
 public interface Observer {
-    void update(int health);
+    void update(PlayerBehaviour playerB);
 
     /**
      * 

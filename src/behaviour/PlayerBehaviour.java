@@ -27,6 +27,8 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
 
     private final GameEngine engine = GameEngine.getInstance();
     
+    private List<Observer> observers = new ArrayList<>();
+
     private int state;
     private int width;
     private int height;
@@ -49,17 +51,13 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     private final long attackCooldown = 700;
     private final int attack1Damage = 50;
 
+    private int dashCharges = 2;
+    private final int maxDashCharges = 2;
+    private final long dashRechargeTime = 3000;
+    private long lastDashRechargeTime = -1;
+
     private int score = 0;
     
-    private List<Observer> observers = new ArrayList<>();
-
-    public int getScore(){
-        return score;
-    }
-
-    public void addScore(int add){
-        score += add;
-    }
     /*
     * recieves the game object that created this instance
     * recieves stats except position because thats on transform
@@ -75,7 +73,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
         return this.physics;
     }
 
-    public Health entity(){
+    public Health health(){
         return this.health;
     }
 
@@ -117,7 +115,12 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
 
         if(physics.isGrounded()){
             physics.setAccel(0, 0);
+        }
 
+        if (dashCharges < maxDashCharges && now - lastDashRechargeTime >= dashRechargeTime) {
+            dashCharges++;
+            lastDashRechargeTime = now;
+            notifyObservers();
         }
 
         if (InputManager.isKeyDown(KeyEvent.VK_LEFT)){
@@ -140,9 +143,15 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
             stopedJumping = true;
         }
 
-        if (InputManager.isKeyDown(KeyEvent.VK_A) && !isDashing && now - dashStart > 600){ // dash logic
+        if(InputManager.isKeyDown(KeyEvent.VK_A) && !isDashing && dashCharges > 0 && now - dashStart > 600){ // dash logic
             dashStart = System.currentTimeMillis();
             isDashing = true;
+            dashCharges--;
+
+            if (lastDashRechargeTime == -1) {
+                lastDashRechargeTime = now;
+            }
+            notifyObservers();
         }
         if(isDashing && now - dashStart < 150){
             myGo.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
@@ -165,6 +174,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
             ((meleeAttackBehaviour) attack1.behaviour()).setGo(this.myGo);
             engine.addEnabled(attack1);
         }
+        
 
         physics.update(dt);
         t.move(physics.Speed().scale(dt/0.016666), 0);
@@ -239,8 +249,24 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     
     public void notifyObservers(){
         for (Observer observer : observers) {
-            if(observer.type() == 0) observer.update(health.getHealth());
-            else if (observer.type() == 1) observer.update(score);
+            if(observer.type() == 0) observer.update(this);
+            else if (observer.type() == 1) observer.update(this);
         }
+    }
+
+    public int getScore(){
+        return score;
+    }
+
+    public void addScore(int add){
+        score += add;
+    }
+
+    public int getDashCharges(){
+        return dashCharges;
+    }
+
+    public long getLastDashRechargeTime(){
+        return lastDashRechargeTime;
     }
 }
