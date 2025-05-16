@@ -57,7 +57,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     private long lastDashRechargeTime = -1;
 
     private int score = 0;
-    
+
     /*
     * recieves the game object that created this instance
     * recieves stats except position because thats on transform
@@ -80,6 +80,8 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     @Override
     public void oninit(){
         health = new Health(myGo, 100);
+
+        myGo.transform().setDirection(1);
 
         IGameObject healthHUD = ObjectCreator.healthHUD();
         this.addObserver((HealthShape) healthHUD.shape());

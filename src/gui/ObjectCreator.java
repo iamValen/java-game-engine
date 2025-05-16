@@ -11,6 +11,7 @@ import interfaces.*;
 import java.awt.Color;
 import shapes.BlockShape;
 import shapes.HealthShape;
+import shapes.PlayerShape;
 import shapes.ScoreShape;
 
 /**
@@ -51,7 +52,7 @@ public class ObjectCreator {
         Transform transform = new Transform(x, y, layer, rotation, scale);
         Collider collider = squareHitbox(width, height);
         PlayerBehaviour behaviour = new PlayerBehaviour(width, height);
-        IShape shape = new BlockShape(width, height, Color.BLUE);
+        IShape shape = new PlayerShape();
         out.insertElements(transform, collider, shape, behaviour);
         return out;
     }

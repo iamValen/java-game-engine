@@ -27,7 +27,6 @@ public class HealthShape implements IShape, Observer {
 
     private int health;
 
-    // Assumimos vida máxima de 100
     private final int maxHealth = 100;
 
     @Override
