@@ -1,8 +1,6 @@
 package shapes;
 
-import behaviour.PlayerBehaviour;
 import engine.GameEngine;
-import interfaces.IGameObject;
 import interfaces.IShape;
 import interfaces.Observer;
 
@@ -28,14 +26,19 @@ public class ScoreShape implements IShape, Observer {
         this.score = score;
     }
 
+    @Override
     public void render(Graphics g, int x, int y) {
         g.setColor(color);
-    
+
         Font oldFont = g.getFont();
         Font newFont = oldFont.deriveFont(Font.BOLD, 36f);
         g.setFont(newFont);
-        g.drawString(Long.toString(score), x, y);
-    
+
+        String scoreStr = Long.toString(score);
+        int textWidth = g.getFontMetrics().stringWidth(scoreStr);
+
+        g.drawString(scoreStr, x - textWidth, y);  // Alinha à direita
+
         g.setFont(oldFont);
     }
 }

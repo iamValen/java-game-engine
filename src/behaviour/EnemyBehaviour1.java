@@ -73,7 +73,7 @@ public class EnemyBehaviour1 extends ADamagingBehaviour {
                 health.takeDamage(go);
                 if(health.getHealth() == 0){
                     IGameObject other = ((meleeAttackBehaviour) go.behaviour()).getGo();
-                    if(other.name().equals("player")){
+                    if(other.name().equals("Player")){
                         PlayerBehaviour playerBehaviour = ((PlayerBehaviour) other.behaviour());
                         playerBehaviour.addScore(500);
                         playerBehaviour.notifyObservers();
