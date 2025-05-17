@@ -26,7 +26,10 @@ public class Loader {
      * Configuração da sala 1.
      */
     private static void level1(){
-        IGameObject player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 60);
+        IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
+        engine.addEnabled(background);
+
+        IGameObject player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 40);
         engine.addEnabled(player);
         
         IGameObject enemy = ObjectCreator.Enemy1(100, 300, 0, 0, 1, 50, 50);
@@ -46,7 +49,10 @@ public class Loader {
      * Configuração da sala 2.
      */
     private static void level2(){
-        IGameObject player = ObjectCreator.Player(400, 300, 0, 0, 1, 40, 40);
+        IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
+        engine.addEnabled(background);
+
+        IGameObject player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 40);
         engine.addEnabled(player);
 
         IGameObject enemy = ObjectCreator.Enemy1(800, 600, 0, 0, 1, 50, 50);

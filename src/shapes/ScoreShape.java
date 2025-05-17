@@ -16,7 +16,7 @@ public class ScoreShape implements IShape, Observer {
     GameEngine engine = GameEngine.getInstance();
 
     int score;
-    Color color = Color.BLACK;
+    Color color = Color.WHITE;
 
     @Override
     public int type(){

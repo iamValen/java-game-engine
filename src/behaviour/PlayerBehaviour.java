@@ -32,6 +32,9 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
 
     private PlayerState state;
 
+    private IGameObject healthHUD;
+    private IGameObject scoreHUD;
+
     private int width;
     private int height;
     private final Physics physics;
@@ -46,10 +49,10 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     private boolean stopedJumping = true;
 
     private IGameObject attack1;
-    private final int attackWidth = 160;
+    private final int attackWidth = 130;
     private final int attackHeight = 100;
     private long meleeAttackStart = 0;
-    private final long attackDuration = 40;
+    private final long attackDuration = 200;
     private final long attackCooldown = 700;
     private final int attack1Damage = 50;
 
@@ -83,6 +86,10 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
         return this.state;
     }
 
+    public IGameObject myGo(){
+        return myGo;
+    }
+
     @Override
     public void oninit(){
         health = new Health(myGo, 100);
@@ -91,10 +98,10 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
 
         state = PlayerState.idle;
 
-        IGameObject healthHUD = ObjectCreator.healthHUD();
+        healthHUD = ObjectCreator.healthHUD();
         this.addObserver((HealthShape) healthHUD.shape());
 
-        IGameObject scoreHUD = ObjectCreator.score();
+        scoreHUD = ObjectCreator.score();
         this.addObserver((ScoreShape) scoreHUD.shape());
 
         notifyObservers();
@@ -108,6 +115,9 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     public void onDestroy(){
         // Player died
         engine.destroy(attack1);
+        engine.destroy(healthHUD);
+        engine.destroy(scoreHUD);
+        System.out.println("player died");
     }
 
     /*
@@ -124,6 +134,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
         ITransform t = myGo.transform();
 
         PlayerState newState = state;
+        int oldDirection = t.direction();
 
         if(physics.isGrounded()){
             physics.setAccel(0, 0);
@@ -201,7 +212,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
             newState = PlayerState.run;
         }
         // idle
-        else if (isGrounded()){
+        else if (isGrounded() && now - meleeAttackStart > attackDuration + 100){ // +100 -> intervalo para a animação do ataque acabar
             newState = PlayerState.idle;
             isDashing = false;
             stopedJumping = true;
@@ -210,7 +221,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
         physics.update(dt);
         t.move(physics.Speed().scale(dt/0.016666), 0);
 
-        if (newState != state) {
+        if (newState != state || t.direction() != oldDirection) {
             state = newState;
             notifyObservers();
         }

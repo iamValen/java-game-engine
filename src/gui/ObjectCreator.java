@@ -9,6 +9,8 @@ import figures.Point;
 import figures.Polygon;
 import interfaces.*;
 import java.awt.Color;
+
+import shapes.BackgroundShape;
 import shapes.BlockShape;
 import shapes.HealthShape;
 import shapes.PlayerShape;
@@ -48,7 +50,7 @@ public class ObjectCreator {
      */
     public static IGameObject Player(double x, double y, int layer, double rotation, double scale,
     int width, int height){
-        GameObject out = new GameObject("Player");
+        IGameObject out = new GameObject("Player");
         Transform transform = new Transform(x, y, layer, rotation, scale);
         Collider collider = squareHitbox(width, height);
         PlayerBehaviour behaviour = new PlayerBehaviour(width, height);
@@ -67,7 +69,7 @@ public class ObjectCreator {
      */
     public static IGameObject Enemy1(double x, double y, int layer, double rotation, double scale,
     int width, int height){
-        GameObject out = new GameObject("Enemy1");
+        IGameObject out = new GameObject("Enemy1");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         ICollider collider = squareHitbox(width, height);
         ABehaviour behaviour = new EnemyBehaviour1(50, width, height);
@@ -87,7 +89,7 @@ public class ObjectCreator {
      */
     public static IGameObject loading_screen(double x, double y, int layer, double rotation, double scale,
     int width, int height, int roomKey, int posKey){
-        GameObject out = new GameObject("loading_screen");
+        IGameObject out = new GameObject("loading_screen");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         ICollider collider = squareHitbox(width, height);
         IBehaviour behaviour = new STBehaviour(roomKey, posKey);
@@ -103,8 +105,8 @@ public class ObjectCreator {
      * @return GameObject configurado como floor
      */
     public static IGameObject floor() {
-        GameObject out = new GameObject("floor");
-        int groundHeight = ge.getScreenHeight() / 12;
+        IGameObject out = new GameObject("floor");
+        int groundHeight = ge.getScreenHeight() / 8 + 5;
 
         // Centro do chão: meio da largura e em baixo, ajustado pela metade da altura
         Transform t2 = new Transform(
@@ -124,7 +126,7 @@ public class ObjectCreator {
         Collider c2 = new Collider(rect);
         IBehaviour b2 = new StaticBehaviour();
         IShape shape2 = new BlockShape(ge.getScreenWidth(), groundHeight, Color.GREEN);
-        out.insertElements(t2, c2, shape2, b2);
+        out.insertElements(t2, c2, null, b2);
         return out;
     }
 
@@ -139,7 +141,7 @@ public class ObjectCreator {
      */
     public static IGameObject block(double x, double y, int layer, double rotation, double scale,
     int width, int height){
-        GameObject block = new GameObject("block");
+        IGameObject block = new GameObject("block");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         IBehaviour behaviour = new BlockBehaviour(x, y, width, height);
         IShape shape = new BlockShape(width, height, Color.GREEN);
@@ -159,7 +161,7 @@ public class ObjectCreator {
      */
     public static IGameObject blockWall(double x, double y, int layer, double rotation, double scale,
     int width, int height, String name){
-        GameObject wall = new GameObject(name);
+        IGameObject wall = new GameObject(name);
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         Collider collider = squareHitbox(width, height);
         wall.insertElements(transform, collider, null, null);
@@ -175,7 +177,7 @@ public class ObjectCreator {
      * @return        GameObject configurado como playerAttack
      */
     public static IGameObject playerAttack1(int width, int height) {
-        GameObject attack = new GameObject("playerAttack");
+        IGameObject attack = new GameObject("playerAttack");
         ITransform transform = new Transform(0, 0, 0, 0, 1);
         ICollider collider = squareHitbox(width, height);
         IShape shape = new BlockShape(width, height, Color.GREEN);
@@ -190,7 +192,7 @@ public class ObjectCreator {
      * @return GameObject configurado como healthHUD
      */
     public static IGameObject healthHUD() {
-        GameObject healthHUD = new GameObject("healthHUD");
+        IGameObject healthHUD = new GameObject("healthHUD");
         ITransform transform = new Transform(40, 70, Integer.MAX_VALUE, 0, 1);
         IShape shape = new HealthShape();
         healthHUD.insertElements(transform, null, shape, null);
@@ -204,7 +206,7 @@ public class ObjectCreator {
         ICollider collider = squareHitbox(width, height);
         IBehaviour behaviour = new meleeAttackBehaviour(damage, duration, physics);
         IShape shape = new BlockShape(width, height, Color.GREEN);
-        attack.insertElements(transform, collider, shape, behaviour);
+        attack.insertElements(transform, collider, null, behaviour);
         return attack;
     }
 
@@ -214,5 +216,15 @@ public class ObjectCreator {
         IShape shape = new ScoreShape();
         score.insertElements(transform, null, shape, null);
         return score;
+    }
+
+    public static IGameObject background(double x, double y, int layer, double rotation, double scale,
+    int width, int height){
+        IGameObject background = new GameObject("background");
+        ITransform transform = new Transform(x, y, layer, rotation, scale);
+        IBehaviour behaviour = new StaticBehaviour();
+        IShape shape = new BackgroundShape("/assets/background.jpeg");
+        background.insertElements(transform, null, shape, behaviour);
+        return background;
     }
 }

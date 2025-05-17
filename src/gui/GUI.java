@@ -19,15 +19,12 @@ import javax.swing.SwingUtilities;
  */
 public class GUI extends Canvas {
 
-    /** Largura do Canvas (pixels) */
     private static final int WIDTHT  = 1440;
-    /** Altura do Canvas (pixels) */
     private static final int HEIGHTT = 810;
-    /** Instância única do motor de jogo */
     private final GameEngine engine;
 
     /**
-     * Construtor: configura o Canvas, adiciona o listener de teclado,
+     * Configura o Canvas, adiciona o listener de teclado,
      * cria a janela e inicia o loop do motor de jogo.
      */
     public GUI() {

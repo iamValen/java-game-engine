@@ -5,10 +5,11 @@
 - [X] Usar observer no PlayerShape para atualizar o estado do player?
 - [ ] Collider do player tem a altura certa?
 
-# TODO
-- [ ] dar uma ref do HUD para o player e no onDestroy destruir tudo.
+# TODO 
+- [X] dar uma ref do HUD para o player e no onDestroy destruir tudo. -> não funciona mesmo assim
 - [ ] não passar nada para o update do observer e ter uma referência para ele
     - Fazer o Observer abstract para ter logo nele o playerBehaviour?
+- [ ] melhorar a chamada de update dos observers
 
 # PDF
 - singleton
