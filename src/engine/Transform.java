@@ -50,6 +50,12 @@ public class Transform implements ITransform {
     }
 
     @Override
+    public void setPosition(Point pos, int layer){
+        this.layer=layer;
+        this.position = pos;
+    }
+
+    @Override
     public void rotate(double dTheta){
         this.angle+=dTheta;
         this.angle%=360;

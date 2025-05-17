@@ -1,5 +1,7 @@
 package shapes;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 public class SpriteAnimator {
@@ -8,10 +10,11 @@ public class SpriteAnimator {
     private int tick = 0;
     private int speed;
 
-    public SpriteAnimator(BufferedImage spriteSheet, int totalFrames, int frameWidth, int frameHeight, int speed) {
+    public SpriteAnimator(BufferedImage spriteSheet, int totalFrames, int frameWidth, int frameHeight, int speed, int scale) {
         this.frames = new BufferedImage[totalFrames];
         for (int i = 0; i < totalFrames; i++) {
-            frames[i] = spriteSheet.getSubimage(i * frameWidth, 0, frameWidth, frameHeight);
+            BufferedImage frame = spriteSheet.getSubimage(i * frameWidth, 0, frameWidth, frameHeight);
+            frames[i] = resizeImage(frame, frameWidth * scale, frameHeight * scale);
         }
         this.speed = speed;
     }
@@ -27,5 +30,13 @@ public class SpriteAnimator {
     public BufferedImage getCurrentFrame() {
         return frames[currentFrame];
     }
-}
 
+    private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
+        BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = resized.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        g2d.drawImage(originalImage, 0, 0, width, height, null);
+        g2d.dispose();
+        return resized;
+    }
+}

@@ -1,13 +1,26 @@
 # Game Engine in Java
 
 ## TO TALK ABT
-- Quando destruir o HUD?
-- Passar o PlayerBehaviour para dentro do update do observer ou não passar nada e ter uma referência para ele?
+- [ ] Criar um ENUM para o playerState ou continuar com String?
+- [ ] Usar observer no PlayerShape para atualizar o estado do player?
+- [ ] Collider do player tem a altura certa?
+
+# AI
+- [ ] dar uma ref do HUD para o player e no onDestroy destruir tudo.
+- [ ] não passar nada para o update do observer e ter uma referência para ele
+    - Fazer o Observer abstract para ter logo nele o playerBehaviour?
 
 # PDF
 - singleton
 - observers
 
+
+
+
+
+
+
+# AI prompt (???)
 Prompt: Estou a fazer um game em java com um game engine criado por mim que usa POO. Como aplicar sprites aos meus GameObjects em que so tenho uma imagem png e tenho ai todas os frames do personagem?
 Explica també m o que é um aseprite?
 Answer: Perfeito! Estás a criar um jogo em Java com uma game engine feita por ti usando Programação Orientada a Objetos (POO) — ótimo desafio. Vamos por partes:

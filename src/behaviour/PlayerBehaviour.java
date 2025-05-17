@@ -10,6 +10,7 @@ import interfaces.Observable;
 import interfaces.Observer;
 import shapes.HealthShape;
 import shapes.ScoreShape;
+import shapes.PlayerShape;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -30,6 +31,13 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     private List<Observer> observers = new ArrayList<>();
 
     private int state;
+    /** State
+     *  0 - idle
+     *  1 - running
+     *  2 - jumping
+     *  3 - dashing
+     *  ...
+     */
     private int width;
     private int height;
     private final Physics physics;
@@ -77,10 +85,16 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
         return this.health;
     }
 
+    public int state(){
+        return this.state;
+    }
+
     @Override
     public void oninit(){
-        health = new Health(myGo, 100);
+        state = 0;
 
+        health = new Health(myGo, 100);
+        
         myGo.transform().setDirection(1);
 
         IGameObject healthHUD = ObjectCreator.healthHUD();
@@ -128,18 +142,25 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
         if (InputManager.isKeyDown(KeyEvent.VK_LEFT)){
             physics.sumAccel(-130, 0);
             myGo.transform().setDirection(-1);
+            state = 1;
+            notifyObservers();
         }
         if (InputManager.isKeyDown(KeyEvent.VK_RIGHT)){
             physics.sumAccel(130, 0);
             myGo.transform().setDirection(1);
+            state = 1;
+            notifyObservers();
         }
         if (InputManager.isKeyDown(KeyEvent.VK_D) && (physics.isGrounded() || now - jumpStart < 300)){ //jump logic
             if(physics.isGrounded()){
                 jumpStart = System.currentTimeMillis();
                 stopedJumping = false;
             }
-            if(!stopedJumping)
+            if(!stopedJumping){
                 physics.sumAccel(0, -370);
+                state = 2;
+                notifyObservers();
+            }
         }
         else{
             stopedJumping = true;
@@ -251,8 +272,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     
     public void notifyObservers(){
         for (Observer observer : observers) {
-            if(observer.type() == 0) observer.update(this);
-            else if (observer.type() == 1) observer.update(this);
+            observer.update(this);
         }
     }
 

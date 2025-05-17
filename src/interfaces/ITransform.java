@@ -17,6 +17,7 @@ public interface ITransform {
     */
     public void move(Point dPos, int dlayer);
 
+    public void setPosition(Point pos, int layer);
     /**
     * Rotate this ITransform from current orientation by dTheta
     * @param dTheta

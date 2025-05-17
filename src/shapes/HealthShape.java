@@ -11,7 +11,6 @@ import java.awt.Graphics;
 public class HealthShape implements IShape, Observer {
     private final GameEngine engine = GameEngine.getInstance();
 
-    private int observerType = 0;
     private Color color = Color.GREEN;
 
     private int dashCharges = 2;
@@ -31,7 +30,7 @@ public class HealthShape implements IShape, Observer {
 
     @Override
     public int type() {
-        return observerType;
+        return 0;
     }
 
     @Override

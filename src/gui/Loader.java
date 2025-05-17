@@ -26,7 +26,7 @@ public class Loader {
      * Configuração da sala 1.
      */
     private static void level1(){
-        IGameObject player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 40);
+        IGameObject player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 60);
         engine.addEnabled(player);
         
         IGameObject enemy = ObjectCreator.Enemy1(100, 300, 0, 0, 1, 50, 50);
