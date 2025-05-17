@@ -26,14 +26,14 @@ public class PlayerShape implements IShape, Observer {
             BufferedImage idleSprite = ImageIO.read(getClass().getResource("/assets/player_idle.png"));
             BufferedImage runSprite = ImageIO.read(getClass().getResource("/assets/player_run.png"));
             BufferedImage jumpSprite = ImageIO.read(getClass().getResource("/assets/player_idle.png"));
-            BufferedImage dashSprite = ImageIO.read(getClass().getResource("/assets/player_idle.png"));
+            BufferedImage dashSprite = ImageIO.read(getClass().getResource("/assets/player_dash.png"));
             BufferedImage attackSprite = ImageIO.read(getClass().getResource("/assets/player_attack.png"));
 
 
-            animators.put(PlayerState.idle, new SpriteAnimator(idleSprite, 10, 96, 96, 10, 3));
+            animators.put(PlayerState.idle, new SpriteAnimator(idleSprite, 10, 96, 96, 6, 3));
             animators.put(PlayerState.run, new SpriteAnimator(runSprite, 16, 96, 96, 2, 3));
             animators.put(PlayerState.jump, new SpriteAnimator(jumpSprite, 8, 96, 96, 10, 3));
-            animators.put(PlayerState.dash, new SpriteAnimator(dashSprite, 8, 96, 96, 10, 3));
+            animators.put(PlayerState.dash, new SpriteAnimator(dashSprite, 6, 96, 96, 2, 3));
             animators.put(PlayerState.attack, new SpriteAnimator(attackSprite, 7, 96, 96, 4, 3));
         } catch (IOException e) {
             e.printStackTrace();
