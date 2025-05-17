@@ -52,7 +52,8 @@ public class ObjectCreator {
         Transform transform = new Transform(x, y, layer, rotation, scale);
         Collider collider = squareHitbox(width, height);
         PlayerBehaviour behaviour = new PlayerBehaviour(width, height);
-        IShape shape = new PlayerShape();
+        PlayerShape shape = new PlayerShape();
+        behaviour.addObserver(shape);
         out.insertElements(transform, collider, shape, behaviour);
         return out;
     }

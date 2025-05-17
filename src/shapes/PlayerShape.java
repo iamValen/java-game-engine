@@ -1,40 +1,45 @@
 package shapes;
 
+import behaviour.PlayerBehaviour;
+import behaviour.PlayerState;
+import interfaces.IShape;
+import interfaces.Observer;
+
+import java.io.IOException;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
 
-import behaviour.PlayerBehaviour;
-
-import java.io.IOException;
-
-import interfaces.IShape;
-import interfaces.Observer;
-
 public class PlayerShape implements IShape, Observer {
 
-    private Map<Integer, SpriteAnimator> animators;
-    private int currentState;
+    private PlayerState currentState;
+    private Map<PlayerState, SpriteAnimator> animators;
+
 
     public PlayerShape() {
         animators = new HashMap<>();
 
         try {
-            BufferedImage idleSheet = ImageIO.read(getClass().getResource("/assets/player.png"));
-            BufferedImage walkSheet = ImageIO.read(getClass().getResource("/assets/player.png"));
-            BufferedImage jumpSheet = ImageIO.read(getClass().getResource("/assets/player.png"));
+            BufferedImage idleSprite = ImageIO.read(getClass().getResource("/assets/player.png"));
+            BufferedImage walkSprite = ImageIO.read(getClass().getResource("/assets/player.png"));
+            BufferedImage jumpSprite = ImageIO.read(getClass().getResource("/assets/player.png"));
+            BufferedImage dashSprite = ImageIO.read(getClass().getResource("/assets/player.png"));
+            BufferedImage attackSprite = ImageIO.read(getClass().getResource("/assets/player.png"));
 
-            animators.put(0, new SpriteAnimator(idleSheet, 8, 64, 64, 15, 3));
-            animators.put(1, new SpriteAnimator(walkSheet, 8, 64, 64, 8, 3));
-            animators.put(2, new SpriteAnimator(jumpSheet, 4, 64, 64, 20, 3));
+
+            animators.put(PlayerState.idle, new SpriteAnimator(idleSprite, 8, 64, 64, 15, 3));
+            animators.put(PlayerState.run, new SpriteAnimator(walkSprite, 8, 64, 64, 8, 3));
+            animators.put(PlayerState.jump, new SpriteAnimator(jumpSprite, 8, 64, 64, 20, 3));
+            animators.put(PlayerState.dash, new SpriteAnimator(dashSprite, 8, 64, 64, 20, 3));
+            animators.put(PlayerState.attack, new SpriteAnimator(attackSprite, 8, 64, 64, 20, 3));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void setState(int newState) {
+    public void setState(PlayerState newState) {
         if (animators.containsKey(newState)) {
             currentState = newState;
         }
@@ -60,7 +65,7 @@ public class PlayerShape implements IShape, Observer {
 
     @Override
     public void update(PlayerBehaviour b){
-        int newState = b.state();
+        PlayerState newState = b.state();
         if(currentState != newState) setState(newState);
     }
 

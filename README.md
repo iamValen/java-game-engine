@@ -1,11 +1,11 @@
 # Game Engine in Java
 
 ## TO TALK ABT
-- [ ] Criar um ENUM para o playerState ou continuar com String?
-- [ ] Usar observer no PlayerShape para atualizar o estado do player?
+- [X] Criar um ENUM para o playerState ou continuar com String?
+- [X] Usar observer no PlayerShape para atualizar o estado do player?
 - [ ] Collider do player tem a altura certa?
 
-# AI
+# TODO
 - [ ] dar uma ref do HUD para o player e no onDestroy destruir tudo.
 - [ ] não passar nada para o update do observer e ter uma referência para ele
     - Fazer o Observer abstract para ter logo nele o playerBehaviour?
@@ -14,7 +14,10 @@
 - singleton
 - observers
 
-
+# Validação
+- double jump
+- crouch
+- power ups
 
 
 

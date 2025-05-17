@@ -30,14 +30,8 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     
     private List<Observer> observers = new ArrayList<>();
 
-    private int state;
-    /** State
-     *  0 - idle
-     *  1 - running
-     *  2 - jumping
-     *  3 - dashing
-     *  ...
-     */
+    private PlayerState state;
+
     private int width;
     private int height;
     private final Physics physics;
@@ -85,17 +79,17 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
         return this.health;
     }
 
-    public int state(){
+    public PlayerState state(){
         return this.state;
     }
 
     @Override
     public void oninit(){
-        state = 0;
-
         health = new Health(myGo, 100);
         
         myGo.transform().setDirection(1);
+
+        state = PlayerState.idle;
 
         IGameObject healthHUD = ObjectCreator.healthHUD();
         this.addObserver((HealthShape) healthHUD.shape());
@@ -129,6 +123,8 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
 
         ITransform t = myGo.transform();
 
+        PlayerState newState = state;
+
         if(physics.isGrounded()){
             physics.setAccel(0, 0);
         }
@@ -136,56 +132,11 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
         if (dashCharges < maxDashCharges && now - lastDashRechargeTime >= dashRechargeTime) {
             dashCharges++;
             lastDashRechargeTime = now;
-            notifyObservers();
+            notifyObservers(); // notify dash bars
         }
 
-        if (InputManager.isKeyDown(KeyEvent.VK_LEFT)){
-            physics.sumAccel(-130, 0);
-            myGo.transform().setDirection(-1);
-            state = 1;
-            notifyObservers();
-        }
-        if (InputManager.isKeyDown(KeyEvent.VK_RIGHT)){
-            physics.sumAccel(130, 0);
-            myGo.transform().setDirection(1);
-            state = 1;
-            notifyObservers();
-        }
-        if (InputManager.isKeyDown(KeyEvent.VK_D) && (physics.isGrounded() || now - jumpStart < 300)){ //jump logic
-            if(physics.isGrounded()){
-                jumpStart = System.currentTimeMillis();
-                stopedJumping = false;
-            }
-            if(!stopedJumping){
-                physics.sumAccel(0, -370);
-                state = 2;
-                notifyObservers();
-            }
-        }
-        else{
-            stopedJumping = true;
-        }
-
-        if(InputManager.isKeyDown(KeyEvent.VK_A) && !isDashing && dashCharges > 0 && now - dashStart > 600){ // dash logic
-            dashStart = System.currentTimeMillis();
-            isDashing = true;
-            dashCharges--;
-
-            if (lastDashRechargeTime == -1) {
-                lastDashRechargeTime = now;
-            }
-            notifyObservers();
-        }
-        if(isDashing && now - dashStart < 150){
-            myGo.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
-            if(engine.enabled().contains(attack1))
-                attack1.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
-        }
-        else{
-            isDashing = false;
-        }
-
-
+        // INPUT
+        // attack
         if(InputManager.isKeyDown(KeyEvent.VK_S) && (now - meleeAttackStart > attackCooldown)){
 
             meleeAttackStart = System.currentTimeMillis();
@@ -196,13 +147,79 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
             attack1 = ObjectCreator.meleeAtack(x, y, t.layer(), t.angle(), t.scale(), attack1Damage, attackWidth, attackHeight, attackDuration, physics, "playerAttack");
             ((meleeAttackBehaviour) attack1.behaviour()).setGo(this.myGo);
             engine.addEnabled(attack1);
+
+            isDashing = false;
+            stopedJumping = true;
+
+            newState = PlayerState.attack;
         }
-        
+        // dash
+        else if(InputManager.isKeyDown(KeyEvent.VK_A) && !isDashing && dashCharges > 0 && now - dashStart > 600){ // dash logic
+            dashStart = System.currentTimeMillis();
+            isDashing = true;
+            dashCharges--;
+
+            if (lastDashRechargeTime == -1) {
+                lastDashRechargeTime = now;
+            }
+
+            stopedJumping = true;
+
+            newState = PlayerState.dash;
+        }// continues dash
+        else if(isDashing && now - dashStart < 150){
+            myGo.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
+            if(engine.enabled().contains(attack1))
+                attack1.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
+        }
+        // jump
+        else if (InputManager.isKeyDown(KeyEvent.VK_D) && (physics.isGrounded() || now - jumpStart < 300)){ //jump logic
+            if(physics.isGrounded()){
+                jumpStart = System.currentTimeMillis();
+                stopedJumping = false;
+            }
+            if(!stopedJumping){
+                physics.sumAccel(0, -370);
+                isDashing = false;
+                newState = PlayerState.jump;
+            }
+        }
+        // run
+        else if (InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+            if (InputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+                physics.sumAccel(-130, 0);
+                t.setDirection(-1);
+            } 
+            else {
+                physics.sumAccel(130, 0);
+                t.setDirection(1);
+            }
+
+            isDashing = false;
+            stopedJumping = true;
+
+            newState = PlayerState.run;
+        }
+        // idle
+        else if (isGrounded()){
+            newState = PlayerState.idle;
+            isDashing = false;
+            stopedJumping = true;
+        }
 
         physics.update(dt);
         t.move(physics.Speed().scale(dt/0.016666), 0);
 
+        if (newState != state) {
+            state = newState;
+            notifyObservers();
+        }
+
         physics.setIsGrounded(false);
+
+        // sprite animation
+        PlayerShape ps =(PlayerShape) myGo.shape();
+        ps.update();
     }
 
     @Override
