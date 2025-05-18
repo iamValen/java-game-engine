@@ -25,16 +25,18 @@ public class PlayerShape implements IShape, Observer {
         try {
             BufferedImage idleSprite = ImageIO.read(getClass().getResource("/assets/player_idle.png"));
             BufferedImage runSprite = ImageIO.read(getClass().getResource("/assets/player_run.png"));
-            BufferedImage jumpSprite = ImageIO.read(getClass().getResource("/assets/player_idle.png"));
+            BufferedImage jumpUpSprite = ImageIO.read(getClass().getResource("/assets/player_jump.png"));
             BufferedImage dashSprite = ImageIO.read(getClass().getResource("/assets/player_dash.png"));
             BufferedImage attackSprite = ImageIO.read(getClass().getResource("/assets/player_attack.png"));
+            BufferedImage hurtSprite = ImageIO.read(getClass().getResource("/assets/player_hurt.png"));
 
+            animators.put(PlayerState.idle, new SpriteAnimator(idleSprite, 10, 96, 96, 6, 3, true));
+            animators.put(PlayerState.run, new SpriteAnimator(runSprite, 16, 96, 96, 2, 3, true));
+            animators.put(PlayerState.jump, new SpriteAnimator(jumpUpSprite, 4, 96, 96, 8, 3, false));
+            animators.put(PlayerState.dash, new SpriteAnimator(dashSprite, 6, 96, 96, 2, 3, true));
+            animators.put(PlayerState.attack, new SpriteAnimator(attackSprite, 7, 96, 96, 5, 3, true));
+            animators.put(PlayerState.hurt, new SpriteAnimator(hurtSprite, 4, 96, 96, 4, 3, false));
 
-            animators.put(PlayerState.idle, new SpriteAnimator(idleSprite, 10, 96, 96, 6, 3));
-            animators.put(PlayerState.run, new SpriteAnimator(runSprite, 16, 96, 96, 2, 3));
-            animators.put(PlayerState.jump, new SpriteAnimator(jumpSprite, 8, 96, 96, 10, 3));
-            animators.put(PlayerState.dash, new SpriteAnimator(dashSprite, 6, 96, 96, 2, 3));
-            animators.put(PlayerState.attack, new SpriteAnimator(attackSprite, 7, 96, 96, 4, 3));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -5,25 +5,34 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 public class SpriteAnimator {
+    private boolean loop, finished = false;
     private BufferedImage[] frames;
     private int currentFrame = 0;
     private int tick = 0;
     private int speed;
 
-    public SpriteAnimator(BufferedImage spriteSheet, int totalFrames, int frameWidth, int frameHeight, int speed, int scale) {
+    public SpriteAnimator(BufferedImage spriteSheet, int totalFrames, int frameWidth, int frameHeight, int speed, int scale, boolean loop) {
         this.frames = new BufferedImage[totalFrames];
         for (int i = 0; i < totalFrames; i++) {
             BufferedImage frame = spriteSheet.getSubimage(i * frameWidth, 0, frameWidth, frameHeight);
             frames[i] = resizeImage(frame, frameWidth * scale, frameHeight * scale);
         }
+        this.loop = loop;
         this.speed = speed;
     }
 
     public void update() {
+        if(finished) return;
+
         tick++;
         if (tick >= speed) {
             tick = 0;
-            currentFrame = (currentFrame + 1) % frames.length;
+            if (!loop && currentFrame == frames.length - 1) {
+                finished = true;
+            } 
+            else {
+                currentFrame = (currentFrame + 1) % frames.length;
+            }
         }
     }
 

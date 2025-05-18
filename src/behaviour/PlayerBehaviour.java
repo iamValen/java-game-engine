@@ -164,8 +164,21 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
 
             newState = PlayerState.attack;
         }
+        // run
+        if (now - meleeAttackStart > attackDuration + 200 && (InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT))) {
+            if (InputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+                physics.sumAccel(-130, 0);
+                t.setDirection(-1);
+            }
+            else {
+                physics.sumAccel(130, 0);
+                t.setDirection(1);
+            }
+
+            newState = PlayerState.run;
+        }
         // dash
-        else if(InputManager.isKeyDown(KeyEvent.VK_A) && !isDashing && dashCharges > 0 && now - dashStart > 600){ // dash logic
+        if(InputManager.isKeyDown(KeyEvent.VK_A) && !isDashing && dashCharges > 0 && now - dashStart > 600){ // dash logic
             dashStart = System.currentTimeMillis();
             isDashing = true;
             dashCharges--;
@@ -178,13 +191,16 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
 
             newState = PlayerState.dash;
         }// continues dash
-        else if(isDashing && now - dashStart < 150){
+        if(isDashing && now - dashStart < 150){
             myGo.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
             if(engine.enabled().contains(attack1))
                 attack1.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
         }
+        else{
+            isDashing = false;
+        }
         // jump
-        else if (InputManager.isKeyDown(KeyEvent.VK_D) && (physics.isGrounded() || now - jumpStart < 300)){ //jump logic
+        if (InputManager.isKeyDown(KeyEvent.VK_D) && (physics.isGrounded() || now - jumpStart < 300)){ //jump logic
             if(physics.isGrounded()){
                 jumpStart = System.currentTimeMillis();
                 stopedJumping = false;
@@ -195,24 +211,8 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
                 newState = PlayerState.jump;
             }
         }
-        // run
-        else if (InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
-            if (InputManager.isKeyDown(KeyEvent.VK_LEFT)) {
-                physics.sumAccel(-130, 0);
-                t.setDirection(-1);
-            } 
-            else {
-                physics.sumAccel(130, 0);
-                t.setDirection(1);
-            }
-
-            isDashing = false;
-            stopedJumping = true;
-
-            newState = PlayerState.run;
-        }
         // idle
-        else if (isGrounded() && now - meleeAttackStart > attackDuration + 100){ // +100 -> intervalo para a animação do ataque acabar
+        else if (isGrounded() && !isDashing && now - meleeAttackStart > attackDuration + 200 && physics.Speed().x() <= 3 && physics.Speed().x() >= -3){ // +200 -> intervalo para a animação do ataque acabar
             newState = PlayerState.idle;
             isDashing = false;
             stopedJumping = true;
@@ -262,10 +262,12 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
                 }
                 case("Enemy1") -> {
                     health.takeDamage(go1);
+                    state = PlayerState.hurt;
                     notifyObservers();
                 }
                 case("EnemyAttack") ->{
                     health.takeDamage(go1);
+                    state = PlayerState.hurt;
                     notifyObservers();
                 }
                 default -> {}

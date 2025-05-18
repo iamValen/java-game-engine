@@ -5,5 +5,6 @@ public enum PlayerState {
     run,
     jump,
     dash,
-    attack
+    attack,
+    hurt
 }

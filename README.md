@@ -1,15 +1,17 @@
 # Game Engine in Java
 
 ## TO TALK ABT
-- [X] Criar um ENUM para o playerState ou continuar com String?
-- [X] Usar observer no PlayerShape para atualizar o estado do player?
-- [ ] Collider do player tem a altura certa?
+
 
 # TODO 
-- [X] dar uma ref do HUD para o player e no onDestroy destruir tudo. -> não funciona mesmo assim
+- [X] dar uma ref do HUD para o player e no onDestroy destruir tudo. -
+    - não funciona mesmo assim
 - [ ] não passar nada para o update do observer e ter uma referência para ele
     - Fazer o Observer abstract para ter logo nele o playerBehaviour?
 - [ ] melhorar a chamada de update dos observers
+- [ ] Animation "hurt" aparece mesmo quando ainda está no cooldown de invencível
+    - Já tentei passar a lógica do cooldown de Health para PlayerBehaviour mas funciona mal 
+
 
 # PDF
 - singleton
