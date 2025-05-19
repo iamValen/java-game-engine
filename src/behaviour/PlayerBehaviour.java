@@ -8,13 +8,12 @@ import interfaces.IGameObject;
 import interfaces.ITransform;
 import interfaces.Observable;
 import interfaces.Observer;
-import shapes.HealthShape;
-import shapes.ScoreShape;
-import shapes.PlayerShape;
-
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import shapes.HealthShape;
+import shapes.PlayerShape;
+import shapes.ScoreShape;
 
 /**
  * Comportamento responsável por carregar um novo nível.
@@ -140,11 +139,15 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
             physics.setAccel(0, 0);
         }
 
-        if (dashCharges < maxDashCharges && now - lastDashRechargeTime >= dashRechargeTime) {
-            dashCharges++;
+        if(dashCharges >= maxDashCharges)
             lastDashRechargeTime = now;
-            notifyObservers(); // notify dash bars
-        }
+        else
+            if (now - lastDashRechargeTime >= dashRechargeTime) {
+                dashCharges++;
+                lastDashRechargeTime = now;
+                notifyObservers(); // notify dash bars
+            }
+
 
         // INPUT
         // attack
@@ -191,10 +194,10 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
 
             newState = PlayerState.dash;
         }// continues dash
-        if(isDashing && now - dashStart < 150){
-            myGo.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
+        if(isDashing && now - dashStart < 240){
+            myGo.transform().move(new Point(20*(dt/0.016666) * myGo.transform().direction(), 0), 0);
             if(engine.enabled().contains(attack1))
-                attack1.transform().move(new Point(35*(dt/0.016666) * myGo.transform().direction(), 0), 0);
+                attack1.transform().move(new Point(20*(dt/0.016666) * myGo.transform().direction(), 0), 0);
         }
         else{
             isDashing = false;
