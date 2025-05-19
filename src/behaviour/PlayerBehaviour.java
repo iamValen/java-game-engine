@@ -246,7 +246,6 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
                     if(flag)
                         Physics.snapToFloor(myGo, go1);
                     physics.setIsGrounded(true);
-                    flag = false;
                 }
                 case("celing") ->{
                     if(flag)

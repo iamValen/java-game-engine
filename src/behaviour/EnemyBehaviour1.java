@@ -1,8 +1,7 @@
 package behaviour;
 
 import interfaces.IGameObject;
-import interfaces.IBehaviour;
-
+import interfaces.ITransform;
 import java.util.ArrayList;
 
 /**
@@ -15,10 +14,25 @@ import java.util.ArrayList;
  */
 public class EnemyBehaviour1 extends ADamagingBehaviour {
 
+    long now = 0;
+    long lastTurned = 0;
+    int moving = -50;
+
     private Health health;
     private int state;
     private int damage;
     private Physics physics;
+
+    private int patrolRangeX;
+    private int patrolRangeY;
+
+    private IGameObject attack1;
+    private final int attackWidth = 130;
+    private final int attackHeight = 100;
+    private long meleeAttackStart = 0;
+    private final long attackDuration = 200;
+    private final long attackCooldown = 700;
+    private final int attack1Damage = 50;
 
     public EnemyBehaviour1(int damage, int width, int height){
         this.damage = damage;
@@ -47,8 +61,34 @@ public class EnemyBehaviour1 extends ADamagingBehaviour {
 
     @Override
     public void onUpdate(double dT){
+System.out.println(myGo.transform().position().y());
+        now = System.currentTimeMillis();
+        ITransform t = myGo.transform();
+
+        if(physics.isGrounded()){
+            physics.setAccel(0, 0);
+        }
+
+        if (now - lastTurned > 2000) {
+            moving*=-1;
+            t.setDirection(t.direction()*-1);
+            lastTurned = System.currentTimeMillis();
+        }
+        physics.sumAccel(moving, 0);
+        
+
+
+
+
+
+
+
+        physics.update(dT);
+        t.move(physics.Speed().scale(dT/0.016666), 0);
+        physics.setIsGrounded(false);
 
     }
+
     // NOTAS
     /*
      * if it is in an atacking sequence
@@ -68,6 +108,7 @@ public class EnemyBehaviour1 extends ADamagingBehaviour {
 
     @Override
     public void onCollision(ArrayList<IGameObject> gol){
+        boolean flag = true;
         for(IGameObject go : gol){
             if(go.name().equals("playerAttack")){
                 health.takeDamage(go);
@@ -78,6 +119,28 @@ public class EnemyBehaviour1 extends ADamagingBehaviour {
                         playerBehaviour.addScore(500);
                         playerBehaviour.notifyObservers();
                     }
+                }
+            }
+            switch (go.name()) {
+            case("floor") -> {
+                    if(flag)
+                        Physics.snapToFloor(myGo, go);
+                    physics.setIsGrounded(true);
+                }
+                case("celing") ->{
+                    if(flag)
+                        Physics.snapToCeling(myGo, go);
+                    flag = false;
+                }
+                case("rightWall") -> {
+                    if(flag)
+                        Physics.snapToWallOnTheRight(myGo, go);
+                    flag = false;
+                }
+                case("leftWall") -> {
+                    if(flag)
+                        Physics.snapToWallOnTheLeft(myGo, go);
+                    flag = false;
                 }
             }
         }
