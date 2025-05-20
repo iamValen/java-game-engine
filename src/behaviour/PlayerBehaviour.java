@@ -244,9 +244,11 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints{
 
                 }
                 case("celing") ->{
-                    if(flag)
-                        stopedJumping = true;
-                        Physics.snapToCeling(myGo, go1);
+                    if(flag){
+                        canJump = true;
+                        isJumping = false;
+                    }
+                    Physics.snapToCeling(myGo, go1);
                     flag = false;
                 }
                 case("rightWall") -> {
