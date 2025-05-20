@@ -12,6 +12,7 @@ import java.awt.Color;
 import shapes.BackgroundShape;
 import shapes.BlockShape;
 import shapes.HealthShape;
+import shapes.ImageBlockShape;
 import shapes.PlayerShape;
 import shapes.ScoreShape;
 
@@ -142,7 +143,7 @@ public class ObjectCreator {
         IGameObject block = new GameObject("block");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         IBehaviour behaviour = new BlockBehaviour(width, height);
-        IShape shape = new BlockShape(width, height, Color.GREEN);
+        IShape shape = new ImageBlockShape(width, height);
         block.insertElements(transform, null, shape, behaviour);
         return block;
     }

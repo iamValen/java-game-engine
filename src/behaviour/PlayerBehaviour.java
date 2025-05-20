@@ -80,7 +80,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints{
     @Override
     public void oninit(){
         physics = new Physics();
-        health = new Health(myGo, 100);
+        health = new Health(myGo, 200);
         myGo.transform().setDirection(1);
 
         state = PlayerState.idle;

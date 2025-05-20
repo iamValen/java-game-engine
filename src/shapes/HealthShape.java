@@ -30,7 +30,7 @@ public class HealthShape implements IShape {
 
     private int health;
 
-    private final int maxHealth = 100;
+    private final int maxHealth = 200;
 
     public void update() {
         this.health = owner.health().getHealth();
@@ -52,7 +52,7 @@ public class HealthShape implements IShape {
         g.setColor(Color.GRAY);
         g.fillRect(x, y - healthBarHeight / 2, totalDashWidth, healthBarHeight);
 
-        float healthRatio = Math.max(0f, Math.min(1f, health / (float) maxHealth));
+        float healthRatio = health / (float) maxHealth;
         int filledHealthWidth = (int) (healthRatio * totalDashWidth);
 
         g.setColor(color);
