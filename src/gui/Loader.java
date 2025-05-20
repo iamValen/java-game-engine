@@ -33,23 +33,35 @@ public class Loader {
         IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
         engine.addEnabled(background);
 
+        int screenW = engine.getScreenWidth();
+        int screenH = engine.getScreenHeight();
+
+        IGameObject leftWall = ObjectCreator.block(-20, screenH / 2, 0, 0, 1, 30, screenH, false);
+        engine.addEnabled(leftWall);
+
+        IGameObject rightWall = ObjectCreator.block(screenW, screenH / 2, 0, 0, 1, 10, screenH, false);
+        engine.addEnabled(rightWall);
+
         if(player == null) 
-            player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 100);
+            player = ObjectCreator.Player(150, 700, 0, 0, 1, 40, 100);
         else
             player.transform().setPosition(new Point(500, 300), 0);    
         engine.addEnabled(player);
-        
+
         IGameObject enemy = ObjectCreator.Enemy1(100, 100, 0, 0, 1, 50, 50);
         engine.addEnabled(enemy);
 
-        IGameObject ls = ObjectCreator.loading_screen(1000, 600, 0, 0, 1, 60, 60, 2, 1);
+        IGameObject ls = ObjectCreator.loading_screen(1400, 200, 0, 0, 1, 60, 60, 2, 1);
         engine.addEnabled(ls);
 
         IGameObject floor = ObjectCreator.floor();
         engine.addEnabled(floor);
         
-        IGameObject block = ObjectCreator.block(1300,600, 0, 0, 1, 200,200);
-        engine.addEnabled(block);
+        IGameObject b1 = ObjectCreator.block(1200,350, 0, 0, 1, 256, 64, true);
+        engine.addEnabled(b1);
+
+        IGameObject b2 = ObjectCreator.block(0,550, 0, 0, 1, 2304, 64, true);
+        engine.addEnabled(b2);
     }
 
     /**
@@ -58,6 +70,15 @@ public class Loader {
     private static void level2(){
         IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
         engine.addEnabled(background);
+
+        int screenW = engine.getScreenWidth();
+        int screenH = engine.getScreenHeight();
+
+        IGameObject leftWall = ObjectCreator.block(-20, screenH / 2, 0, 0, 1, 30, screenH, false);
+        engine.addEnabled(leftWall);
+
+        IGameObject rightWall = ObjectCreator.block(screenW, screenH / 2, 0, 0, 1, 10, screenH, false);
+        engine.addEnabled(rightWall);
 
         if(player == null) 
             player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 100);

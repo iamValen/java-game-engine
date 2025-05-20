@@ -12,6 +12,7 @@ import java.awt.Color;
 import shapes.BackgroundShape;
 import shapes.BlockShape;
 import shapes.HealthShape;
+import shapes.ImageBlockShape;
 import shapes.PlayerShape;
 import shapes.ScoreShape;
 
@@ -117,14 +118,14 @@ public class ObjectCreator {
         // Polígono retangular que define a hitbox do chão
         Point[] points = new Point[] {
             new Point(0, ge.getScreenHeight()),
-            new Point(ge.getScreenWidth(), ge.getScreenHeight()),
-            new Point(ge.getScreenWidth(), ge.getScreenHeight() - groundHeight),
+            new Point(ge.getScreenWidth() + 20, ge.getScreenHeight()),
+            new Point(ge.getScreenWidth() + 20, ge.getScreenHeight() - groundHeight),
             new Point(0, ge.getScreenHeight() - groundHeight)
         };
         Polygon rect = new Polygon(points);
         Collider c2 = new Collider(rect);
         IBehaviour b2 = new StaticBehaviour();
-        IShape shape2 = new BlockShape(ge.getScreenWidth(), groundHeight, Color.GREEN);
+        //IShape shape2 = new BlockShape(ge.getScreenWidth(), groundHeight, Color.GREEN);
         out.insertElements(t2, c2, null, b2);
         return out;
     }
@@ -139,12 +140,17 @@ public class ObjectCreator {
      * @return        GameObject configurado como block
      */
     public static IGameObject block(double x, double y, int layer, double rotation, double scale,
-    int width, int height){
+    int width, int height, boolean hasShape){
         IGameObject block = new GameObject("block");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         IBehaviour behaviour = new BlockBehaviour(x, y, width, height);
-        IShape shape = new BlockShape(width, height, Color.GREEN);
-        block.insertElements(transform, null, shape, behaviour);
+        if(hasShape){
+            IShape shape = new ImageBlockShape(width, height);
+            block.insertElements(transform, null, shape, behaviour);
+        }
+        else{
+            block.insertElements(transform, null, null, behaviour);
+        }
         return block;
     }
 
