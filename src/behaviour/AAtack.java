@@ -1,6 +1,6 @@
 package behaviour;
 
-public abstract  class AAtack extends ABehaviour implements IPoints, IDamage {
+public abstract  class AAtack extends AAABehaviour implements IPoints, IDamage {
 
     protected IPoints owner;
     protected int damage;
@@ -18,5 +18,4 @@ public abstract  class AAtack extends ABehaviour implements IPoints, IDamage {
         owner = own;
         damage = dmg;
     }
-
 }

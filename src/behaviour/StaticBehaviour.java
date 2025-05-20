@@ -3,7 +3,7 @@ package behaviour;
 import interfaces.IGameObject;
 import java.util.ArrayList;
 
-public class StaticBehaviour extends ABehaviour{
+public class StaticBehaviour extends AAABehaviour{
     
     @Override
     public void oninit() {

@@ -12,7 +12,7 @@ import interfaces.*;
  * @author Valentim Khakhitva a81785
  * @version 11/05/2025
  */
-public class BlockBehaviour extends ABehaviour {
+public class BlockBehaviour extends AAABehaviour {
     
         static final GameEngine engine = GameEngine.getInstance();
     
@@ -20,8 +20,8 @@ public class BlockBehaviour extends ABehaviour {
         IGameObject leftHitbox;
         IGameObject rightHitbox;
         IGameObject bottomHitbox;
-        private int width;
-        private int height;
+        private final int width;
+        private final int height;
 
         /**
          * Para cada bloco (retângulo) é criado 4 Colliders a representar os 4 lados para facilitar na hora das colisões
@@ -30,14 +30,9 @@ public class BlockBehaviour extends ABehaviour {
          * @param width
          * @param height
          */
-        public BlockBehaviour(double x, double y, int width, int height){
+        public BlockBehaviour(int width, int height){
             this.width = width;
             this.height = height;
-            // topHitbox = ObjectCreator.blockWall(x, y - height/2 + 1, 0,0,1, width-5, 2, "floor");
-            // bottomHitbox = ObjectCreator.blockWall(x, y + height/2 - 1, 0,0,1, width-5, 2, "celing");
-            // leftHitbox = ObjectCreator.blockWall(x - width/2 + 1, y, 2, 0,0,1, height-10, "rightWall");
-            // rightHitbox = ObjectCreator.blockWall(x + width/2 - 1, y, 2, 0,0,1, height-10, "leftWall");
-            //se o bloco tiver scale ou rotation isto nao funciona
         }
 
         @Override

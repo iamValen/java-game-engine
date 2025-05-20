@@ -6,48 +6,43 @@ import figures.Point;
 import gui.ObjectCreator;
 import interfaces.IGameObject;
 import interfaces.ITransform;
-import interfaces.Observable;
-import interfaces.Observer;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.List;
 import shapes.PlayerShape;
 
 /**
- * Comportamento responsável por carregar um novo nível.
+ *
  * 
  * @author Alexandre Menino a83974
  * @author Grégory Endrio Leite a90952
  * @author Valentim Khakhitva a81785
  * @version 11/05/2025
  */
-public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
+public class PlayerBehaviour extends AAABehaviour implements IPoints{
 
     private final GameEngine engine = GameEngine.getInstance();
     
-    private List<Observer> observers = new ArrayList<>();
-
     private PlayerState state;
 
     private IGameObject healthHUD;
     private IGameObject scoreHUD;
 
-    private int width;
-    private int height;
-    private final Physics physics;
+    private final int width;
+    private final int height;
+    private Physics physics;
     private Health health;
 
-    private double deltaTime;
     private long now;
 
     private boolean isDashing = false;
     private long jumpStart = 0;
     private long dashStart = 0;
-    private boolean stopedJumping = true;
+    private boolean isJumping = false;
+    private boolean canJump = false;
 
     private IGameObject attack1;
-    private final int attackWidth = 130;
-    private final int attackHeight = 100;
+    private final int attackWidth = 170;
+    private final int attackHeight = 120;
     private long meleeAttackStart = 0;
     private final long attackDuration = 200;
     private final long attackCooldown = 700;
@@ -66,7 +61,6 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
     * puts go on the static reference
     */
     public PlayerBehaviour(int width, int height){
-        physics = new Physics();
         this.width = width;
         this.height = height;
     }
@@ -83,14 +77,10 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
         return this.state;
     }
 
-    public IGameObject myGo(){
-        return myGo;
-    }
-
     @Override
     public void oninit(){
+        physics = new Physics();
         health = new Health(myGo, 100);
-        
         myGo.transform().setDirection(1);
 
         state = PlayerState.idle;
@@ -99,7 +89,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
 
         scoreHUD = ObjectCreator.score(this);
 
-        notifyObservers();
+        attack1 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack1Damage, attackWidth, attackHeight, attackDuration, physics, "playerAttack");
 
         engine.addEnabled(healthHUD);
         engine.addEnabled(scoreHUD);
@@ -109,8 +99,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
     @Override
     public void onDestroy(){
         // Player died
-        if(attack1 != null)
-            engine.destroy(attack1);
+        engine.destroy(attack1);
         engine.destroy(healthHUD);
         engine.destroy(scoreHUD);
         System.out.println("player died");
@@ -124,7 +113,6 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
      */
     @Override
     public void onUpdate(double dt) {
-        this.deltaTime = dt;
         now = System.currentTimeMillis();
 
         ITransform t = myGo.transform();
@@ -142,7 +130,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
             if (now - lastDashRechargeTime >= dashRechargeTime) {
                 dashCharges++;
                 lastDashRechargeTime = now;
-                notifyObservers(); // notify dash bars
+                // notifyObservers(); // notify dash bars
             }
 
 
@@ -154,18 +142,17 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
 
             double x = t.position().x() + t.direction()*(width/2 + attackWidth/2);
             double y = t.position().y();
+            attack1.transform().setPosition(new Point(x, y), myGo.transform().layer());
 
-            attack1 = ObjectCreator.meleeAtack(x, y, t.layer(), t.angle(), t.scale(), attack1Damage, attackWidth, attackHeight, attackDuration, physics, "playerAttack");
-            ((meleeAttackBehaviour) attack1.behaviour()).setGo(this.myGo);
             engine.addEnabled(attack1);
 
             isDashing = false;
-            stopedJumping = true;
+            // isJumping = false; //attention!!!
 
             newState = PlayerState.attack;
         }
         // run
-        if (now - meleeAttackStart > attackDuration + 200 && (InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT))) {
+        if (now - meleeAttackStart > attackDuration && (InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT))) {
             if (InputManager.isKeyDown(KeyEvent.VK_LEFT)) {
                 physics.sumAccel(-130, 0);
                 t.setDirection(-1);
@@ -187,7 +174,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
                 lastDashRechargeTime = now;
             }
 
-            stopedJumping = true;
+            isJumping = false; //attention
 
             newState = PlayerState.dash;
         }// continues dash
@@ -200,30 +187,38 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
             isDashing = false;
         }
         // jump
-        if (InputManager.isKeyDown(KeyEvent.VK_D) && (physics.isGrounded() || now - jumpStart < 300)){ //jump logic
-            if(physics.isGrounded()){
-                jumpStart = System.currentTimeMillis();
-                stopedJumping = false;
+        if(InputManager.isKeyDown(KeyEvent.VK_D)){
+            if(physics.isGrounded() && canJump || now - jumpStart < 300 && isJumping){
+                isJumping = true;
+                canJump = false;
+                if(physics.isGrounded()){
+                    jumpStart = System.currentTimeMillis();
+                }
             }
-            if(!stopedJumping){
-                physics.sumAccel(0, -370);
-                isDashing = false;
-                newState = PlayerState.jump;
+            else{
+                isJumping = false;
             }
         }
-        // idle
-        else if (isGrounded() && !isDashing && now - meleeAttackStart > attackDuration + 200 && physics.Speed().x() <= 3 && physics.Speed().x() >= -3){ // +200 -> intervalo para a animação do ataque acabar
-            newState = PlayerState.idle;
-            isDashing = false;
-            stopedJumping = true;
+        else{
+            isJumping = false;
+            canJump = true;
+        }
+        if(isJumping){
+            physics.sumAccel(0, -370);
+            newState = PlayerState.jump;
         }
 
+        if (isGrounded() && !isDashing && !isJumping && now - meleeAttackStart > attackDuration + 200 && physics.Speed().x() <= 3 && physics.Speed().x() >= -3){ // +200 -> intervalo para a animação do ataque acabar
+            newState = PlayerState.idle;
+            isDashing = false;
+        }
+        
         physics.update(dt);
         t.move(physics.Speed().scale(dt/0.016666), 0);
 
         if (newState != state || t.direction() != oldDirection) {
             state = newState;
-            notifyObservers();
+            // notifyObservers();
         }
 
         physics.setIsGrounded(false);
@@ -243,6 +238,10 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
                     if(flag)
                         Physics.snapToFloor(myGo, go1);
                     physics.setIsGrounded(true);
+                    if(physics.Speed().y() < 0){
+                        isJumping = false;
+                    }
+
                 }
                 case("celing") ->{
                     if(flag)
@@ -262,12 +261,12 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
                 case("Enemy1") -> {
                     health.takeDamage(go1);
                     state = PlayerState.hurt;
-                    notifyObservers();
+                    // notifyObservers();
                 }
                 case("EnemyAttack") ->{
                     health.takeDamage(go1);
                     state = PlayerState.hurt;
-                    notifyObservers();
+                    // notifyObservers();
                 }
                 default -> {}
             }
@@ -291,22 +290,6 @@ public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
         this.physics.setIsGrounded(isGrounded);
     }
 
-    @Override
-    public void addObserver(Observer observer){
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer){
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers(){
-        for (Observer observer : observers) {
-            observer.update(this);
-        }
-    }
 
     @Override
     public void recievePoints(int points) {
