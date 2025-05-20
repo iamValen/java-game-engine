@@ -249,6 +249,7 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
                 }
                 case("celing") ->{
                     if(flag)
+                        stopedJumping = true;
                         Physics.snapToCeling(myGo, go1);
                     flag = false;
                 }
