@@ -45,7 +45,7 @@ public class Health {
         now = System.currentTimeMillis();
         if(now - damageTime > 2500){
             damageTime = System.currentTimeMillis();
-            this.health -= ((ADamagingBehaviour)take.behaviour()).getDamage();
+            this.health -= ((IDamage)take.behaviour()).getDamage();
             if(this.health <= 0)
                 engine.destroy(go);
         }

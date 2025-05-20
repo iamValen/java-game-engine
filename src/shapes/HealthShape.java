@@ -3,12 +3,16 @@ package shapes;
 import behaviour.PlayerBehaviour;
 import engine.GameEngine;
 import interfaces.IShape;
-import interfaces.Observer;
-
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class HealthShape implements IShape, Observer {
+public class HealthShape implements IShape {
+
+    public HealthShape(PlayerBehaviour pb){
+        owner = pb;
+    }
+    private PlayerBehaviour owner;
+
     private final GameEngine engine = GameEngine.getInstance();
 
     private Color color = Color.GREEN;
@@ -28,16 +32,10 @@ public class HealthShape implements IShape, Observer {
 
     private final int maxHealth = 100;
 
-    @Override
-    public int type() {
-        return 0;
-    }
-
-    @Override
-    public void update(PlayerBehaviour playerB) {
-        this.health = playerB.health().getHealth();
-        this.dashCharges = playerB.getDashCharges();
-        this.lastDashRechargeTime = playerB.getLastDashRechargeTime();
+    public void update() {
+        this.health = owner.health().getHealth();
+        this.dashCharges = owner.getDashCharges();
+        this.lastDashRechargeTime = owner.getLastDashRechargeTime();
     }
 
     public void setColor(Color color) {
@@ -46,6 +44,7 @@ public class HealthShape implements IShape, Observer {
 
     @Override
     public void render(Graphics g, int x, int y) {
+        update();
         now = System.currentTimeMillis();
 
         int totalDashWidth = maxDashCharges * dashBarWidth + (maxDashCharges - 1) * dashBarSpacing;
