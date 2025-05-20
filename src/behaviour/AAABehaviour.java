@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Valentim Khakhitva a81785
  * @version 11/05/2025
  */
-public abstract class ABehaviour implements IBehaviour{
+public abstract class AAABehaviour implements IBehaviour{
  
     protected IGameObject myGo;
 

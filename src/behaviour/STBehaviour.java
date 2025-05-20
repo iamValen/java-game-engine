@@ -12,7 +12,7 @@ import interfaces.IGameObject;
  * @author Valentim Khakhitva a81785
  * @version 11/05/2025
  */
-public class STBehaviour extends ABehaviour {
+public class STBehaviour extends AAABehaviour {
 
     private final int roomKey;  // Identificador da sala para onde será feita a transição
     private final int posKey;   // Posição inicial dentro da nova sala

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import behaviour.ABehaviour;
+import behaviour.AAABehaviour;
 import engine.GameEngine;
 import engine.GameObject;
 import figures.Point;
@@ -16,7 +16,7 @@ import interfaces.IGameObject;
 
 public class IBehaviourTests {
 
-    class testBehaviour extends  ABehaviour{
+    class testBehaviour extends  AAABehaviour{
         boolean onInitRan = false;
         boolean onEnableRan = false;
         boolean onDisableRan = false;

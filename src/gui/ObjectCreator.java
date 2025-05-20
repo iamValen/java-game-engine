@@ -12,7 +12,6 @@ import java.awt.Color;
 import shapes.BackgroundShape;
 import shapes.BlockShape;
 import shapes.HealthShape;
-import shapes.ImageBlockShape;
 import shapes.PlayerShape;
 import shapes.ScoreShape;
 
@@ -54,8 +53,7 @@ public class ObjectCreator {
         Transform transform = new Transform(x, y, layer, rotation, scale);
         Collider collider = squareHitbox(width, height);
         PlayerBehaviour behaviour = new PlayerBehaviour(width, height);
-        PlayerShape shape = new PlayerShape();
-        behaviour.addObserver(shape);
+        PlayerShape shape = new PlayerShape(behaviour);
         out.insertElements(transform, collider, shape, behaviour);
         return out;
     }
@@ -68,11 +66,11 @@ public class ObjectCreator {
      * @return   GameObject configurado como Enemy1
      */
     public static IGameObject Enemy1(double x, double y, int layer, double rotation, double scale,
-    int width, int height){
+    int width, int height, int visionRangeX, int visionRangeY){
         IGameObject out = new GameObject("Enemy1");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         ICollider collider = squareHitbox(width, height);
-        ABehaviour behaviour = new EnemyBehaviour1(50, width, height);
+        AAABehaviour behaviour = new EnemyBehaviour1(50, 50,  width, height, visionRangeX, visionRangeY);
         IShape shape = new BlockShape(width, height, Color.BLUE);
         out.insertElements(transform, collider, shape, behaviour);
         return out;
@@ -143,14 +141,9 @@ public class ObjectCreator {
     int width, int height, boolean hasShape){
         IGameObject block = new GameObject("block");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
-        IBehaviour behaviour = new BlockBehaviour(x, y, width, height);
-        if(hasShape){
-            IShape shape = new ImageBlockShape(width, height);
-            block.insertElements(transform, null, shape, behaviour);
-        }
-        else{
-            block.insertElements(transform, null, null, behaviour);
-        }
+        IBehaviour behaviour = new BlockBehaviour(width, height);
+        IShape shape = new BlockShape(width, height, Color.GREEN);
+        block.insertElements(transform, null, shape, behaviour);
         return block;
     }
 
@@ -174,47 +167,18 @@ public class ObjectCreator {
     }
 
     /**
-     * Cria o objeto de ataque do jogador (hitbox retangular) sem comportamento.
-     * Será ativado/desativado pela Entity ou Behaviour de ataque.
-     * 
-     * @param width   largura do hitbox de ataque
-     * @param height  altura do hitbox de ataque
-     * @return        GameObject configurado como playerAttack
-     */
-    public static IGameObject playerAttack1(int width, int height) {
-        IGameObject attack = new GameObject("playerAttack");
-        ITransform transform = new Transform(0, 0, 0, 0, 1);
-        ICollider collider = squareHitbox(width, height);
-        IShape shape = new BlockShape(width, height, Color.GREEN);
-        attack.insertElements(transform, collider, shape, null);
-        return attack;
-    }
-
-    /**
      * Cria o HUD de visualização de vida do jogador.
      * Posiciona-o no canto superior esquerdo e usa uma forma específica.
      * 
      * @return GameObject configurado como healthHUD
      */
-    public static IGameObject healthHUD(PlayerBehaviour pb) {
+    public static IGameObject healthHUD(PlayerBehaviour trackedPlayer) {
         IGameObject healthHUD = new GameObject("healthHUD");
         ITransform transform = new Transform(40, 70, Integer.MAX_VALUE, 0, 1);
-        IShape shape = new HealthShape(pb);
+        IShape shape = new HealthShape(trackedPlayer);
         healthHUD.insertElements(transform, null, shape, null);
         return healthHUD;
     }
-
-    public static IGameObject meleeAtack(double x, double y, int layer, double rotation, double scale,
-    int damage, int width, int height, long duration, Physics physics, String name){
-        GameObject attack = new GameObject(name);
-        ITransform transform = new Transform(x, y, layer, rotation, scale);
-        ICollider collider = squareHitbox(width, height);
-        IBehaviour behaviour = new meleeAttackBehaviour(damage, duration, physics);
-        IShape shape = new BlockShape(width, height, Color.GREEN);
-        attack.insertElements(transform, collider, null, behaviour);
-        return attack;
-    }
-
     public static IGameObject score(PlayerBehaviour trackedPlayer){
         IGameObject score = new GameObject("score");
         ITransform transform = new Transform(1400, 70, 0, 0, 1);
@@ -222,6 +186,19 @@ public class ObjectCreator {
         score.insertElements(transform, null, shape, null);
         return score;
     }
+
+
+    public static IGameObject meleeAtack(IPoints own, double x, double y, int layer, double rotation, double scale,
+    int damage, int width, int height, long duration, Physics physics, String name){
+        GameObject attack = new GameObject(name);
+        ITransform transform = new Transform(x, y, layer, rotation, scale);
+        ICollider collider = squareHitbox(width, height);
+        IBehaviour behaviour = new meleeAttackBehaviour(own, damage, duration, physics);
+        IShape shape = new BlockShape(width, height, Color.GREEN);
+        attack.insertElements(transform, collider, null, behaviour);
+        return attack;
+    }
+
 
     public static IGameObject background(double x, double y, int layer, double rotation, double scale,
     int width, int height){

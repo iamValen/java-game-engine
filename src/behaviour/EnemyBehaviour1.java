@@ -1,5 +1,6 @@
 package behaviour;
 
+import engine.GameObject;
 import interfaces.IGameObject;
 import interfaces.ITransform;
 import java.util.ArrayList;
@@ -14,9 +15,9 @@ import java.util.ArrayList;
  */
 public class EnemyBehaviour1 extends AEnemy {
 
-    long now = 0;
-    long lastTurned = 0;
-    int moving = -50;
+    private long now = 0;
+    private long lastTurned = System.currentTimeMillis();
+    private int moving = 50;
 
     private Health health;
     private int state;
@@ -24,6 +25,11 @@ public class EnemyBehaviour1 extends AEnemy {
 
     private int patrolRangeX;
     private int patrolRangeY;
+
+    private GameObject vision;
+    private int visionRangeX;
+    private int visionRangeY;
+    private int seesPlayer;
 
     private AAtack attack1;
     private final int attackWidth = 130;
@@ -33,14 +39,23 @@ public class EnemyBehaviour1 extends AEnemy {
     private final long attackCooldown = 700;
     private final int attack1Damage = 50;
 
-    public EnemyBehaviour1(int damage, int width, int height){
+    public EnemyBehaviour1(int damage, int movespeed, int width, int height, int visionRangeX, int visionRangeY){
         super(1000, 50);
+        this.visionRangeX = visionRangeX;
+        this.visionRangeY = visionRangeY;
         this.physics = new Physics();
+        moving = movespeed;
+    }
+
+    @Override
+    public void playerInRange() {
+        seesPlayer = 1;        
     }
 
     @Override
     public void oninit(){
         health = new Health(myGo, 100);
+        // vision = ObjectCreator.enemyVision(this, visionRangeX, visionRangeY);
     }
 
     @Override
@@ -57,6 +72,7 @@ public class EnemyBehaviour1 extends AEnemy {
 
     @Override
     public void onUpdate(double dT){
+        //move vision to correct position
         now = System.currentTimeMillis();
         ITransform t = myGo.transform();
 
@@ -81,7 +97,7 @@ public class EnemyBehaviour1 extends AEnemy {
         physics.update(dT);
         t.move(physics.Speed().scale(dT/0.016666), 0);
         physics.setIsGrounded(false);
-
+        seesPlayer = 0;
     }
 
     // NOTAS

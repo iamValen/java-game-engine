@@ -3,24 +3,24 @@ package shapes;
 import behaviour.PlayerBehaviour;
 import behaviour.PlayerState;
 import interfaces.IShape;
-import interfaces.Observer;
-
-import java.io.IOException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
 
-public class PlayerShape implements IShape, Observer {
+public class PlayerShape implements IShape {
 
     private PlayerState currentState;
     int direction;
     private Map<PlayerState, SpriteAnimator> animators;
+    private final PlayerBehaviour owner;
 
-    public PlayerShape() {
+    public PlayerShape(PlayerBehaviour own) {
         animators = new HashMap<>();
+        owner = own;
 
         try {
             BufferedImage idleSprite = ImageIO.read(getClass().getResource("/assets/player_idle.png"));
@@ -38,7 +38,7 @@ public class PlayerShape implements IShape, Observer {
             animators.put(PlayerState.hurt, new SpriteAnimator(hurtSprite, 4, 96, 96, 4, 3, false));
 
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
     }
 
@@ -49,7 +49,7 @@ public class PlayerShape implements IShape, Observer {
         else System.out.println("Not a state");
     }
 
-    public void update() {
+    public void update(){ 
         SpriteAnimator animator = animators.get(currentState);
         if (animator != null) {
             animator.update();
@@ -58,37 +58,32 @@ public class PlayerShape implements IShape, Observer {
 
     @Override
     public void render(Graphics g, int x, int y) {
-    SpriteAnimator animator = animators.get(currentState);
-    if (animator != null) {
-        BufferedImage frame = animator.getCurrentFrame();
+        updateState();
+        SpriteAnimator animator = animators.get(currentState);
+        if (animator != null) {
+            BufferedImage frame = animator.getCurrentFrame();
 
-        int width = frame.getWidth();
-        int height = frame.getHeight();
+            int width = frame.getWidth();
+            int height = frame.getHeight();
 
-        Graphics2D g2d = (Graphics2D) g.create();
+            Graphics2D g2d = (Graphics2D) g.create();
 
-        if (direction == -1) {
-            g2d.translate(x + width / 2, y - height / 2 - 50);
-            g2d.scale(-1, 1); // espelha horizontalmente
-            g2d.drawImage(frame, 0, 0, null);
-        } else {
-            g2d.drawImage(frame, x - width / 2, y - height / 2 - 50, null);
+            if (direction == -1) {
+                g2d.translate(x + width / 2, y - height / 2 - 50);
+                g2d.scale(-1, 1); // espelha horizontalmente
+                g2d.drawImage(frame, 0, 0, null);
+            } else {
+                g2d.drawImage(frame, x - width / 2, y - height / 2 - 50, null);
+            }
+
+            g2d.dispose();
         }
-
-        g2d.dispose();
-    }
     }
 
-    @Override
-    public void update(PlayerBehaviour b){
-        PlayerState newState = b.state();
-        int newDirection = b.myGo().transform().direction();
+    private void updateState(){
+        PlayerState newState = owner.state();
+        int newDirection = owner.gameObject().transform().direction();
         if(currentState != newState) setState(newState);
         if(direction != newDirection) direction = newDirection;
-    }
-
-    @Override
-    public int type() {
-        return 2;
     }
 }

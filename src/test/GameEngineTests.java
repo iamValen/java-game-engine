@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import behaviour.ABehaviour;
+import behaviour.AAABehaviour;
 import behaviour.Physics;
 import engine.Collider;
 import engine.GameEngine;
@@ -18,7 +18,7 @@ import interfaces.IGameObject;
 
 public class GameEngineTests {
 
-    class testBehaviour extends ABehaviour{
+    class testBehaviour extends AAABehaviour{
         Physics physics;
 
         boolean onInitRan = false;
