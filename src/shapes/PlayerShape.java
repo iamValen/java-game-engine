@@ -68,11 +68,11 @@ public class PlayerShape implements IShape, Observer {
         Graphics2D g2d = (Graphics2D) g.create();
 
         if (direction == -1) {
-            g2d.translate(x + width / 2, y - height / 2 - 25);
+            g2d.translate(x + width / 2, y - height / 2 - 50);
             g2d.scale(-1, 1); // espelha horizontalmente
             g2d.drawImage(frame, 0, 0, null);
         } else {
-            g2d.drawImage(frame, x - width / 2, y - height / 2 - 25, null);
+            g2d.drawImage(frame, x - width / 2, y - height / 2 - 50, null);
         }
 
         g2d.dispose();

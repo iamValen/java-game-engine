@@ -1,17 +1,19 @@
 # Game Engine in Java
 
 ## TO TALK ABT
-
+- [ ] Como fazer os blocos?
 
 # TODO 
 - [X] dar uma ref do HUD para o player e no onDestroy destruir tudo. -
     - não funciona mesmo assim
-- [ ] não passar nada para o update do observer e ter uma referência para ele
-    - Fazer o Observer abstract para ter logo nele o playerBehaviour?
-- [ ] melhorar a chamada de update dos observers
 - [ ] Animation "hurt" aparece mesmo quando ainda está no cooldown de invencível
     - Já tentei passar a lógica do cooldown de Health para PlayerBehaviour mas funciona mal 
 
+- [ ] não passar nada para o update do observer e ter uma referência para ele
+    - Fazer o Observer abstract para ter logo nele o playerBehaviour?
+- [ ] melhorar a chamada de update dos observers
+
+- [ ] onCollision dos inimigos serão quase os mesmos
 
 # PDF
 - singleton

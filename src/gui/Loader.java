@@ -2,6 +2,8 @@ package gui;
 
 import engine.*;
 import interfaces.*;
+import figures.Point;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -22,6 +24,8 @@ public class Loader {
     /** Chave de posição dentro do nível (pode indicar spawn point) */
     private static int posKey;
 
+    private static IGameObject player;
+
     /**
      * Configuração da sala 1.
      */
@@ -29,10 +33,13 @@ public class Loader {
         IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
         engine.addEnabled(background);
 
-        IGameObject player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 40);
+        if(player == null) 
+            player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 100);
+        else
+            player.transform().setPosition(new Point(500, 300), 0);    
         engine.addEnabled(player);
         
-        IGameObject enemy = ObjectCreator.Enemy1(100, 300, 0, 0, 1, 50, 50);
+        IGameObject enemy = ObjectCreator.Enemy1(100, 100, 0, 0, 1, 50, 50);
         engine.addEnabled(enemy);
 
         IGameObject ls = ObjectCreator.loading_screen(1000, 600, 0, 0, 1, 60, 60, 2, 1);
@@ -41,7 +48,7 @@ public class Loader {
         IGameObject floor = ObjectCreator.floor();
         engine.addEnabled(floor);
         
-        IGameObject block = ObjectCreator.block(1300,400, 0, 0, 1, 200,200);
+        IGameObject block = ObjectCreator.block(1300,600, 0, 0, 1, 200,200);
         engine.addEnabled(block);
     }
 
@@ -52,7 +59,10 @@ public class Loader {
         IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
         engine.addEnabled(background);
 
-        IGameObject player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 40);
+        if(player == null) 
+            player = ObjectCreator.Player(500, 300, 0, 0, 1, 40, 100);
+        else
+            player.transform().setPosition(new Point(500, 300), 0);    
         engine.addEnabled(player);
 
         IGameObject enemy = ObjectCreator.Enemy1(800, 600, 0, 0, 1, 50, 50);

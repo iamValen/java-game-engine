@@ -106,7 +106,7 @@ public class ObjectCreator {
      */
     public static IGameObject floor() {
         IGameObject out = new GameObject("floor");
-        int groundHeight = ge.getScreenHeight() / 8 + 5;
+        int groundHeight = ge.getScreenHeight() / 16;
 
         // Centro do chão: meio da largura e em baixo, ajustado pela metade da altura
         Transform t2 = new Transform(
