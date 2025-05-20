@@ -11,9 +11,7 @@ import interfaces.Observer;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import shapes.HealthShape;
 import shapes.PlayerShape;
-import shapes.ScoreShape;
 
 /**
  * Comportamento responsável por carregar um novo nível.
@@ -23,7 +21,7 @@ import shapes.ScoreShape;
  * @author Valentim Khakhitva a81785
  * @version 11/05/2025
  */
-public class PlayerBehaviour extends ABehaviour implements Observable{
+public class PlayerBehaviour extends ABehaviour implements Observable, IPoints{
 
     private final GameEngine engine = GameEngine.getInstance();
     
@@ -97,11 +95,9 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
 
         state = PlayerState.idle;
 
-        healthHUD = ObjectCreator.healthHUD();
-        this.addObserver((HealthShape) healthHUD.shape());
+        healthHUD = ObjectCreator.healthHUD(this);
 
-        scoreHUD = ObjectCreator.score();
-        this.addObserver((ScoreShape) scoreHUD.shape());
+        scoreHUD = ObjectCreator.score(this);
 
         notifyObservers();
 
@@ -113,7 +109,8 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
     @Override
     public void onDestroy(){
         // Player died
-        engine.destroy(attack1);
+        if(attack1 != null)
+            engine.destroy(attack1);
         engine.destroy(healthHUD);
         engine.destroy(scoreHUD);
         System.out.println("player died");
@@ -294,18 +291,26 @@ public class PlayerBehaviour extends ABehaviour implements Observable{
         this.physics.setIsGrounded(isGrounded);
     }
 
+    @Override
     public void addObserver(Observer observer){
         observers.add(observer);
     }
 
+    @Override
     public void removeObserver(Observer observer){
         observers.remove(observer);
     }
-    
+
+    @Override
     public void notifyObservers(){
         for (Observer observer : observers) {
             observer.update(this);
         }
+    }
+
+    @Override
+    public void recievePoints(int points) {
+        score+=points;
     }
 
     public int getScore(){

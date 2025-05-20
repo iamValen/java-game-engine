@@ -1,33 +1,24 @@
 package shapes;
 
+import behaviour.PlayerBehaviour;
 import engine.GameEngine;
 import interfaces.IShape;
-import interfaces.Observer;
-
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
-import behaviour.PlayerBehaviour;
+public class ScoreShape implements IShape {
 
-import java.awt.Font;
+    public ScoreShape(PlayerBehaviour own){
+        owner = own;
+    }
 
-public class ScoreShape implements IShape, Observer {
+    private PlayerBehaviour owner;
 
-    GameEngine engine = GameEngine.getInstance();
+    private final GameEngine engine = GameEngine.getInstance();
 
     int score;
     Color color = Color.WHITE;
-
-    @Override
-    public int type(){
-        return 1;
-    }
-
-    @Override
-    public void update(PlayerBehaviour playerB) {
-        int newScore = playerB.getScore();
-        this.score = newScore;
-    }
 
     @Override
     public void render(Graphics g, int x, int y) {
@@ -37,6 +28,7 @@ public class ScoreShape implements IShape, Observer {
         Font newFont = oldFont.deriveFont(Font.BOLD, 36f);
         g.setFont(newFont);
 
+        score = owner.getScore();
         String scoreStr = Long.toString(score);
         int textWidth = g.getFontMetrics().stringWidth(scoreStr);
 

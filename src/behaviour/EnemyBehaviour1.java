@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Valentim Khakhitva a81785
  * @version 11/05/2025
  */
-public class EnemyBehaviour1 extends ADamagingBehaviour {
+public class EnemyBehaviour1 extends AEnemy {
 
     long now = 0;
     long lastTurned = 0;
@@ -20,13 +20,12 @@ public class EnemyBehaviour1 extends ADamagingBehaviour {
 
     private Health health;
     private int state;
-    private int damage;
     private Physics physics;
 
     private int patrolRangeX;
     private int patrolRangeY;
 
-    private IGameObject attack1;
+    private AAtack attack1;
     private final int attackWidth = 130;
     private final int attackHeight = 100;
     private long meleeAttackStart = 0;
@@ -35,13 +34,8 @@ public class EnemyBehaviour1 extends ADamagingBehaviour {
     private final int attack1Damage = 50;
 
     public EnemyBehaviour1(int damage, int width, int height){
-        this.damage = damage;
+        super(1000, 50);
         this.physics = new Physics();
-    }
-
-    @Override
-    public int getDamage(){
-        return damage;
     }
 
     @Override
@@ -50,7 +44,9 @@ public class EnemyBehaviour1 extends ADamagingBehaviour {
     }
 
     @Override
-    public void onDestroy(){}
+    public void onDestroy(){
+        givePointsToWhoDeserves();
+    }
 
     @Override
     public void onEnable(){}
@@ -61,7 +57,6 @@ public class EnemyBehaviour1 extends ADamagingBehaviour {
 
     @Override
     public void onUpdate(double dT){
-System.out.println(myGo.transform().position().y());
         now = System.currentTimeMillis();
         ITransform t = myGo.transform();
 
@@ -110,18 +105,23 @@ System.out.println(myGo.transform().position().y());
     public void onCollision(ArrayList<IGameObject> gol){
         boolean flag = true;
         for(IGameObject go : gol){
-            if(go.name().equals("playerAttack")){
-                health.takeDamage(go);
-                if(health.getHealth() == 0){
-                    IGameObject other = ((meleeAttackBehaviour) go.behaviour()).getGo();
-                    if(other.name().equals("Player")){
-                        PlayerBehaviour playerBehaviour = ((PlayerBehaviour) other.behaviour());
-                        playerBehaviour.addScore(500);
-                        playerBehaviour.notifyObservers();
-                    }
-                }
-            }
+            // if(go.name().equals("playerAttack")){
+                // lastAtackThatConnected = (AAtack)go;
+                // health.takeDamage(go);
+                // if(health.getHealth() == 0){
+                //     IGameObject other = ((meleeAttackBehaviour) go.behaviour()).getGo();
+                //     if(other.name().equals("Player")){
+                //         PlayerBehaviour playerBehaviour = ((PlayerBehaviour) other.behaviour());
+                //         playerBehaviour.addScore(500);
+                //         playerBehaviour.notifyObservers();
+                //     }
+                // }
+            // }
             switch (go.name()) {
+            case("playerAttack") ->{
+                lastAtackThatConnected = (AAtack) go.behaviour();
+                health.takeDamage(go);
+            }
             case("floor") -> {
                     if(flag)
                         Physics.snapToFloor(myGo, go);

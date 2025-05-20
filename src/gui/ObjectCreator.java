@@ -9,7 +9,6 @@ import figures.Point;
 import figures.Polygon;
 import interfaces.*;
 import java.awt.Color;
-
 import shapes.BackgroundShape;
 import shapes.BlockShape;
 import shapes.HealthShape;
@@ -191,10 +190,10 @@ public class ObjectCreator {
      * 
      * @return GameObject configurado como healthHUD
      */
-    public static IGameObject healthHUD() {
+    public static IGameObject healthHUD(PlayerBehaviour pb) {
         IGameObject healthHUD = new GameObject("healthHUD");
         ITransform transform = new Transform(40, 70, Integer.MAX_VALUE, 0, 1);
-        IShape shape = new HealthShape();
+        IShape shape = new HealthShape(pb);
         healthHUD.insertElements(transform, null, shape, null);
         return healthHUD;
     }
@@ -210,10 +209,10 @@ public class ObjectCreator {
         return attack;
     }
 
-    public static IGameObject score(){
+    public static IGameObject score(PlayerBehaviour trackedPlayer){
         IGameObject score = new GameObject("score");
         ITransform transform = new Transform(1400, 70, 0, 0, 1);
-        IShape shape = new ScoreShape();
+        IShape shape = new ScoreShape(trackedPlayer);
         score.insertElements(transform, null, shape, null);
         return score;
     }

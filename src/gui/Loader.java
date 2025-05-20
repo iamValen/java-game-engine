@@ -41,7 +41,7 @@ public class Loader {
         IGameObject floor = ObjectCreator.floor();
         engine.addEnabled(floor);
         
-        IGameObject block = ObjectCreator.block(1300,400, 0, 0, 1, 200,200);
+        IGameObject block = ObjectCreator.block(1300,600, 0, 0, 1, 200,200);
         engine.addEnabled(block);
     }
 

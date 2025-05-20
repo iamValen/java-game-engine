@@ -3,7 +3,7 @@ package behaviour;
 import engine.GameEngine;
 import interfaces.IGameObject;
 
-public class meleeAttackBehaviour extends ADamagingBehaviour{
+public class meleeAttackBehaviour extends AAtack{
 
     private static final GameEngine engine = GameEngine.getInstance();
     private IGameObject go;
@@ -11,9 +11,9 @@ public class meleeAttackBehaviour extends ADamagingBehaviour{
     private long start;
     private final long duration;
     private long now;
-    private int damage;
 
     public meleeAttackBehaviour(int damage, long duration, Physics physics) {
+        super(null, damage);
         this.damage = damage;
         this.duration = duration;
         this.physics = physics;
@@ -21,6 +21,7 @@ public class meleeAttackBehaviour extends ADamagingBehaviour{
 
     public void setGo(IGameObject other){
         this.go = other;
+        owner = (IPoints) other.behaviour();
     }
 
     public IGameObject getGo(){

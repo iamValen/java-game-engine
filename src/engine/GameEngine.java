@@ -124,6 +124,7 @@ public class GameEngine implements IGameEngine{
     @Override
     public void destroy(IGameObject go){
         toDestroy.add(go);
+        if(go.behaviour() != null) go.behaviour().onDestroy();
     }
     
     @Override
