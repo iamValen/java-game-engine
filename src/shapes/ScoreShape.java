@@ -9,16 +9,10 @@ import java.awt.Graphics;
 
 public class ScoreShape implements IShape {
 
-    public ScoreShape(PlayerBehaviour own){
-        owner = own;
-    }
-
-    private PlayerBehaviour owner;
-
-    private final GameEngine engine = GameEngine.getInstance();
-
     private int score = 0;
     private Color color = Color.WHITE;
+
+    public ScoreShape(){}
 
     @Override
     public void render(Graphics g, int x, int y) {
@@ -31,12 +25,12 @@ public class ScoreShape implements IShape {
         String scoreStr = Long.toString(score);
         int textWidth = g.getFontMetrics().stringWidth(scoreStr);
 
-        g.drawString(scoreStr, x - textWidth, y);  // Alinha à direita
+        g.drawString(scoreStr, x - textWidth, y);
 
         g.setFont(oldFont);
     }
 
-    public void updateScore(){
-        score = owner.getScore();
+    public void update(int i){
+        score = i;
     }
 }

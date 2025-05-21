@@ -11,6 +11,7 @@ import interfaces.*;
 import java.awt.Color;
 import shapes.BackgroundShape;
 import shapes.BlockShape;
+import shapes.DashShape;
 import shapes.HealthShape;
 import shapes.ImageBlockShape;
 import shapes.PlayerShape;
@@ -187,16 +188,25 @@ public class ObjectCreator {
         IGameObject healthHUD = new GameObject("healthHUD");
         ITransform transform = new Transform(40, 70, Integer.MAX_VALUE, 0, 1);
         HealthShape shape = new HealthShape(width);
-        IBehaviour behaviour = new HealthHUDBehaviour(maxHealth, width, shape);
+        IBehaviour behaviour = new HUDHealthBehaviour(maxHealth, width, shape);
         healthHUD.insertElements(transform, null, shape, behaviour);
         return healthHUD;
     }
-    public static IGameObject score(PlayerBehaviour trackedPlayer){
-        IGameObject score = new GameObject("score");
-        ITransform transform = new Transform(1400, 70, 0, 0, 1);
-        IShape shape = new ScoreShape(trackedPlayer);
-        score.insertElements(transform, null, shape, null);
-        return score;
+    public static IGameObject scoreHUD(){
+        IGameObject scoreHUD = new GameObject("scoreHUD");
+        ITransform transform = new Transform(1400, 70, Integer.MAX_VALUE, 0, 1);
+        ScoreShape shape = new ScoreShape();
+        IBehaviour behaviour = new HUDScoreBehaviour(shape);
+        scoreHUD.insertElements(transform, null, shape, behaviour);
+        return scoreHUD;
+    }
+    public static IGameObject dashHUD(){
+        IGameObject dashHUD = new GameObject("dashHUD");
+        ITransform transform = new Transform(40, 70, Integer.MAX_VALUE, 0, 1);
+        DashShape shape = new DashShape();
+        IBehaviour behaviour = new HUDDashBehaviour(100, shape);
+        dashHUD.insertElements(transform, null, shape, behaviour);
+        return dashHUD;
     }
 
 

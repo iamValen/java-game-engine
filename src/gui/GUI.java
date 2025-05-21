@@ -68,7 +68,7 @@ public class GUI extends Canvas {
      * O método equals() no final serve apenas para evitar
      * warnings de variável não utilizada.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args){
         GUI gui = new GUI();
         gui.engine.equals((Object)0);
     }

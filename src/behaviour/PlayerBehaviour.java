@@ -7,6 +7,8 @@ import gui.ObjectCreator;
 import interfaces.IGameObject;
 import interfaces.ITransform;
 import interfaces.Observable;
+import interfaces.Observer;
+
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import shapes.HealthShape;
@@ -25,15 +27,19 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
     private final GameEngine engine = GameEngine.getInstance();
     
-    private PlayerState state;
+    private final ArrayList<Observer> ol = new ArrayList<>();
 
-    private IGameObject healthHUD;
-    private IGameObject scoreHUD;
+    IGameObject healthHUD;
+    IGameObject dashHUD;
+    IGameObject scoreHUD;
+
+    private PlayerState state;
 
     private final int width;
     private final int height;
     private Physics physics;
     private Health health;
+    private int maxHealth = 200;
 
     private long now;
 
@@ -84,25 +90,28 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
     public void oninit(){
         physics = new Physics();
         if(health == null){
-            health = new Health(myGo, 200);
+            health = new Health(myGo, maxHealth);
             health.setIFrames(2500);
         }
         myGo.transform().setDirection(1);
 
         state = PlayerState.idle;
 
-        healthHUD = ObjectCreator.healthHUD();
-        ((HealthShape)healthHUD.shape()).updateHealth();
+        healthHUD = ObjectCreator.healthHUD(maxHealth, 210);
+        dashHUD = ObjectCreator.dashHUD();
+        scoreHUD = ObjectCreator.scoreHUD();
 
-        scoreHUD = ObjectCreator.score(this);
-        ((ScoreShape)scoreHUD.shape()).updateScore();
+        addObserver(((HUDHealthBehaviour) healthHUD.behaviour()));
+        addObserver(((HUDDashBehaviour) dashHUD.behaviour()));
+        addObserver(((HUDScoreBehaviour) scoreHUD.behaviour()));
 
-
-        attack1 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack1Damage, attackWidth, attackHeight, attackDuration, physics, "playerAttack");
+        notifyHealth();
 
         engine.addEnabled(healthHUD);
+        engine.addEnabled(dashHUD);
         engine.addEnabled(scoreHUD);
 
+        attack1 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack1Damage, attackWidth, attackHeight, attackDuration, physics, "playerAttack");
     }
 
     @Override
@@ -110,6 +119,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         // Player died
         engine.destroy(attack1);
         engine.destroy(healthHUD);
+        engine.destroy(dashHUD);
         engine.destroy(scoreHUD);
         System.out.println("player died");
     }
@@ -135,12 +145,14 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
         if(dashCharges >= maxDashCharges)
             lastDashRechargeTime = now;
-        else
+        else{
             if (now - lastDashRechargeTime >= dashRechargeTime) {
                 dashCharges++;
                 lastDashRechargeTime = now;
-                // notifyObservers(); // notify dash bars
             }
+            notifyDash();
+        }
+
 
 
         // INPUT
@@ -155,7 +167,6 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             engine.addEnabled(attack1);
 
             isDashing = false;
-            // isJumping = false; //attention!!!
 
             newState = PlayerState.attack;
         }
@@ -184,7 +195,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
             isJumping = false; //attention
 
-            ((HealthShape)healthHUD.shape()).updateDash();
+            notifyDash();
 
             newState = PlayerState.dash;
         }// continues dash
@@ -192,6 +203,8 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             myGo.transform().move(new Point(20*(dt/0.016666) * myGo.transform().direction(), 0), 0);
             if(engine.enabled().contains(attack1))
                 attack1.transform().move(new Point(20*(dt/0.016666) * myGo.transform().direction(), 0), 0);
+            
+            notifyDash();
         }
         else{
             isDashing = false;
@@ -228,7 +241,6 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
         if (newState != state || t.direction() != oldDirection) {
             state = newState;
-            // notifyObservers();
         }
 
         physics.setIsGrounded(false);
@@ -274,14 +286,12 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
                 case("Enemy1") -> {
                     health.takeDamage(go1);
                     state = PlayerState.hurt;
-                    ((HealthShape)healthHUD.shape()).updateHealth();
-                    // notifyObservers();
+                    notifyHealth();
                 }
                 case("EnemyAttack") ->{
                     health.takeDamage(go1);
-                    ((HealthShape)healthHUD.shape()).updateHealth();
                     state = PlayerState.hurt;
-                    // notifyObservers();
+                    notifyHealth();
                 }
                 default -> {}
             }
@@ -309,15 +319,11 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
     @Override
     public void recievePoints(int points) {
         score += points;
-        ((ScoreShape)scoreHUD.shape()).updateScore();
+        notifyScore();
     }
 
     public int getScore(){
         return score;
-    }
-
-    public void addScore(int add){
-        score += add;
     }
 
     public int getDashCharges(){
@@ -326,5 +332,33 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
     public long getLastDashRechargeTime(){
         return lastDashRechargeTime;
+    }
+
+    @Override
+    public void addObserver(Observer observer){
+        ol.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer){
+        ol.remove(observer);
+    }
+
+    @Override
+    public void notifyHealth(){
+        ObserverInfo info = new ObserverInfo(health.getHealth(), 0);
+        ol.get(0).update(info);
+    }
+
+    @Override
+    public void notifyDash(){
+        ObserverInfo info = new ObserverInfo(dashCharges, lastDashRechargeTime);
+        ol.get(1).update(info);
+    }
+
+    @Override
+    public void notifyScore(){
+        ObserverInfo info = new ObserverInfo(score, 0);
+        ol.get(2).update(info);
     }
 }

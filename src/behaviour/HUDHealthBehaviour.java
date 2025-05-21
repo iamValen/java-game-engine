@@ -3,7 +3,7 @@ package behaviour;
 import interfaces.Observer;
 import shapes.HealthShape;
 
-public class HealthHUDBehaviour extends AAABehaviour implements Observer {
+public class HUDHealthBehaviour extends AAABehaviour implements Observer {
 
     private final int width;
     private final int maxHealth;
@@ -11,7 +11,7 @@ public class HealthHUDBehaviour extends AAABehaviour implements Observer {
     private final HealthShape hs;
 
 
-    public HealthHUDBehaviour(int maxHealth, int width, HealthShape shape){
+    public HUDHealthBehaviour(int maxHealth, int width, HealthShape shape){
         this.maxHealth = maxHealth;
         this.width = width;
         this.hs = shape;
@@ -19,9 +19,9 @@ public class HealthHUDBehaviour extends AAABehaviour implements Observer {
 
     @Override
     public void update(ObserverInfo info) {
-        this.health = info.health;
+        this.health = info.i;
         
-        float healthRatio = health / maxHealth;
+        float healthRatio = (float) health / maxHealth;
         int filledWidth = (int) (healthRatio * width);
         hs.update(filledWidth);
     }
