@@ -47,7 +47,7 @@ public class Loader {
             player.transform().setPosition(new Point(500, 300), 0);    
         engine.addEnabled(player);
 
-        IGameObject enemy = ObjectCreator.Enemy1(100, 100, 0, 0, 1, 50, 50, 400, 600);
+        IGameObject enemy = ObjectCreator.Enemy1(100, 100, 0, 0, 1, 50, 50, 600, 300);
         engine.addEnabled(enemy);
 
         IGameObject ls = ObjectCreator.loading_screen(1400, 200, 0, 0, 1, 60, 60, 2, 1);

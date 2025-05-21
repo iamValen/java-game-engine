@@ -77,6 +77,16 @@ public class ObjectCreator {
         return out;
     }
 
+    public static IGameObject EnemyVision(AEnemy own, int rangeX, int rangeY){
+        IGameObject out = new GameObject("vision");
+        ITransform transform = new Transform(0, 0, 0, 0, 1);
+        ICollider collider = squareHitbox(rangeX, rangeY);
+        IBehaviour behaviour = new VisionBehaviour(own);
+        IShape shape = new BlockShape(rangeX, rangeY, Color.CYAN); // to see hitbox
+        out.insertElements(transform, collider, null, behaviour);
+        return out;
+    }
+
     /**
      * Cria o GameObject da zona de transição (loading screen) com comportamento STBehaviour.
      * 
@@ -195,7 +205,7 @@ public class ObjectCreator {
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         ICollider collider = squareHitbox(width, height);
         IBehaviour behaviour = new meleeAttackBehaviour(own, damage, duration, physics);
-        IShape shape = new BlockShape(width, height, Color.GREEN);
+        IShape shape = new BlockShape(width, height, Color.GREEN); // to check hitbox
         attack.insertElements(transform, collider, null, behaviour);
         return attack;
     }

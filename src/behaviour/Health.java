@@ -18,7 +18,13 @@ public class Health {
 
     private int health;
 
+    private int iFrames = 250;
+
     long damageTime = 0;
+
+    public void setIFrames(int newVal){
+        iFrames = newVal;
+    }
 
     /**
      * Constrói uma nova entidade associada a um GameObject e com vida inicial.
@@ -43,7 +49,7 @@ public class Health {
 
     public void takeDamage(IGameObject take){
         now = System.currentTimeMillis();
-        if(now - damageTime > 2500){
+        if(now - damageTime > iFrames){
             damageTime = System.currentTimeMillis();
             this.health -= ((IDamage)take.behaviour()).getDamage();
             if(this.health <= 0)

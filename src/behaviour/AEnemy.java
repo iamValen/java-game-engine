@@ -4,6 +4,11 @@ public abstract class AEnemy extends AAABehaviour implements IDamage, IPoints {
     protected int points;
     protected int contactDamage;
     protected AAtack lastAtackThatConnected;
+    protected Physics physics;
+
+    public Physics physics(){
+        return physics;
+    }
 
     @Override
     public int getDamage(){

@@ -8,7 +8,9 @@ import interfaces.IGameObject;
 import interfaces.ITransform;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import shapes.HealthShape;
 import shapes.PlayerShape;
+import shapes.ScoreShape;
 
 /**
  *
@@ -80,14 +82,20 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints{
     @Override
     public void oninit(){
         physics = new Physics();
-        health = new Health(myGo, 200);
+        if(health == null){
+            health = new Health(myGo, 200);
+            health.setIFrames(2500);
+        }
         myGo.transform().setDirection(1);
 
         state = PlayerState.idle;
 
         healthHUD = ObjectCreator.healthHUD(this);
+        ((HealthShape)healthHUD.shape()).updateHealth();
 
         scoreHUD = ObjectCreator.score(this);
+        ((ScoreShape)scoreHUD.shape()).updateScore();
+
 
         attack1 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack1Damage, attackWidth, attackHeight, attackDuration, physics, "playerAttack");
 
@@ -137,7 +145,6 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints{
         // INPUT
         // attack
         if(InputManager.isKeyDown(KeyEvent.VK_S) && (now - meleeAttackStart > attackCooldown)){
-
             meleeAttackStart = System.currentTimeMillis();
 
             double x = t.position().x() + t.direction()*(width/2 + attackWidth/2);
@@ -264,10 +271,12 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints{
                 case("Enemy1") -> {
                     health.takeDamage(go1);
                     state = PlayerState.hurt;
+                    ((HealthShape)healthHUD.shape()).updateHealth();
                     // notifyObservers();
                 }
                 case("EnemyAttack") ->{
                     health.takeDamage(go1);
+                    ((HealthShape)healthHUD.shape()).updateHealth();
                     state = PlayerState.hurt;
                     // notifyObservers();
                 }
@@ -296,7 +305,8 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints{
 
     @Override
     public void recievePoints(int points) {
-        score+=points;
+        score += points;
+        ((ScoreShape)scoreHUD.shape()).updateScore();
     }
 
     public int getScore(){

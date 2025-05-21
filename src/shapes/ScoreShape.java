@@ -17,8 +17,8 @@ public class ScoreShape implements IShape {
 
     private final GameEngine engine = GameEngine.getInstance();
 
-    int score;
-    Color color = Color.WHITE;
+    private int score = 0;
+    private Color color = Color.WHITE;
 
     @Override
     public void render(Graphics g, int x, int y) {
@@ -28,12 +28,15 @@ public class ScoreShape implements IShape {
         Font newFont = oldFont.deriveFont(Font.BOLD, 36f);
         g.setFont(newFont);
 
-        score = owner.getScore();
         String scoreStr = Long.toString(score);
         int textWidth = g.getFontMetrics().stringWidth(scoreStr);
 
         g.drawString(scoreStr, x - textWidth, y);  // Alinha à direita
 
         g.setFont(oldFont);
+    }
+
+    public void updateScore(){
+        score = owner.getScore();
     }
 }

@@ -32,10 +32,13 @@ public class HealthShape implements IShape {
 
     private final int maxHealth = 200;
 
-    public void update() {
-        this.health = owner.health().getHealth();
+    public void updateDash() {
         this.dashCharges = owner.getDashCharges();
         this.lastDashRechargeTime = owner.getLastDashRechargeTime();
+    }
+
+    public void updateHealth(){
+        this.health = owner.health().getHealth();
     }
 
     public void setColor(Color color) {
@@ -44,7 +47,7 @@ public class HealthShape implements IShape {
 
     @Override
     public void render(Graphics g, int x, int y) {
-        update();
+        updateDash();
         now = System.currentTimeMillis();
 
         int totalDashWidth = maxDashCharges * dashBarWidth + (maxDashCharges - 1) * dashBarSpacing;

@@ -1,6 +1,8 @@
 package behaviour;
 
-import engine.GameObject;
+import engine.GameEngine;
+import figures.Point;
+import gui.ObjectCreator;
 import interfaces.IGameObject;
 import interfaces.ITransform;
 import java.util.ArrayList;
@@ -15,21 +17,24 @@ import java.util.ArrayList;
  */
 public class EnemyBehaviour1 extends AEnemy {
 
+    private GameEngine engine = GameEngine.getInstance();
     private long now = 0;
-    private long lastTurned = System.currentTimeMillis();
     private int moving = 50;
 
     private Health health;
     private int state;
-    private Physics physics;
 
-    private int patrolRangeX;
-    private int patrolRangeY;
+    private final int patrolRangeLeft;
+    private final int patrolRangeRight;
 
-    private GameObject vision;
-    private int visionRangeX;
-    private int visionRangeY;
-    private int seesPlayer;
+    private final int width;
+    private final int height;
+
+
+    private IGameObject vision;
+    private final int visionRangeX;
+    private final int visionRangeY;
+    private boolean seesPlayer;
 
     private AAtack attack1;
     private final int attackWidth = 130;
@@ -45,22 +50,29 @@ public class EnemyBehaviour1 extends AEnemy {
         this.visionRangeY = visionRangeY;
         this.physics = new Physics();
         moving = movespeed;
+        this.width = width;
+        this.height = height;
+        patrolRangeLeft = 50;
+        patrolRangeRight = 800;
     }
 
     @Override
     public void playerInRange() {
-        seesPlayer = 1;        
+        seesPlayer = true;
     }
 
     @Override
     public void oninit(){
+        myGo.transform().setDirection(1);
         health = new Health(myGo, 100);
-        // vision = ObjectCreator.enemyVision(this, visionRangeX, visionRangeY);
+        vision = ObjectCreator.EnemyVision(this, visionRangeX, visionRangeY);
+        engine.addEnabled(vision);
     }
 
     @Override
     public void onDestroy(){
         givePointsToWhoDeserves();
+        engine.destroy(vision);
     }
 
     @Override
@@ -80,14 +92,20 @@ public class EnemyBehaviour1 extends AEnemy {
             physics.setAccel(0, 0);
         }
 
-        if (now - lastTurned > 2000) {
-            moving*=-1;
-            t.setDirection(t.direction()*-1);
-            lastTurned = System.currentTimeMillis();
-        }
-        physics.sumAccel(moving, 0);
-        
 
+        if(seesPlayer)
+            physics.sumAccel(2*moving, 0);
+        else{
+            if(t.position().x() < patrolRangeLeft){
+                moving = 50;
+                t.setDirection(1);
+            }
+            if(t.position().x() > patrolRangeRight){
+                moving = -50;
+                t.setDirection(-1);
+            }
+            physics.sumAccel(moving, 0);
+        }
 
 
 
@@ -96,8 +114,14 @@ public class EnemyBehaviour1 extends AEnemy {
 
         physics.update(dT);
         t.move(physics.Speed().scale(dT/0.016666), 0);
+
+        // to move vision
+        double x = t.position().x() + t.direction()*(width/2 + visionRangeX/2);
+        double y = t.position().y() + height/2 - visionRangeY/2;
+        vision.transform().setPosition(new Point(x, y), myGo.transform().layer());
+
         physics.setIsGrounded(false);
-        seesPlayer = 0;
+        seesPlayer = false;
     }
 
     // NOTAS
@@ -121,18 +145,6 @@ public class EnemyBehaviour1 extends AEnemy {
     public void onCollision(ArrayList<IGameObject> gol){
         boolean flag = true;
         for(IGameObject go : gol){
-            // if(go.name().equals("playerAttack")){
-                // lastAtackThatConnected = (AAtack)go;
-                // health.takeDamage(go);
-                // if(health.getHealth() == 0){
-                //     IGameObject other = ((meleeAttackBehaviour) go.behaviour()).getGo();
-                //     if(other.name().equals("Player")){
-                //         PlayerBehaviour playerBehaviour = ((PlayerBehaviour) other.behaviour());
-                //         playerBehaviour.addScore(500);
-                //         playerBehaviour.notifyObservers();
-                //     }
-                // }
-            // }
             switch (go.name()) {
             case("playerAttack") ->{
                 lastAtackThatConnected = (AAtack) go.behaviour();
