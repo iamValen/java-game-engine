@@ -183,6 +183,8 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints{
 
             isJumping = false; //attention
 
+            ((HealthShape)healthHUD.shape()).updateDash();
+
             newState = PlayerState.dash;
         }// continues dash
         if(isDashing && now - dashStart < 240){
@@ -252,10 +254,10 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints{
                 }
                 case("celing") ->{
                     if(flag){
-                        canJump = true;
-                        isJumping = false;
+                        Physics.snapToCeling(myGo, go1);
                     }
-                    Physics.snapToCeling(myGo, go1);
+                    canJump = false;
+                    isJumping = false;
                     flag = false;
                 }
                 case("rightWall") -> {
