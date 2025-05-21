@@ -8,12 +8,10 @@ import interfaces.IGameObject;
 import interfaces.ITransform;
 import interfaces.Observable;
 import interfaces.Observer;
+import shapes.PlayerShape;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import shapes.HealthShape;
-import shapes.PlayerShape;
-import shapes.ScoreShape;
 
 /**
  *
@@ -171,7 +169,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             newState = PlayerState.attack;
         }
         // run
-        if (now - meleeAttackStart > attackDuration && (InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT))) {
+        if ((InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT))) {
             if (InputManager.isKeyDown(KeyEvent.VK_LEFT)) {
                 physics.sumAccel(-130, 0);
                 t.setDirection(-1);
@@ -181,7 +179,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
                 t.setDirection(1);
             }
 
-            newState = PlayerState.run;
+            if(now - meleeAttackStart > attackDuration + 200)newState = PlayerState.run;
         }
         // dash
         if(InputManager.isKeyDown(KeyEvent.VK_A) && !isDashing && dashCharges > 0 && now - dashStart > 600){ // dash logic
@@ -192,8 +190,6 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             if (lastDashRechargeTime == -1) {
                 lastDashRechargeTime = now;
             }
-
-            isJumping = false; //attention
 
             notifyDash();
 
@@ -231,7 +227,8 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             newState = PlayerState.jump;
         }
 
-        if (isGrounded() && !isDashing && !isJumping && now - meleeAttackStart > attackDuration + 200 && physics.Speed().x() <= 3 && physics.Speed().x() >= -3){ // +200 -> intervalo para a animação do ataque acabar
+        if (isGrounded() && !isDashing && !isJumping && now - meleeAttackStart > attackDuration + 200 
+        && physics.Speed().x() <= 3 && physics.Speed().x() >= -3){ // +200 -> intervalo para a animação do ataque acabar
             newState = PlayerState.idle;
             isDashing = false;
         }

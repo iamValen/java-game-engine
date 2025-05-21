@@ -6,7 +6,6 @@ import shapes.ScoreShape;
 public class HUDScoreBehaviour extends AAABehaviour implements Observer {
     
     private final ScoreShape ss;
-    private int score;
 
     public HUDScoreBehaviour(ScoreShape ss){
         this.ss = ss;

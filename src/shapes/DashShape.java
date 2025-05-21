@@ -3,16 +3,12 @@ package shapes;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import behaviour.ObserverInfo;
 import interfaces.IShape;
-import interfaces.Observer;
 
 public class DashShape implements IShape{
 
     private int dashCharges = 2;
     private final int maxDashCharges = 2;
-    private final long dashRechargeTime = 3000;
-    private long now;
     private long lastDashRechargeTime = -1;
 
     private final int barWidth = 100;

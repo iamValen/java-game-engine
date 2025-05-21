@@ -1,8 +1,7 @@
 package shapes;
 
-import behaviour.PlayerBehaviour;
-import engine.GameEngine;
 import interfaces.IShape;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;

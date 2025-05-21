@@ -5,17 +5,12 @@ import shapes.DashShape;
 
 public class HUDDashBehaviour extends AAABehaviour implements Observer {
 
-    private int dashCharges;
-    private final int maxDashCharges = 2;
+    private final DashShape ds;
+
     private final long dashRechargeTime = 3000;
-    private long now;
     private long lastDashRechargeTime = -1;
 
     private final int barWidth;
-    private final int barHeight = 15;
-    private final int barSpacing = 10;
-
-    private final DashShape ds;
 
     public HUDDashBehaviour(int width, DashShape shape){
         this.barWidth = width;
@@ -32,7 +27,6 @@ public class HUDDashBehaviour extends AAABehaviour implements Observer {
         progress = Math.max(0f, Math.min(1f, progress));
         int filledWidth = (int)(progress * barWidth);
 
-        // envia tudo ao shape:
         ds.update(charges, lastDashRechargeTime, filledWidth);
     }
 }
