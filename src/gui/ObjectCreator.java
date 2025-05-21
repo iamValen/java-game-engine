@@ -183,11 +183,12 @@ public class ObjectCreator {
      * 
      * @return GameObject configurado como healthHUD
      */
-    public static IGameObject healthHUD(PlayerBehaviour trackedPlayer) {
+    public static IGameObject healthHUD(int maxHealth, int width){
         IGameObject healthHUD = new GameObject("healthHUD");
         ITransform transform = new Transform(40, 70, Integer.MAX_VALUE, 0, 1);
-        IShape shape = new HealthShape(trackedPlayer);
-        healthHUD.insertElements(transform, null, shape, null);
+        HealthShape shape = new HealthShape(width);
+        IBehaviour behaviour = new HealthHUDBehaviour(maxHealth, width, shape);
+        healthHUD.insertElements(transform, null, shape, behaviour);
         return healthHUD;
     }
     public static IGameObject score(PlayerBehaviour trackedPlayer){

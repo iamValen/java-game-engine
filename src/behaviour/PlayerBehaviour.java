@@ -6,6 +6,7 @@ import figures.Point;
 import gui.ObjectCreator;
 import interfaces.IGameObject;
 import interfaces.ITransform;
+import interfaces.Observable;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import shapes.HealthShape;
@@ -20,7 +21,7 @@ import shapes.ScoreShape;
  * @author Valentim Khakhitva a81785
  * @version 11/05/2025
  */
-public class PlayerBehaviour extends AAABehaviour implements IPoints{
+public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable{
 
     private final GameEngine engine = GameEngine.getInstance();
     
@@ -90,7 +91,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints{
 
         state = PlayerState.idle;
 
-        healthHUD = ObjectCreator.healthHUD(this);
+        healthHUD = ObjectCreator.healthHUD();
         ((HealthShape)healthHUD.shape()).updateHealth();
 
         scoreHUD = ObjectCreator.score(this);
