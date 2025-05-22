@@ -43,6 +43,7 @@ public class Loader {
         IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
         engine.addEnabled(background);
         int score = ((PlayerBehaviour)player.behaviour()).getScore();
+        player = null;
         IGameObject completeGame = ObjectCreator.completeGame(score);
         engine.addEnabled(completeGame);
     }
