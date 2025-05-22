@@ -3,8 +3,20 @@
 ## TO TALK ABT
 
 # TODO 
+- [ ] FIX HUD
+- [ ] FIX DASH into WALL
+- [X] Salas
+- [ ] Inimigo 2
+- [ ] Sprites inimigos
+- [ ] Sprite do Screen Loader
+- [ ] Sons
+- [ ] GameOver e Retry Button
+- [ ] UML
+- [ ] Tests
+- [ ] PDF
+- [ ] Comments
+
 - [ ] Animation "hurt" aparece mesmo quando ainda está no cooldown de invencível
-    - Já tentei passar a lógica do cooldown de Health para PlayerBehaviour mas funciona mal 
 
 
 # PDF

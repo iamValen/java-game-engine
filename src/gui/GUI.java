@@ -62,14 +62,4 @@ public class GUI extends Canvas {
             new Thread(engine::run, "EngineThread").start();
         });
     }
-
-    /**
-     * Ponto de entrada da aplicação: instancia a GUI.
-     * O método equals() no final serve apenas para evitar
-     * warnings de variável não utilizada.
-     */
-    public static void main(String[] args){
-        GUI gui = new GUI();
-        gui.engine.equals((Object)0);
-    }
 }
