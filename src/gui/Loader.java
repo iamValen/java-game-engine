@@ -67,7 +67,7 @@ public class Loader {
         if(player == null) 
             player = ObjectCreator.Player(150, 700, 0, 0, 1, 40, 100);
         else
-            player.transform().setPosition(new Point(500, 300), 0);    
+            player.transform().setPosition(new Point(150, 700), 0);    
         engine.addEnabled(player);
 
 
