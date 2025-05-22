@@ -45,7 +45,7 @@ public class EnemyBehaviour1 extends AEnemy {
     private final int attack1Damage = 50;
 
     public EnemyBehaviour1(int damage, int movespeed, int width, int height, int visionRangeX, int visionRangeY){
-        super(1000, 50);
+        super(1000, damage);
         this.visionRangeX = visionRangeX;
         this.visionRangeY = visionRangeY;
         this.physics = new Physics();

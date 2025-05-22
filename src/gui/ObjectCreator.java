@@ -79,6 +79,17 @@ public class ObjectCreator {
         return out;
     }
 
+    public static IGameObject EnemyBoss(double x, double y, int layer, double rotation, double scale,
+    int width, int height){
+        IGameObject out = new GameObject("Enemy1");
+        ITransform transform = new Transform(x, y, layer, rotation, scale);
+        ICollider collider = squareHitbox(width, height);
+        IBehaviour behaviour = new BossBehaviour(100, width, height);
+        IShape shape = new BlockShape(width, height, Color.YELLOW);
+        out.insertElements(transform, collider, shape, behaviour);
+        return out;
+    }
+
     public static IGameObject EnemyVision(AEnemy own, int rangeX, int rangeY){
         IGameObject out = new GameObject("vision");
         ITransform transform = new Transform(0, 0, 0, 0, 1);
@@ -212,13 +223,17 @@ public class ObjectCreator {
 
 
     public static IGameObject meleeAtack(IPoints own, double x, double y, int layer, double rotation, double scale,
-    int damage, int width, int height, long duration, Physics physics, String name){
+    int damage, int width, int height, long duration, Physics physics, String name, boolean visible){
         GameObject attack = new GameObject(name);
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         ICollider collider = squareHitbox(width, height);
         IBehaviour behaviour = new meleeAttackBehaviour(own, damage, duration, physics);
-        IShape shape = new BlockShape(width, height, Color.GREEN); // to check hitbox
-        attack.insertElements(transform, collider, null, behaviour);
+        IShape shape;
+        if(visible)
+            shape = new BlockShape(width, height, Color.RED); // to check hitbox
+        else
+            shape = null;
+        attack.insertElements(transform, collider, shape, behaviour);
         return attack;
     }
 
@@ -236,6 +251,14 @@ public class ObjectCreator {
     public static IGameObject gameOver(){
         IGameObject out = new GameObject("gameOver");
         IBehaviour behaviour = new gameOverBehaviour();
+        ITransform transform = new Transform(0, 0, 0, 0, 1);
+        out.insertElements(transform, null, null, behaviour);
+        return out;
+    }
+
+    public static IGameObject completeGame(int score){
+        IGameObject out = new GameObject("completeGame");
+        IBehaviour behaviour = new gameCompleteBehaviour(score);
         ITransform transform = new Transform(0, 0, 0, 0, 1);
         out.insertElements(transform, null, null, behaviour);
         return out;

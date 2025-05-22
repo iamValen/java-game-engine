@@ -1,5 +1,6 @@
 package gui;
 
+import behaviour.PlayerBehaviour;
 import engine.*;
 import figures.Point;
 import interfaces.*;
@@ -36,6 +37,14 @@ public class Loader {
         player = null;
         IGameObject gameOver = ObjectCreator.gameOver();
         engine.addEnabled(gameOver);
+    }
+
+    public static void completeGame(){
+        IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
+        engine.addEnabled(background);
+        int score = ((PlayerBehaviour)player.behaviour()).getScore();
+        IGameObject completeGame = ObjectCreator.completeGame(score);
+        engine.addEnabled(completeGame);
     }
 
     private static void level1(){
@@ -110,6 +119,8 @@ public class Loader {
         IGameObject enemy = ObjectCreator.Enemy1(1400, 600, 0, 0, 1, 50, 50, 400, 600);
         engine.addEnabled(enemy);
 
+        IGameObject boss = ObjectCreator.EnemyBoss(1300, 600, 0, 0, 1, 200, 200);
+        engine.addEnabled(boss);
         //IGameObject ls = ObjectCreator.loading_screen(1000, 600, 0, 0, 1, 60, 60, 1, 1);
         //engine.addEnabled(ls);
     }

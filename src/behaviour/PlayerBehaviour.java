@@ -111,7 +111,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         engine.addEnabled(dashHUD);
         engine.addEnabled(scoreHUD);
 
-        attack1 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack1Damage, attackWidth, attackHeight, attackDuration, physics, "playerAttack");
+        attack1 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack1Damage, attackWidth, attackHeight, attackDuration, physics, "playerAttack", false);
     }
 
     @Override
