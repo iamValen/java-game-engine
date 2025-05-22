@@ -1,7 +1,6 @@
 package shapes;
 
 import interfaces.IShape;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;

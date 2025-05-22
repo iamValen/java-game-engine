@@ -238,8 +238,15 @@ public class GameEngine implements IGameEngine{
 
     public void render(Graphics g) {
         for(IGameObject go : enabledList) {
-            int x = (int)go.transform().position().x();
-            int y = (int)go.transform().position().y();
+            int x, y;
+            if(go.transform() == null){
+                x = 0;
+                y = 0;
+            }
+            else{
+                x = go.transform().position().X();
+                y = go.transform().position().Y();
+            }
             IShape shape = go.shape();
             if (shape != null) {
                 shape.render(g, x, y);

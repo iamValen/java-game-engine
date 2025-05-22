@@ -16,6 +16,7 @@ import shapes.HealthShape;
 import shapes.ImageBlockShape;
 import shapes.PlayerShape;
 import shapes.ScoreShape;
+import shapes.screenMessageShape;
 
 /**
  * Classe responsável por criar e configurar todos os GameObjects do jogo.
@@ -230,5 +231,21 @@ public class ObjectCreator {
         IShape shape = new BackgroundShape("/assets/background.jpeg");
         background.insertElements(transform, null, shape, behaviour);
         return background;
+    }
+
+    public static IGameObject gameOver(){
+        IGameObject out = new GameObject("gameOver");
+        IBehaviour behaviour = new gameOverBehaviour();
+        ITransform transform = new Transform(0, 0, 0, 0, 1);
+        out.insertElements(transform, null, null, behaviour);
+        return out;
+    }
+
+    public static IGameObject screenMessage(int x, int y, String message, int size, Color color){
+        IGameObject out = new GameObject("message");
+        IShape shape = new screenMessageShape(message, size, color);
+        ITransform transform = new Transform(x, y, 0, 0, 1);
+        out.insertElements(transform, null, shape, null);
+        return out;
     }
 }

@@ -3,15 +3,15 @@ package behaviour;
 import engine.GameEngine;
 import engine.InputManager;
 import figures.Point;
+import gui.Loader;
 import gui.ObjectCreator;
 import interfaces.IGameObject;
 import interfaces.ITransform;
 import interfaces.Observable;
 import interfaces.Observer;
-import shapes.PlayerShape;
-
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import shapes.PlayerShape;
 
 /**
  *
@@ -37,7 +37,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
     private final int height;
     private Physics physics;
     private Health health;
-    private int maxHealth = 200;
+    private final int maxHealth = 200;
 
     private long now;
 
@@ -70,6 +70,14 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
     public PlayerBehaviour(int width, int height){
         this.width = width;
         this.height = height;
+
+        healthHUD = ObjectCreator.healthHUD(maxHealth, 210);
+        dashHUD = ObjectCreator.dashHUD();
+        scoreHUD = ObjectCreator.scoreHUD();
+
+        addObserver(((HUDHealthBehaviour) healthHUD.behaviour()));
+        addObserver(((HUDDashBehaviour) dashHUD.behaviour()));
+        addObserver(((HUDScoreBehaviour) scoreHUD.behaviour()));
     }
 
     public Physics physics(){
@@ -95,13 +103,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
         state = PlayerState.idle;
 
-        healthHUD = ObjectCreator.healthHUD(maxHealth, 210);
-        dashHUD = ObjectCreator.dashHUD();
-        scoreHUD = ObjectCreator.scoreHUD();
 
-        addObserver(((HUDHealthBehaviour) healthHUD.behaviour()));
-        addObserver(((HUDDashBehaviour) dashHUD.behaviour()));
-        addObserver(((HUDScoreBehaviour) scoreHUD.behaviour()));
 
         notifyHealth();
 
@@ -293,6 +295,9 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
                 default -> {}
             }
         }
+        if(health.getHealth() <= 0){
+            Loader.gameOver();
+        }
     }
 
     /* Métodos usados para testes */
@@ -332,7 +337,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
     }
 
     @Override
-    public void addObserver(Observer observer){
+    public final void addObserver(Observer observer){
         ol.add(observer);
     }
 

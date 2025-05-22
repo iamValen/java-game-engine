@@ -28,6 +28,16 @@ public class Loader {
     /**
      * Configuração da sala 1.
      */
+
+    public static void gameOver(){
+        IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
+        engine.addEnabled(background);
+        engine.destroyAll();
+        player = null;
+        IGameObject gameOver = ObjectCreator.gameOver();
+        engine.addEnabled(gameOver);
+    }
+
     private static void level1(){
         IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
         engine.addEnabled(background);
