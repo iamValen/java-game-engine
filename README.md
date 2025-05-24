@@ -3,14 +3,16 @@
 ## TO TALK ABT
 
 # TODO 
-- [ ] FIX HUD
-- [ ] FIX DASH into WALL
+- [X] FIX HUD
+- [X] GameOver e Retry Button
 - [X] Salas
-- [ ] Inimigo 2
-- [ ] Sprites inimigos
+- [X] Inimigo 2
+- [ ] FIX DASH into WALL
+- [X] Sprites inimigos
+    - [ ] Abstract Class RenderEntity ?
+- [ ] Dead Animation
 - [ ] Sprite do Screen Loader
 - [ ] Sons
-- [ ] GameOver e Retry Button
 - [ ] UML
 - [ ] Tests
 - [ ] PDF

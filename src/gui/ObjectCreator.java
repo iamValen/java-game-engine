@@ -11,6 +11,7 @@ import interfaces.*;
 import java.awt.Color;
 import shapes.BackgroundShape;
 import shapes.BlockShape;
+import shapes.BossShape;
 import shapes.DashShape;
 import shapes.EnemyShape;
 import shapes.HealthShape;
@@ -74,10 +75,8 @@ public class ObjectCreator {
         IGameObject out = new GameObject("Enemy1");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         ICollider collider = squareHitbox(width, height);
-        EnemyBehaviour1 behaviour = new EnemyBehaviour1(50, 50,  width, height, visionRangeX, visionRangeY);
-        System.out.println("Behaviour created");
+        EnemyBehaviour1 behaviour = new EnemyBehaviour1(25, 50,  width, height, visionRangeX, visionRangeY);
         EnemyShape shape = new EnemyShape(behaviour);
-        System.out.println("Shape created");
         out.insertElements(transform, collider, shape, behaviour);
         return out;
     }
@@ -87,8 +86,8 @@ public class ObjectCreator {
         IGameObject out = new GameObject("Enemy1");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         ICollider collider = squareHitbox(width, height);
-        IBehaviour behaviour = new BossBehaviour(100, width, height);
-        IShape shape = new BlockShape(width, height, Color.YELLOW);
+        BossBehaviour behaviour = new BossBehaviour(100, width, height);
+        BossShape shape = new BossShape(behaviour);
         out.insertElements(transform, collider, shape, behaviour);
         return out;
     }
@@ -233,7 +232,7 @@ public class ObjectCreator {
         IBehaviour behaviour = new meleeAttackBehaviour(own, damage, duration, physics);
         IShape shape;
         if(visible)
-            shape = new BlockShape(width, height, Color.RED); // to check hitbox
+            shape = new BlockShape(width, height, Color.RED); 
         else
             shape = null;
         attack.insertElements(transform, collider, shape, behaviour);

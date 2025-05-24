@@ -6,13 +6,19 @@ import gui.Loader;
 import gui.ObjectCreator;
 import interfaces.IGameObject;
 import interfaces.ITransform;
+import shapes.BossShape;
+import shapes.EnemyShape;
+
 import java.util.ArrayList;
 
 public class BossBehaviour extends AEnemy {
 
     GameEngine engine = GameEngine.getInstance();
+    
     private Physics physics;
     private Health health;
+    private State state;
+
     private final int width;
     private final int height;
 
@@ -23,18 +29,20 @@ public class BossBehaviour extends AEnemy {
     private final int attack1Width = 300;
     private final int attack1Height = 600;
     private final long attack1Duration = 200;
-    private final int attack1Damage = 200;
+    private final int attack1Damage = 50;
     private final long attack1Start = 3000;
     private boolean canUseAttack1 = true;
 
     private IGameObject attack2;
-    private final int attack2Width = 800;
+    private final int attack2Width = 600;
     private final int attack2Height = 100;
     private final long attack2Duration = 200;
-    private final int attack2Damage = 200;
+    private final int attack2Damage = 50;
     private final long attack2Start = 4000;
     private boolean canUseAttack2 = true;
 
+    private long attack1TimeStamp = -1;
+    private long attack2TimeStamp = -1;
 
 
 
@@ -45,14 +53,20 @@ public class BossBehaviour extends AEnemy {
         this.height = height;
     }
 
+    public State state(){
+        return this.state;
+    }
+
     @Override
     public void oninit() {
         health = new Health(myGo, 500);
         myGo.transform().setDirection(-1);
 
 
-        attack1 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack1Damage, attack1Width, attack1Height, attack1Duration, null, "EnemyAttack", true);
-        attack2 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack2Damage, attack2Width, attack2Height, attack2Duration, null, "EnemyAttack", true);
+        attack1 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack1Damage, attack1Width, attack1Height, attack1Duration, null, "EnemyAttack", false);
+        attack2 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack2Damage, attack2Width, attack2Height, attack2Duration, null, "EnemyAttack", false);
+
+        state = State.idle;
     }
 
     @Override
@@ -67,6 +81,8 @@ public class BossBehaviour extends AEnemy {
     public void onUpdate(double dT) {
         ITransform t = myGo.transform();
 
+        State newState = state;
+
         long now = System.currentTimeMillis();
 
         if(now - loopStartedAt > totalLoopTime){
@@ -77,12 +93,21 @@ public class BossBehaviour extends AEnemy {
 
         long elapsedFromLoopStart = now - loopStartedAt;
 
+        
+        // o boss salta para avisar que vai atacar
+        if(elapsedFromLoopStart > 2000 && elapsedFromLoopStart < 3000 ){
+            newState = State.jump;
+        }
+        else newState = State.idle;
+
         if(elapsedFromLoopStart > attack1Start && canUseAttack1) {
             double x = t.position().x() + t.direction()*(width/2 + attack1Width/2);
             double y = t.position().y() + height/2 - attack1Height/2;
             attack1.transform().setPosition(new Point(x, y), myGo.transform().layer());
             engine.addEnabled(attack1);
             canUseAttack1 = false;
+
+            attack1TimeStamp = now;
         }
 
         if(elapsedFromLoopStart > attack2Start && canUseAttack2){
@@ -91,14 +116,31 @@ public class BossBehaviour extends AEnemy {
             attack2.transform().setPosition(new Point(x, y), myGo.transform().layer());
             engine.addEnabled(attack2);
             canUseAttack2 = false;
+
+            attack2TimeStamp = now;
         }
 
-        // o boss salta para avisar que vai atacar
-        if(elapsedFromLoopStart > 2000 && elapsedFromLoopStart < 2200 )
-            physics.sumAccel(0, -370);
+        // coloca e mantém o estado em "attack" com prioridade
+        boolean isAttacking1 = attack1TimeStamp != -1 && now - attack1TimeStamp < attack1Duration + 300;
+        boolean isAttacking2 = attack2TimeStamp != -1 && now - attack2TimeStamp < attack2Duration + 300;
+
+        if (isAttacking1) {
+            newState = State.attack;
+        } else if (isAttacking2) {
+            newState = State.dash;
+        }
 
         physics.update(dT);
         t.move(physics.Speed().scale(dT/0.016666), 0);
+
+        // sprite animation
+
+        if (newState != state) {
+            state = newState;
+        }
+
+        BossShape bs =(BossShape) myGo.shape();
+        bs.update();
     }
 
     @Override

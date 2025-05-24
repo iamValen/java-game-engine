@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class EnemyBehaviour1 extends AEnemy {
 
     private GameEngine engine = GameEngine.getInstance();
-    private long now = 0;
     private int moving = 50;
 
     private Health health;
@@ -81,7 +80,6 @@ public class EnemyBehaviour1 extends AEnemy {
     @Override
     public void onUpdate(double dT){
         //move vision to correct position
-        now = System.currentTimeMillis();
         ITransform t = myGo.transform();
 
         State newState = state;

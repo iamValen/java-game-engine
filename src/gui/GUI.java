@@ -56,7 +56,7 @@ public class GUI extends Canvas {
             engine.setWindow(this);
 
             // Carrega o nível inicial (sala 1, posição 1)
-            Loader.loadLevel(1, 1);
+            Loader.loadLevel(2, 1);
 
             // Inicia o engine num thread separado
             new Thread(engine::run, "EngineThread").start();

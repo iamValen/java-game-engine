@@ -36,6 +36,12 @@ public class SpriteAnimator {
         }
     }
 
+    public void reset() {
+        this.currentFrame = 0;
+        this.tick         = 0;
+        this.finished     = false;
+    }
+
     public BufferedImage getCurrentFrame() {
         return frames[currentFrame];
     }

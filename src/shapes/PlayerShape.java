@@ -47,6 +47,8 @@ public class PlayerShape implements IShape {
             currentState = newState;
         }
         else System.out.println("Not a state");
+
+        animators.get(newState).reset();
     }
 
     public void update(){ 
