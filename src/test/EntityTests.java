@@ -1,5 +1,6 @@
 package test;
 
+import behaviour.AAtack;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Color;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import behaviour.Health;
+import behaviour.IDamage;
+import behaviour.meleeAttackBehaviour;
 import engine.Collider;
 import engine.GameObject;
 import engine.GameEngine;
@@ -24,7 +27,7 @@ public class EntityTests {
 
     private GameEngine engine;
     private GameObject go;
-    private Health entity;
+    private Health health;
 
     @BeforeEach
     public void setUp() {
@@ -46,44 +49,58 @@ public class EntityTests {
         go.insertElements(t, c, shape, null);
 
         // Instancia a Entity com 10 de vida
-        entity = new Health(go, 10);
+        health = new Health(go, 10);
         engine.addEnabled(go);
     }
 
     @Test
     public void testInitialHealth() {
-        assertEquals(10, entity.getHealth(),
+        assertEquals(10, health.getHealth(),
             "getHealth() deve devolver o valor inicial");
     }
 
+
     @Test
     public void testDamageWithinCooldownIsIgnored() {
-        entity.damage(5);
-        assertEquals(5, entity.getHealth());
-        entity.damage(3); // dentro de 2s não deve aplicar
-        assertEquals(5, entity.getHealth(),
+        AAtack atkbhav = new meleeAttackBehaviour(null, 4, 0, null);
+        IGameObject atk = new GameObject(null);
+        atk.insertElements(null, null, null, atkbhav);
+        health.takeDamage(atk);
+        assertEquals(6, health.getHealth());
+        health.takeDamage(atk); // dentro de 2s não deve aplicar
+        assertEquals(6, health.getHealth(),
             "Dano dentro do cooldown de 2s deve ser ignorado");
+        try{
+            Thread.sleep(2000);
+        }
+        catch(InterruptedException IE){}
+        health.takeDamage(atk); // passado 2s deve aplicar
+        assertEquals(2, health.getHealth());
+
     }
 
-    @Test
-    public void testCreateAndDisableAttack() throws Exception {
-        // Cria um projétil de ataque como GameObject vazio
-        GameObject attack = new GameObject("attack");
-        Transform tAtk = new Transform(100, 100, 0, 0, 1);
-        Collider cAtk = new Collider(new Circle(new Point(100,100), 5.0));
-        attack.insertElements(tAtk, cAtk, null, null);
-        engine.addDisabled(attack);
+    /*
+     * acho q isto e inutil agora
+     */
+    // @Test
+    // public void testCreateAndDisableAttack() throws Exception {
+    //     // Cria um projétil de ataque como GameObject vazio
+    //     GameObject attack = new GameObject("attack");
+    //     Transform tAtk = new Transform(100, 100, 0, 0, 1);
+    //     Collider cAtk = new Collider(new Circle(new Point(100,100), 5.0));
+    //     attack.insertElements(tAtk, cAtk, null, null);
+    //     engine.addDisabled(attack);
 
-        long now = System.currentTimeMillis();
-        // createAttack deve ativar o ataque
-        entity.createAttack(attack, now - 1000);
-        assertFalse(engine.isEnabled(attack),
-            "createAttack fora do cooldown deve ativar o ataque");
+    //     long now = System.currentTimeMillis();
+    //     // createAttack deve ativar o ataque
+    //     entity.createAttack(attack, now - 1000);
+    //     assertFalse(engine.isEnabled(attack),
+    //         "createAttack fora do cooldown deve ativar o ataque");
 
-        // disableAttack deve desativar após 60ms
-        Thread.sleep(70);
-        entity.disableAttack(attack, now);
-        assertFalse(engine.isEnabled(attack),
-            "disableAttack após 60ms deve desativar o ataque");
-    }
+    //     // disableAttack deve desativar após 60ms
+    //     Thread.sleep(70);
+    //     entity.disableAttack(attack, now);
+    //     assertFalse(engine.isEnabled(attack),
+    //         "disableAttack após 60ms deve desativar o ataque");
+    // }
 }
