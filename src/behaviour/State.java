@@ -1,7 +1,8 @@
 package behaviour;
 
-public enum PlayerState {
+public enum State {
     idle,
+    walk,
     run,
     jump,
     dash,

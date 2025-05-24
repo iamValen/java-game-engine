@@ -12,6 +12,7 @@ import java.awt.Color;
 import shapes.BackgroundShape;
 import shapes.BlockShape;
 import shapes.DashShape;
+import shapes.EnemyShape;
 import shapes.HealthShape;
 import shapes.ImageBlockShape;
 import shapes.PlayerShape;
@@ -73,8 +74,10 @@ public class ObjectCreator {
         IGameObject out = new GameObject("Enemy1");
         ITransform transform = new Transform(x, y, layer, rotation, scale);
         ICollider collider = squareHitbox(width, height);
-        AAABehaviour behaviour = new EnemyBehaviour1(50, 50,  width, height, visionRangeX, visionRangeY);
-        IShape shape = new BlockShape(width, height, Color.BLUE);
+        EnemyBehaviour1 behaviour = new EnemyBehaviour1(50, 50,  width, height, visionRangeX, visionRangeY);
+        System.out.println("Behaviour created");
+        EnemyShape shape = new EnemyShape(behaviour);
+        System.out.println("Shape created");
         out.insertElements(transform, collider, shape, behaviour);
         return out;
     }

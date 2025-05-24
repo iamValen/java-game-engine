@@ -1,7 +1,7 @@
 package shapes;
 
 import behaviour.PlayerBehaviour;
-import behaviour.PlayerState;
+import behaviour.State;
 import interfaces.IShape;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,9 +13,9 @@ import javax.imageio.ImageIO;
 
 public class PlayerShape implements IShape {
 
-    private PlayerState currentState;
+    private State currentState;
     int direction;
-    private Map<PlayerState, SpriteAnimator> animators;
+    private Map<State, SpriteAnimator> animators;
     private final PlayerBehaviour owner;
 
     public PlayerShape(PlayerBehaviour own) {
@@ -30,19 +30,19 @@ public class PlayerShape implements IShape {
             BufferedImage attackSprite = ImageIO.read(getClass().getResource("/assets/player_attack.png"));
             BufferedImage hurtSprite = ImageIO.read(getClass().getResource("/assets/player_hurt.png"));
 
-            animators.put(PlayerState.idle, new SpriteAnimator(idleSprite, 10, 96, 96, 6, 3, true));
-            animators.put(PlayerState.run, new SpriteAnimator(runSprite, 16, 96, 96, 2, 3, true));
-            animators.put(PlayerState.jump, new SpriteAnimator(jumpUpSprite, 4, 96, 96, 8, 3, false));
-            animators.put(PlayerState.dash, new SpriteAnimator(dashSprite, 6, 96, 96, 2, 3, true));
-            animators.put(PlayerState.attack, new SpriteAnimator(attackSprite, 7, 96, 96, 5, 3, true));
-            animators.put(PlayerState.hurt, new SpriteAnimator(hurtSprite, 4, 96, 96, 4, 3, false));
+            animators.put(State.idle, new SpriteAnimator(idleSprite, 10, 96, 96, 6, 3, true));
+            animators.put(State.run, new SpriteAnimator(runSprite, 16, 96, 96, 2, 3, true));
+            animators.put(State.jump, new SpriteAnimator(jumpUpSprite, 4, 96, 96, 8, 3, false));
+            animators.put(State.dash, new SpriteAnimator(dashSprite, 6, 96, 96, 2, 3, true));
+            animators.put(State.attack, new SpriteAnimator(attackSprite, 7, 96, 96, 5, 3, true));
+            animators.put(State.hurt, new SpriteAnimator(hurtSprite, 4, 96, 96, 4, 3, false));
 
         } catch (IOException e) {
             e.printStackTrace(System.out);
         }
     }
 
-    public void setState(PlayerState newState) {
+    public void setState(State newState) {
         if (animators.containsKey(newState)) {
             currentState = newState;
         }
@@ -81,7 +81,7 @@ public class PlayerShape implements IShape {
     }
 
     private void updateState(){
-        PlayerState newState = owner.state();
+        State newState = owner.state();
         int newDirection = owner.gameObject().transform().direction();
         if(currentState != newState) setState(newState);
         if(direction != newDirection) direction = newDirection;

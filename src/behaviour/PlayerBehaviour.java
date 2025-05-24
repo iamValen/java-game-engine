@@ -31,13 +31,15 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
     IGameObject dashHUD;
     IGameObject scoreHUD;
 
-    private PlayerState state;
+    PlayerShape ps;
 
     private final int width;
     private final int height;
     private Physics physics;
     private Health health;
     private final int maxHealth = 200;
+
+    private State state;
 
     private long now;
 
@@ -88,7 +90,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         return this.health;
     }
 
-    public PlayerState state(){
+    public State state(){
         return this.state;
     }
 
@@ -101,9 +103,9 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         }
         myGo.transform().setDirection(1);
 
-        state = PlayerState.idle;
+        state = State.idle;
 
-
+        
 
         notifyHealth();
 
@@ -135,8 +137,8 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         now = System.currentTimeMillis();
 
         ITransform t = myGo.transform();
-
-        PlayerState newState = state;
+        PlayerShape ps =(PlayerShape) myGo.shape();
+        State newState = state;
         int oldDirection = t.direction();
 
         if(physics.isGrounded()){
@@ -168,7 +170,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
             isDashing = false;
 
-            newState = PlayerState.attack;
+            newState = State.attack;
         }
         // run
         if ((InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT))) {
@@ -181,7 +183,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
                 t.setDirection(1);
             }
 
-            if(now - meleeAttackStart > attackDuration + 200)newState = PlayerState.run;
+            if(now - meleeAttackStart > attackDuration + 200)newState = State.run;
         }
         // dash
         if(InputManager.isKeyDown(KeyEvent.VK_A) && !isDashing && dashCharges > 0 && now - dashStart > 600){ // dash logic
@@ -195,7 +197,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
             notifyDash();
 
-            newState = PlayerState.dash;
+            newState = State.dash;
         }// continues dash
         if(isDashing && now - dashStart < 240){
             myGo.transform().move(new Point(20*(dt/0.016666) * myGo.transform().direction(), 0), 0);
@@ -226,27 +228,29 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         }
         if(isJumping){
             physics.sumAccel(0, -370);
-            newState = PlayerState.jump;
+            newState = State.jump;
         }
 
         if (isGrounded() && !isDashing && !isJumping && now - meleeAttackStart > attackDuration + 200 
         && physics.Speed().x() <= 3 && physics.Speed().x() >= -3){ // +200 -> intervalo para a animação do ataque acabar
-            newState = PlayerState.idle;
+            newState = State.idle;
             isDashing = false;
         }
         
         physics.update(dt);
         t.move(physics.Speed().scale(dt/0.016666), 0);
 
-        if (newState != state || t.direction() != oldDirection) {
-            state = newState;
-        }
 
         physics.setIsGrounded(false);
 
         // sprite animation
-        PlayerShape ps =(PlayerShape) myGo.shape();
-        ps.update();
+
+        if (newState != state) {
+            state = newState;
+        }
+        
+        PlayerShape ps2 =(PlayerShape) myGo.shape();
+        ps2.update();
     }
 
     @Override
@@ -284,12 +288,12 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
                 }
                 case("Enemy1") -> {
                     health.takeDamage(go1);
-                    state = PlayerState.hurt;
+                    state = State.hurt;
                     notifyHealth();
                 }
                 case("EnemyAttack") ->{
                     health.takeDamage(go1);
-                    state = PlayerState.hurt;
+                    state = State.hurt;
                     notifyHealth();
                 }
                 default -> {}

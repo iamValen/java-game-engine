@@ -11,11 +11,11 @@ public class SpriteAnimator {
     private int tick = 0;
     private int speed;
 
-    public SpriteAnimator(BufferedImage spriteSheet, int totalFrames, int frameWidth, int frameHeight, int speed, int scale, boolean loop) {
+    public SpriteAnimator(BufferedImage spriteSheet, int totalFrames, int frameWidth, int frameHeight, int speed, double scale, boolean loop) {
         this.frames = new BufferedImage[totalFrames];
         for (int i = 0; i < totalFrames; i++) {
             BufferedImage frame = spriteSheet.getSubimage(i * frameWidth, 0, frameWidth, frameHeight);
-            frames[i] = resizeImage(frame, frameWidth * scale, frameHeight * scale);
+            frames[i] = resizeImage(frame, (int)(frameWidth * scale), (int)(frameHeight * scale));
         }
         this.loop = loop;
         this.speed = speed;

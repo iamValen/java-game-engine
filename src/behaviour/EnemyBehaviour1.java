@@ -5,6 +5,8 @@ import figures.Point;
 import gui.ObjectCreator;
 import interfaces.IGameObject;
 import interfaces.ITransform;
+import shapes.EnemyShape;
+
 import java.util.ArrayList;
 
 /**
@@ -22,7 +24,8 @@ public class EnemyBehaviour1 extends AEnemy {
     private int moving = 50;
 
     private Health health;
-    private int state;
+
+    private State state;
 
     private final int patrolRangeLeft;
     private final int patrolRangeRight;
@@ -36,13 +39,6 @@ public class EnemyBehaviour1 extends AEnemy {
     private final int visionRangeY;
     private boolean seesPlayer;
 
-    private AAtack attack1;
-    private final int attackWidth = 130;
-    private final int attackHeight = 100;
-    private long meleeAttackStart = 0;
-    private final long attackDuration = 200;
-    private final long attackCooldown = 700;
-    private final int attack1Damage = 50;
 
     public EnemyBehaviour1(int damage, int movespeed, int width, int height, int visionRangeX, int visionRangeY){
         super(1000, damage);
@@ -56,6 +52,10 @@ public class EnemyBehaviour1 extends AEnemy {
         patrolRangeRight = 800;
     }
 
+    public State state(){
+        return this.state;
+    }
+
     @Override
     public void playerInRange() {
         seesPlayer = true;
@@ -67,6 +67,8 @@ public class EnemyBehaviour1 extends AEnemy {
         health = new Health(myGo, 100);
         vision = ObjectCreator.EnemyVision(this, visionRangeX, visionRangeY);
         engine.addEnabled(vision);
+
+        state = State.walk;
     }
 
     @Override
@@ -75,12 +77,6 @@ public class EnemyBehaviour1 extends AEnemy {
         engine.destroy(vision);
     }
 
-    @Override
-    public void onEnable(){}
-    
-    @Override
-    public void onDisable(){}
-
 
     @Override
     public void onUpdate(double dT){
@@ -88,13 +84,16 @@ public class EnemyBehaviour1 extends AEnemy {
         now = System.currentTimeMillis();
         ITransform t = myGo.transform();
 
+        State newState = state;
+
         if(physics.isGrounded()){
             physics.setAccel(0, 0);
         }
 
-
-        if(seesPlayer)
+        if(seesPlayer){
             physics.sumAccel(2*moving, 0);
+            newState = State.run;
+        }
         else{
             if(t.position().x() < patrolRangeLeft){
                 moving = 50;
@@ -105,11 +104,9 @@ public class EnemyBehaviour1 extends AEnemy {
                 t.setDirection(-1);
             }
             physics.sumAccel(moving, 0);
+
+            newState = State.walk;
         }
-
-
-
-
 
 
         physics.update(dT);
@@ -119,9 +116,18 @@ public class EnemyBehaviour1 extends AEnemy {
         double x = t.position().x() + t.direction()*(width/2 + visionRangeX/2);
         double y = t.position().y() + height/2 - visionRangeY/2;
         vision.transform().setPosition(new Point(x, y), myGo.transform().layer());
-
+        
         physics.setIsGrounded(false);
         seesPlayer = false;
+    
+        // sprite animation
+
+        if (newState != state) {
+            state = newState;
+        }
+
+        EnemyShape es =(EnemyShape) myGo.shape();
+        es.update();
     }
 
     // NOTAS
@@ -173,9 +179,6 @@ public class EnemyBehaviour1 extends AEnemy {
             }
         }
     }
-    /*
-     * verifies colisions of itself with at least: player, enemies, player atacks, solid objects
-     * enemies and player cause turn arround
-     * solid objects push enemies away from them
-     */
+    
+
 }
