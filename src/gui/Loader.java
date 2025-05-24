@@ -72,10 +72,10 @@ public class Loader {
         engine.addEnabled(player);
 
 
-        IGameObject enemy1 = ObjectCreator.Enemy1(50, 450, 0, 0, 1, 50, 50, 600, 300);
+        IGameObject enemy1 = ObjectCreator.Enemy1(50, 450, 0, 0, 1, 50, 50, 400, 200);
         engine.addEnabled(enemy1);
 
-         IGameObject enemy2 = ObjectCreator.Enemy1(1400, 600, 0, 0, 1, 50, 50, 600, 300);
+         IGameObject enemy2 = ObjectCreator.Enemy1(1400, 600, 0, 0, 1, 50, 50, 400, 200);
         engine.addEnabled(enemy2);
 
         
@@ -122,6 +122,7 @@ public class Loader {
 
         IGameObject boss = ObjectCreator.EnemyBoss(1300, 600, 0, 0, 1, 100, 200);
         engine.addEnabled(boss);
+        
         //IGameObject ls = ObjectCreator.loading_screen(1000, 600, 0, 0, 1, 60, 60, 1, 1);
         //engine.addEnabled(ls);
     }

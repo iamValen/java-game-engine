@@ -1,5 +1,6 @@
 package engine;
 import figures.Point;
+import gui.SoundPlayer;
 import interfaces.IGameEngine;
 import interfaces.IGameObject;
 import interfaces.IShape;
@@ -181,7 +182,8 @@ public class GameEngine implements IGameEngine{
     @SuppressWarnings("BusyWait") //sleep in a loop
     @Override
     public void run(){
-
+        //music
+        SoundPlayer.playMusic("sounds/bgm.wav", true, 80);
         // Must have called setRenderSurface(canvas) first!
         BufferStrategy bs = window.getBufferStrategy();
 
