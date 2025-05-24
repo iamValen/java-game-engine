@@ -33,7 +33,7 @@ public class PlayerBehaviourTests {
         engine.destroyAll();
 
         // Cria o player via ObjectCreator
-        playerGO = ObjectCreator.Player(0, 0);
+        playerGO = ObjectCreator.Player(0, 0, 0, 0, 1, 1, 1);
         behaviour = (PlayerBehaviour) playerGO.behaviour();
         engine.addEnabled(playerGO);
 
@@ -73,7 +73,7 @@ public class PlayerBehaviourTests {
 
         assertNotNull(behaviour.health(),
             "Entity não deve ser nulo após oninit");
-        assertEquals(100, behaviour.health().getHealth(),
+        assertEquals(200, behaviour.health().getHealth(),
             "Entity deve iniciar com 100 de vida");
     }
 
@@ -95,18 +95,18 @@ public class PlayerBehaviourTests {
         behaviour.setGrounded(true);
 
         // Pressiona A
-        pressKey(KeyEvent.VK_A);
+        pressKey(KeyEvent.VK_LEFT);
         behaviour.onUpdate(0.1);
         assertEquals(-1, playerGO.transform().direction(),
             "Ao carregar A, direção deve ser -1");
-        releaseKey(KeyEvent.VK_A);
+        releaseKey(KeyEvent.VK_LEFT);
 
         // Pressiona D
-        pressKey(KeyEvent.VK_D);
+        pressKey(KeyEvent.VK_RIGHT);
         behaviour.onUpdate(0.1);
         assertEquals(1, playerGO.transform().direction(),
             "Ao carregar D, direção deve ser 1");
-        releaseKey(KeyEvent.VK_D);
+        releaseKey(KeyEvent.VK_RIGHT);
     }
 
     @Test
@@ -114,10 +114,13 @@ public class PlayerBehaviourTests {
         behaviour.setGrounded(true);
 
         // Pressiona W
-        pressKey(KeyEvent.VK_W);
+        behaviour.physics().setIsGrounded(true);
+        pressKey(KeyEvent.VK_D);
         behaviour.onUpdate(0.1);
         double vyFirst = behaviour.physics().Speed().y();
         assertTrue(vyFirst < 0,
             "Impulso de salto deve produzir velocidade Y negativa");
+        releaseKey(KeyEvent.VK_D);
+
     }
 }

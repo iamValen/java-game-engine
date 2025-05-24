@@ -47,7 +47,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
     private long jumpStart = 0;
     private long dashStart = 0;
     private boolean isJumping = false;
-    private boolean canJump = false;
+    private boolean canJump = true;
 
     private IGameObject attack1;
     private final int attackWidth = 170;

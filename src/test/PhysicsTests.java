@@ -59,11 +59,11 @@ public class PhysicsTests {
         double dt = 0.1; // 100ms
 
         // Manual: v' = (10,0) + (0,200)*0.1 = (10,20)
-        // frictionFactor = 0.85 / (dt/0.016666) = 0.85 / (0.1/0.016666) = 0.85 / 6 = 0.141666...
+        // frictionFactor = 0.85^(dT/0.016666) = 
         // v''.x = 10 * 0.141666... = 1.41666..., v''.y = 20 (unchanged by horizontal friction)
         physics.update(dt);
         Point vAfter = physics.Speed();
-        double frictionFactor = 0.85 / (dt / 0.016666);
+        double frictionFactor = Math.pow(0.85 , dt/0.016666);
         assertEquals(10 * frictionFactor, vAfter.x(), EPS, "Velocidade x após update incorreta");
 
         // Após update, accel deve ter sido reposto para (0,160)
