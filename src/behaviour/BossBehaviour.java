@@ -7,10 +7,8 @@ import gui.ObjectCreator;
 import gui.SoundPlayer;
 import interfaces.IGameObject;
 import interfaces.ITransform;
-import shapes.BossShape;
-import shapes.EnemyShape;
-
 import java.util.ArrayList;
+import shapes.BossShape;
 
 public class BossBehaviour extends AEnemy {
 
@@ -102,7 +100,7 @@ public class BossBehaviour extends AEnemy {
         // o boss grita para avisar que vai atacar
         if(elapsedFromLoopStart > 2000 && elapsedFromLoopStart < 3000 ){
             newState = State.jump;
-            if(!hasScreamed) SoundPlayer.playLoadedSound("scream", 80);
+            if(!hasScreamed) SoundPlayer.playLoadedSound("scream", 100);
             hasScreamed = true;
         }
         else{
@@ -119,7 +117,7 @@ public class BossBehaviour extends AEnemy {
             
             attack1TimeStamp = now;
 
-            SoundPlayer.playLoadedSound("boom1", 70);
+            SoundPlayer.playLoadedSound("boom1", 95);
 
         }
 

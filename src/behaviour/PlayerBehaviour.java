@@ -268,7 +268,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             }
         }
         if (state == State.dash){
-            SoundPlayer.playLoadedSound("dash", 80);
+            SoundPlayer.playLoadedSound("dash", 92);
         }
         if (state == State.attack && !playedAttackSound){
             SoundPlayer.playLoadedSound("attack", 100);
