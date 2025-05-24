@@ -4,6 +4,7 @@ import engine.GameEngine;
 import figures.Point;
 import gui.Loader;
 import gui.ObjectCreator;
+import gui.SoundPlayer;
 import interfaces.IGameObject;
 import interfaces.ITransform;
 import shapes.BossShape;
@@ -44,7 +45,7 @@ public class BossBehaviour extends AEnemy {
     private long attack1TimeStamp = -1;
     private long attack2TimeStamp = -1;
 
-
+    private boolean hasScreamed = false;
 
     public BossBehaviour(int damage, int width, int height) {
         super(5000, damage);
@@ -67,6 +68,10 @@ public class BossBehaviour extends AEnemy {
         attack2 = ObjectCreator.meleeAtack(this, 0, 0, 0, 0, 1, attack2Damage, attack2Width, attack2Height, attack2Duration, null, "EnemyAttack", false);
 
         state = State.idle;
+
+        SoundPlayer.loadSound("scream", "sounds/boss_scream.wav");
+        SoundPlayer.loadSound("boom1", "sounds/boom1.wav");
+        SoundPlayer.loadSound("boom2", "sounds/boom2.wav");
     }
 
     @Override
@@ -94,11 +99,16 @@ public class BossBehaviour extends AEnemy {
         long elapsedFromLoopStart = now - loopStartedAt;
 
         
-        // o boss salta para avisar que vai atacar
+        // o boss grita para avisar que vai atacar
         if(elapsedFromLoopStart > 2000 && elapsedFromLoopStart < 3000 ){
             newState = State.jump;
+            if(!hasScreamed) SoundPlayer.playLoadedSound("scream", 80);
+            hasScreamed = true;
         }
-        else newState = State.idle;
+        else{
+            newState = State.idle;
+            hasScreamed = false;
+        }
 
         if(elapsedFromLoopStart > attack1Start && canUseAttack1) {
             double x = t.position().x() + t.direction()*(width/2 + attack1Width/2);
@@ -106,8 +116,11 @@ public class BossBehaviour extends AEnemy {
             attack1.transform().setPosition(new Point(x, y), myGo.transform().layer());
             engine.addEnabled(attack1);
             canUseAttack1 = false;
-
+            
             attack1TimeStamp = now;
+
+            SoundPlayer.playLoadedSound("boom1", 70);
+
         }
 
         if(elapsedFromLoopStart > attack2Start && canUseAttack2){
@@ -118,6 +131,8 @@ public class BossBehaviour extends AEnemy {
             canUseAttack2 = false;
 
             attack2TimeStamp = now;
+
+            SoundPlayer.playLoadedSound("boom2", 100);
         }
 
         // coloca e mantém o estado em "attack" com prioridade

@@ -12,7 +12,7 @@
     - [ ] Abstract Class RenderEntity ?
 - [ ] Dead Animation
 - [ ] Sprite do Screen Loader
-- [ ] Sons
+- [X] Sons
 - [ ] UML
 - [ ] Tests
 - [ ] PDF

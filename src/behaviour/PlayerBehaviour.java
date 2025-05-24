@@ -5,6 +5,7 @@ import engine.InputManager;
 import figures.Point;
 import gui.Loader;
 import gui.ObjectCreator;
+import gui.SoundPlayer;
 import interfaces.IGameObject;
 import interfaces.ITransform;
 import interfaces.Observable;
@@ -27,19 +28,22 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
     
     private final ArrayList<Observer> ol = new ArrayList<>();
 
-    IGameObject healthHUD;
-    IGameObject dashHUD;
-    IGameObject scoreHUD;
-
-    PlayerShape ps;
+    private IGameObject healthHUD;
+    private IGameObject dashHUD;
+    private IGameObject scoreHUD;
 
     private final int width;
     private final int height;
-    private Physics physics;
+
     private Health health;
+    private ITransform t;
+    private PlayerShape shape;
+    private Physics physics;
+
     private final int maxHealth = 200;
 
     private State state;
+    private State newState;
 
     private long now;
 
@@ -56,11 +60,14 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
     private final long attackDuration = 200;
     private final long attackCooldown = 700;
     private final int attack1Damage = 50;
+    private boolean playedAttackSound = false;
 
     private int dashCharges = 2;
     private final int maxDashCharges = 2;
     private final long dashRechargeTime = 3000;
     private long lastDashRechargeTime = -1;
+
+    private long lastFootstepTime;
 
     private int score = 0;
 
@@ -105,7 +112,9 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
         state = State.idle;
 
-        
+        SoundPlayer.loadSound("attack", "sounds/attack.wav");
+        SoundPlayer.loadSound("dash", "sounds/dash.wav");
+        SoundPlayer.loadSound("step", "sounds/step.wav");
 
         notifyHealth();
 
@@ -126,20 +135,14 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         System.out.println("player died");
     }
 
-    /*
-     * changes accelaration based on input
-     * adds acceleration to speed
-     * adds speed to position
-     * executes onCollision 
-     */
+
     @Override
-    public void onUpdate(double dt) {
+    public void onUpdate(double dt){
         now = System.currentTimeMillis();
 
-        ITransform t = myGo.transform();
-        PlayerShape ps =(PlayerShape) myGo.shape();
-        State newState = state;
-        int oldDirection = t.direction();
+        t = myGo.transform();
+        shape =(PlayerShape) myGo.shape();
+        newState = state;
 
         if(physics.isGrounded()){
             physics.setAccel(0, 0);
@@ -148,17 +151,44 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         if(dashCharges >= maxDashCharges)
             lastDashRechargeTime = now;
         else{
-            if (now - lastDashRechargeTime >= dashRechargeTime) {
+            if (now - lastDashRechargeTime >= dashRechargeTime){
                 dashCharges++;
                 lastDashRechargeTime = now;
             }
             notifyDash();
         }
 
+        if(isJumping){
+            physics.sumAccel(0, -370);
+            newState = State.jump;
+        }
 
+        if (isGrounded() && !isDashing && !isJumping && now - meleeAttackStart > attackDuration
+        && physics.Speed().x() <= 3 && physics.Speed().x() >= -3){ 
+            newState = State.idle;
+            isDashing = false;
+        }
 
         // INPUT
-        // attack
+        readAndMove(dt);
+
+        physics.update(dt);
+        t.move(physics.Speed().scale(dt/0.016666), 0);
+
+
+        // sprite animation
+        if (newState != state){
+            state = newState;
+        }
+        shape.update();
+
+        // sounds
+        sounds();
+
+        physics.setIsGrounded(false);
+    }
+
+    private void readAndMove(double dt){
         if(InputManager.isKeyDown(KeyEvent.VK_S) && (now - meleeAttackStart > attackCooldown)){
             meleeAttackStart = System.currentTimeMillis();
 
@@ -171,10 +201,12 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             isDashing = false;
 
             newState = State.attack;
+
+            
         }
         // run
-        if ((InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT))) {
-            if (InputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+        if ((InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT))){
+            if (InputManager.isKeyDown(KeyEvent.VK_LEFT)){
                 physics.sumAccel(-130, 0);
                 t.setDirection(-1);
             }
@@ -183,7 +215,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
                 t.setDirection(1);
             }
 
-            if(now - meleeAttackStart > attackDuration + 200)newState = State.run;
+            if(now - meleeAttackStart > attackDuration) newState = State.run;
         }
         // dash
         if(InputManager.isKeyDown(KeyEvent.VK_A) && !isDashing && dashCharges > 0 && now - dashStart > 600){ // dash logic
@@ -191,7 +223,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             isDashing = true;
             dashCharges--;
 
-            if (lastDashRechargeTime == -1) {
+            if (lastDashRechargeTime == -1){
                 lastDashRechargeTime = now;
             }
 
@@ -226,31 +258,26 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             isJumping = false;
             canJump = true;
         }
-        if(isJumping){
-            physics.sumAccel(0, -370);
-            newState = State.jump;
+    }
+
+    private void sounds(){
+        if (state == State.run && isGrounded()){
+            if (now - lastFootstepTime >= 150){
+                SoundPlayer.playLoadedSound("step", 90);
+                lastFootstepTime = now;
+            }
         }
-
-        if (isGrounded() && !isDashing && !isJumping && now - meleeAttackStart > attackDuration + 200 
-        && physics.Speed().x() <= 3 && physics.Speed().x() >= -3){ // +200 -> intervalo para a animação do ataque acabar
-            newState = State.idle;
-            isDashing = false;
+        if (state == State.dash){
+            SoundPlayer.playLoadedSound("dash", 80);
         }
-        
-        physics.update(dt);
-        t.move(physics.Speed().scale(dt/0.016666), 0);
-
-
-        physics.setIsGrounded(false);
-
-        // sprite animation
-
-        if (newState != state) {
-            state = newState;
+        if (state == State.attack && !playedAttackSound){
+            SoundPlayer.playLoadedSound("attack", 100);
+            playedAttackSound = true;
         }
         
-        PlayerShape ps2 =(PlayerShape) myGo.shape();
-        ps2.update();
+        if(state != State.attack){
+            playedAttackSound = false;
+        }
     }
 
     @Override
@@ -258,7 +285,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         boolean flag = true;
         now = System.currentTimeMillis();
         for(IGameObject go1 : gol){
-            switch (go1.name()) {
+            switch (go1.name()){
                 case("floor") -> {
                     if(flag)
                         Physics.snapToFloor(myGo, go1);
@@ -323,7 +350,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
 
     @Override
-    public void recievePoints(int points) {
+    public void recievePoints(int points){
         score += points;
         notifyScore();
     }

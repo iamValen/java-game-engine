@@ -46,6 +46,10 @@ public class SpriteAnimator {
         return frames[currentFrame];
     }
 
+    public int getCurrentFrameInt(){
+        return currentFrame;
+    }
+
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
         BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = resized.createGraphics();
