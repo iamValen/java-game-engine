@@ -60,12 +60,14 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
     private final long attackDuration = 200;
     private final long attackCooldown = 700;
     private final int attack1Damage = 50;
-    private boolean playedAttackSound = false;
 
     private int dashCharges = 2;
     private final int maxDashCharges = 2;
     private final long dashRechargeTime = 3000;
     private long lastDashRechargeTime = -1;
+
+    private boolean playedAttackSound = false;
+    private boolean playedDashSound = false;
 
     private long lastFootstepTime;
 
@@ -267,8 +269,9 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
                 lastFootstepTime = now;
             }
         }
-        if (state == State.dash){
+        if (state == State.dash && !playedDashSound){
             SoundPlayer.playLoadedSound("dash", 92);
+            playedDashSound = true;
         }
         if (state == State.attack && !playedAttackSound){
             SoundPlayer.playLoadedSound("attack", 100);
@@ -277,6 +280,9 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         
         if(state != State.attack){
             playedAttackSound = false;
+        }
+        if(state != State.dash){
+            playedDashSound = false;
         }
     }
 

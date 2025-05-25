@@ -100,7 +100,7 @@ public class BossBehaviour extends AEnemy {
         // o boss grita para avisar que vai atacar
         if(elapsedFromLoopStart > 2000 && elapsedFromLoopStart < 3000 ){
             newState = State.jump;
-            if(!hasScreamed) SoundPlayer.playLoadedSound("scream", 100);
+            if(!hasScreamed) SoundPlayer.playLoadedSound("scream", 95);
             hasScreamed = true;
         }
         else{

@@ -5,6 +5,11 @@ public abstract  class AAtack extends AAABehaviour implements IPoints, IDamage {
     protected IPoints owner;
     protected int damage;
 
+    public AAtack(IPoints own, int dmg) {
+        owner = own;
+        damage = dmg;
+    }
+
     @Override
     public int getDamage() {
         return damage;
@@ -14,8 +19,5 @@ public abstract  class AAtack extends AAABehaviour implements IPoints, IDamage {
         owner.recievePoints(points);
     }
 
-    public AAtack(IPoints own, int dmg) {
-        owner = own;
-        damage = dmg;
-    }
+    
 }
