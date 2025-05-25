@@ -6,24 +6,40 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import game.BossBehaviour;
+import game.State;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import behaviour.BossBehaviour;
-import behaviour.State;
 import interfaces.IShape;
 
-public class BossShape implements IShape{
+/**
+ * Desenha e anima o Boss com base no seu estado atual
+ * e aos seus ataques
+ * Inclui animações de ataque alto e largo
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 11/05/2025
+ */
+public class BossShape implements IShape {
     private final BossBehaviour owner;
-
     private State currentState;
     int direction;
+
     private Map<State, SpriteAnimator> animators;
     private SpriteAnimator showWideAttack;
     private SpriteAnimator showHighAttack;
 
-    public BossShape(BossBehaviour own){
+    /**
+     * Construtor
+     * 
+     * @param own Behaviour do Boss
+     */
+    public BossShape(BossBehaviour own) {
         animators = new HashMap<>();
         owner = own;
 
@@ -32,11 +48,11 @@ public class BossShape implements IShape{
             BufferedImage idleSprite = ImageIO.read(getClass().getResource("/assets/boss_idle.png"));
             BufferedImage screamSprite = ImageIO.read(getClass().getResource("/assets/boss_scream.png"));
             BufferedImage attackSprite = ImageIO.read(getClass().getResource("/assets/boss_attack.png"));
-            
+
             animators.put(State.idle, new SpriteAnimator(idleSprite, 5, 128, 128, 6, 2.5, true));
             animators.put(State.jump, new SpriteAnimator(screamSprite, 4, 128, 128, 7, 2.5, true));
             animators.put(State.attack, new SpriteAnimator(attackSprite, 4, 128, 128, 4, 2.5, false)); // high attack
-            animators.put(State.dash, new SpriteAnimator(attackSprite, 4, 128, 128, 4, 2.5, false)); // wide attack
+            animators.put(State.dash, new SpriteAnimator(attackSprite, 4, 128, 128, 4, 2.5, false));  // wide attack
 
             /* Attack 1 */
             BufferedImage highAttackImage = ImageIO.read(getClass().getResource("/assets/attack.png"));
@@ -50,11 +66,17 @@ public class BossShape implements IShape{
         }
     }
 
+    /**
+     * Altera o estado do Boss
+     * 
+     * @param newState novo estado
+     */
     public void setState(State newState) {
         if (animators.containsKey(newState)) {
             currentState = newState;
+        } else {
+            System.out.println("Not a state");
         }
-        else System.out.println("Not a state");  
 
         animators.get(newState).reset();
 
@@ -64,57 +86,62 @@ public class BossShape implements IShape{
         }
     }
 
-    public void update(){ 
+    /**
+     * Atualiza o quadro de animação atual
+     */
+    public void update() {
         SpriteAnimator animator = animators.get(currentState);
         if (animator != null) {
             animator.update();
         }
     }
 
-   @Override
+    @Override
     public void render(Graphics g, int x, int y) {
         updateState();
 
-        // Draw Boss
+        // Boss
         Graphics2D g2d = (Graphics2D) g.create();
         SpriteAnimator mainAnim = animators.get(currentState);
         if (mainAnim != null) {
             BufferedImage frame = mainAnim.getCurrentFrame();
             int w = frame.getWidth(), h = frame.getHeight();
             if (direction == -1) {
-                g2d.translate(x + w/2, y - h/2 - 70);
+                g2d.translate(x + w / 2, y - h / 2 - 70);
                 g2d.scale(-1, 1);
                 g2d.drawImage(frame, 0, 0, null);
             } else {
-                g2d.drawImage(frame, x - w/2, y - h/2 - 70, null);
+                g2d.drawImage(frame, x - w / 2, y - h / 2 - 70, null);
             }
         }
         g2d.dispose();
 
-        // Draw Attacks
-        if (currentState == State.attack){ // High attack
+        // high attack
+        if (currentState == State.attack) {
             showHighAttack.update();
             BufferedImage attack = showHighAttack.getCurrentFrame();
-
-            int ex = x - attack.getWidth()/2;
-            int ey = y - attack.getHeight()/2 - 50;
+            int ex = x - attack.getWidth() / 2;
+            int ey = y - attack.getHeight() / 2 - 50;
             g.drawImage(attack, ex - 170, ey - 100, null);
         }
-        if (currentState == State.dash){ // Wide attack
+
+        // wide attack
+        if (currentState == State.dash) {
             showWideAttack.update();
             BufferedImage attack = showWideAttack.getCurrentFrame();
-
-            // centra o extra em torno de (x,y) do boss
-            int ex = x - attack.getWidth()/2;
-            int ey = y - attack.getHeight()/2 - 50;
+            int ex = x - attack.getWidth() / 2;
+            int ey = y - attack.getHeight() / 2 - 50;
             g.drawImage(attack, ex - 400, ey - 220, null);
         }
     }
 
-    private void updateState(){
+    /**
+     * Atualiza o estado e direção do Boss
+     */
+    private void updateState() {
         State newState = owner.state();
         int newDirection = owner.gameObject().transform().direction();
-        if(currentState != newState) setState(newState);
-        if(direction != newDirection) direction = newDirection;
+        if (currentState != newState) setState(newState);
+        if (direction != newDirection) direction = newDirection;
     }
 }

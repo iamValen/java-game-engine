@@ -7,6 +7,16 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * Bloco com textura em mosaico.
+ * 
+ * Desenha uma textura repetida para formar um bloco com largura e altura fixas
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 11/05/2025
+ */
 public class ImageBlockShape implements IShape {
 
     private final int width;
@@ -14,8 +24,10 @@ public class ImageBlockShape implements IShape {
     private final BufferedImage texture;
 
     /**
-     * @param width     largura em pixels do bloco
-     * @param height    altura em pixels do bloco
+     * Construtor
+     * 
+     * @param width  largura total do bloco
+     * @param height altura total do bloco
      */
     public ImageBlockShape(int width, int height) {
         this.width = width;

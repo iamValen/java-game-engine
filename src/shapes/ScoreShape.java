@@ -5,12 +5,24 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
+/**
+ * Mostra a pontuação na tela
+ * A pontuação é atualizada via o método update
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 11/05/2025
+ */
 public class ScoreShape implements IShape {
 
     private int score = 0;
     private Color color = Color.WHITE;
 
-    public ScoreShape(){}
+    /**
+     * Construtor
+     */
+    public ScoreShape() {}
 
     @Override
     public void render(Graphics g, int x, int y) {
@@ -28,7 +40,12 @@ public class ScoreShape implements IShape {
         g.setFont(oldFont);
     }
 
-    public void update(int i){
+    /**
+     * Atualiza o valor do score
+     * 
+     * @param i novo score
+     */
+    public void update(int i) {
         score = i;
     }
 }

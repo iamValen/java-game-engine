@@ -14,7 +14,7 @@
 - [ ] Sprite do Screen Loader
 - [X] Sons
 - [ ] UML
-- [ ] Tests
+- [X] Tests
 - [ ] PDF
 - [ ] Comments
 

@@ -3,7 +3,6 @@ package engine;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Classe responsável pela gestão do input do teclado.
@@ -16,7 +15,7 @@ import java.util.Set;
 public class InputManager implements KeyListener {
 
     // Conjunto estático que armazena os códigos das teclas atualmente pressionadas
-    private static final Set<Integer> pressed = new HashSet<>();
+    private static final HashSet<Integer> pressed = new HashSet<>();
 
     /**
      * Método chamado quando uma tecla é pressionada.

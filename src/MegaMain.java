@@ -1,5 +1,5 @@
 public class MegaMain{
     public static void main(String[] args) {
-        gui.Main.main(args);
+        gameManager.Main.main(args);
     }
 }

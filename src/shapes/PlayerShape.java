@@ -1,7 +1,5 @@
 package shapes;
 
-import behaviour.PlayerBehaviour;
-import behaviour.State;
 import interfaces.IShape;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,6 +9,18 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
 
+import game.PlayerBehaviour;
+import game.State;
+
+/**
+ * Representa a forma e animação do jogador
+ * Gera o sprite correto conforme o estado e direção do jogador
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 11/05/2025
+ */
 public class PlayerShape implements IShape {
 
     private State currentState;
@@ -20,10 +30,16 @@ public class PlayerShape implements IShape {
 
     BufferedImage currentFrame;
 
+    /**
+     * Construtor
+     * 
+     * @param own Behaviour do jogador
+     */
     public PlayerShape(PlayerBehaviour own) {
         animators = new HashMap<>();
         owner = own;
 
+        // Carrega os sprites e associa a animadores para cada estado do jogador
         try {
             BufferedImage idleSprite = ImageIO.read(getClass().getResource("/assets/player_idle.png"));
             BufferedImage runSprite = ImageIO.read(getClass().getResource("/assets/player_run.png"));
@@ -44,6 +60,10 @@ public class PlayerShape implements IShape {
         }
     }
 
+    /**
+     * Atualiza o estado do jogador e reinicia a animação correspondente
+     * @param newState Novo estado do owner
+     */
     public void setState(State newState) {
         if (animators.containsKey(newState)) {
             currentState = newState;
@@ -53,6 +73,9 @@ public class PlayerShape implements IShape {
         animators.get(newState).reset();
     }
 
+    /** 
+     *  Avança a animação do estado atual
+     */
     public void update(){ 
         SpriteAnimator animator = animators.get(currentState);
         if (animator != null) {
@@ -84,6 +107,9 @@ public class PlayerShape implements IShape {
         }
     }
 
+    /**
+     * Verifica mudanças de estado e direção do jogador
+     */
     private void updateState(){
         State newState = owner.state();
         int newDirection = owner.gameObject().transform().direction();
@@ -91,6 +117,10 @@ public class PlayerShape implements IShape {
         if(direction != newDirection) direction = newDirection;
     }
 
+    /**
+     * Retorna o índice do frame atual da animação
+     * @return Número do frame 
+     */
     public int getCurrentFrame() {
         SpriteAnimator animator = animators.get(currentState);
         return animator.getCurrentFrameInt();

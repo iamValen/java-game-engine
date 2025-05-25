@@ -5,7 +5,17 @@ import java.awt.Graphics;
 
 import interfaces.IShape;
 
-public class DashShape implements IShape{
+/**
+ * Desenha a barra de cargas de dash do jogador
+ * 
+ * Representa visualmente até duas cargas com animação em tempo real do carregamento
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 11/05/2025
+ */
+public class DashShape implements IShape {
 
     private int dashCharges = 2;
     private final int maxDashCharges = 2;
@@ -17,9 +27,13 @@ public class DashShape implements IShape{
 
     private int filledWidth;
 
-    public DashShape(){
-    }
-
+    /**
+     * Atualiza o estado da barra de dash
+     * 
+     * @param dashCharges número de cargas disponíveis
+     * @param lastDashRechargeTime tempo desde o início da recarga
+     * @param filledWidth largura preenchida da barra em recarga
+     */
     public void update(int dashCharges, long lastDashRechargeTime, int filledWidth){
         this.dashCharges = dashCharges;
         this.lastDashRechargeTime = lastDashRechargeTime;

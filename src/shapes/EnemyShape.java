@@ -6,20 +6,37 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import game.EnemyBehaviour1;
+import game.State;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import behaviour.EnemyBehaviour1;
-import behaviour.State;
 import interfaces.IShape;
 
-public class EnemyShape implements IShape{
+/**
+ * Forma visual de um inimigo simples
+ * 
+ * Mostra animações de andar e correr com orientação horizontal
+ * 
+ * @author Alexandre Menino a83974
+ * @author Grégory Endrio Leite a90952
+ * @author Valentim Khakhitva a81785
+ * @version 11/05/2025
+ */
+public class EnemyShape implements IShape {
+
     private State currentState;
     int direction;
     private Map<State, SpriteAnimator> animators;
     private final EnemyBehaviour1 owner;
 
+    /**
+     * Construtor. Carrega sprites e associa animadores aos estados
+     * 
+     * @param own comportamento do inimigo
+     */
     public EnemyShape(EnemyBehaviour1 own){
         animators = new HashMap<>();
         owner = own;
@@ -34,9 +51,13 @@ public class EnemyShape implements IShape{
         } catch (IOException e) {
             e.printStackTrace(System.out);
         }
-
     }
 
+    /**
+     * Define o estado atual do inimigo
+     * 
+     * @param newState novo estado
+     */
     public void setState(State newState) {
         if (animators.containsKey(newState)) {
             currentState = newState;
@@ -44,6 +65,9 @@ public class EnemyShape implements IShape{
         else System.out.println("Not a state");  
     }
 
+    /**
+     * Atualiza o animador com base no estado atual
+     */
     public void update(){ 
         SpriteAnimator animator = animators.get(currentState);
         if (animator != null) {
@@ -51,6 +75,7 @@ public class EnemyShape implements IShape{
         }
     }
 
+    @Override
     public void render(Graphics g, int x, int y) {
         updateState();
         SpriteAnimator animator = animators.get(currentState);
@@ -74,6 +99,9 @@ public class EnemyShape implements IShape{
         }
     }
 
+    /**
+     * Atualiza o estado e direção com base no dono
+     */
     private void updateState(){
         State newState = owner.state();
         int newDirection = owner.gameObject().transform().direction();
