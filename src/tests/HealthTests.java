@@ -11,11 +11,11 @@ import engine.Collider;
 import engine.GameObject;
 import engine.GameEngine;
 import engine.Transform;
-import figures.Circle;
-import figures.Point;
 import game.AAtack;
 import game.Health;
 import game.MeleeAttackBehaviour;
+import geometry.Circle;
+import geometry.Point;
 import interfaces.IShape;
 import interfaces.IGameObject;
 

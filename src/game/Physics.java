@@ -1,6 +1,6 @@
 package game;
 
-import figures.*;
+import geometry.*;
 import interfaces.IGameObject;
 
 /**

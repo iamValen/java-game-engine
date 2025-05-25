@@ -1,4 +1,4 @@
-package figures;
+package geometry;
 /**
  * Classe abstrata Figura que representa uma figura geométrica.
  * Define os métodos abstratos que devem ser implementados pelas subclasses

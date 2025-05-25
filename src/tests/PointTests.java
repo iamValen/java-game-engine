@@ -2,7 +2,7 @@ package tests;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import figures.Point;
+import geometry.Point;
 
 public class PointTests{
 

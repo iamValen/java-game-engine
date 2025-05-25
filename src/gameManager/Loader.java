@@ -1,8 +1,8 @@
 package gameManager;
 
 import engine.*;
-import figures.Point;
 import game.PlayerBehaviour;
+import geometry.Point;
 import interfaces.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -88,7 +88,7 @@ public class Loader {
         IGameObject leftWall = ObjectCreator.block(-30, screenH / 2, 0, 0, 1, 60, screenH, false);
         engine.addEnabled(leftWall);
 
-        IGameObject rightWall = ObjectCreator.block(screenW, screenH / 2, 0, 0, 1, 10, screenH, false);
+        IGameObject rightWall = ObjectCreator.block(screenW + 30, screenH / 2, 0, 0, 1, 60, screenH, false);
         engine.addEnabled(rightWall);
 
 
@@ -134,7 +134,7 @@ public class Loader {
         IGameObject leftWall = ObjectCreator.block(-30, screenH / 2, 0, 0, 1, 60, screenH, false);
         engine.addEnabled(leftWall);
 
-        IGameObject rightWall = ObjectCreator.block(screenW, screenH / 2, 0, 0, 1, 10, screenH, false);
+        IGameObject rightWall = ObjectCreator.block(screenW + 30, screenH / 2, 0, 0, 1, 60, screenH, false);
         engine.addEnabled(rightWall);
 
         

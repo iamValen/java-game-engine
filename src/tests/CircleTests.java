@@ -3,10 +3,10 @@ package tests;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import figures.Circle;
-import figures.Point;
-import figures.Polygon;
-import figures.Segment;
+import geometry.Circle;
+import geometry.Point;
+import geometry.Polygon;
+import geometry.Segment;
 
 public class CircleTests{
 

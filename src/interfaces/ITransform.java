@@ -1,5 +1,5 @@
 package interfaces;
-import figures.Point;
+import geometry.Point;
 
 /**
  * Interface do Transform.

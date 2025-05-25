@@ -4,10 +4,10 @@ import org.junit.Test;
 import engine.Transform;
 import engine.Collider;
 import engine.GameObject;
-import figures.Circle;
-import figures.Point;
-import figures.Polygon;
 import game.PlayerBehaviour;
+import geometry.Circle;
+import geometry.Point;
+import geometry.Polygon;
 
 import static org.junit.Assert.*;
 

@@ -9,11 +9,11 @@ import engine.Collider;
 import engine.GameEngine;
 import engine.GameObject;
 import engine.Transform;
-import figures.Circle;
-import figures.Point;
-import figures.Polygon;
 import game.AAABehaviour;
 import game.Physics;
+import geometry.Circle;
+import geometry.Point;
+import geometry.Polygon;
 import interfaces.IGameObject;
 
 public class GameEngineTests {

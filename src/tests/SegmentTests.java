@@ -2,8 +2,8 @@ package tests;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import figures.Point;
-import figures.Segment;
+import geometry.Point;
+import geometry.Segment;
 
 public class SegmentTests {
 

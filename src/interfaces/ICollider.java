@@ -1,7 +1,7 @@
 package interfaces;
 
-import figures.Figure;
-import figures.Point;
+import geometry.Figure;
+import geometry.Point;
 
 /**
  * Interface do collider.

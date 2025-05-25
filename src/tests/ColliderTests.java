@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import engine.Collider;
 import engine.Transform;
-import figures.Circle;
-import figures.Point;
-import figures.Polygon;
+import geometry.Circle;
+import geometry.Point;
+import geometry.Polygon;
 
 import static org.junit.Assert.*;
 

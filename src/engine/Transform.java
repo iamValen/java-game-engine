@@ -1,5 +1,5 @@
 package engine;
-import figures.Point;
+import geometry.Point;
 import interfaces.ITransform;
 
 /**

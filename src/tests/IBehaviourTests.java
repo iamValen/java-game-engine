@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import engine.GameEngine;
 import engine.GameObject;
-import figures.Point;
-import figures.Polygon;
 import game.AAABehaviour;
+import geometry.Point;
+import geometry.Polygon;
 import engine.Transform;
 import engine.Collider;
 import interfaces.IGameObject;

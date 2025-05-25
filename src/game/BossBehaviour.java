@@ -1,10 +1,10 @@
 package game;
 
 import engine.GameEngine;
-import figures.Point;
 import gameManager.Loader;
 import gameManager.ObjectCreator;
 import gameManager.SoundPlayer;
+import geometry.Point;
 import interfaces.IGameObject;
 import interfaces.ITransform;
 import java.util.ArrayList;

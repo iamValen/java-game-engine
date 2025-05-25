@@ -1,4 +1,4 @@
-package figures;
+package geometry;
 import static util.util.*;
 
 /**

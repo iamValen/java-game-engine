@@ -2,10 +2,10 @@ package game;
 
 import engine.GameEngine;
 import engine.InputManager;
-import figures.Point;
 import gameManager.Loader;
 import gameManager.ObjectCreator;
 import gameManager.SoundPlayer;
+import geometry.Point;
 import interfaces.IGameObject;
 import interfaces.IPoints;
 import interfaces.ITransform;

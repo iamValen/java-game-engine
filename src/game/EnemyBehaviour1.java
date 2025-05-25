@@ -1,13 +1,12 @@
 package game;
 
 import engine.GameEngine;
-import figures.Point;
 import gameManager.ObjectCreator;
+import geometry.Point;
 import interfaces.IGameObject;
 import interfaces.ITransform;
-import shapes.EnemyShape;
-
 import java.util.ArrayList;
+import shapes.EnemyShape;
 
 /**
  * Classe Enemy Behaviour

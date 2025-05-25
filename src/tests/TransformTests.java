@@ -2,7 +2,7 @@ package tests;
 import org.junit.Test;
 
 import engine.Transform;
-import figures.Point;
+import geometry.Point;
 
 import static org.junit.Assert.*;
 

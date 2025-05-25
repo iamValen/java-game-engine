@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import figures.Point;
 import game.Physics;
+import geometry.Point;
 
 public class PhysicsTests {
 

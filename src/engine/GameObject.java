@@ -1,5 +1,5 @@
 package engine;
-import figures.Figure;
+import geometry.Figure;
 import interfaces.IBehaviour;
 import interfaces.ICollider;
 import interfaces.IGameObject;

@@ -1,6 +1,6 @@
 package engine;
-import figures.Point;
 import gameManager.SoundPlayer;
+import geometry.Point;
 import interfaces.IGameEngine;
 import interfaces.IGameObject;
 import interfaces.IShape;

@@ -1,6 +1,6 @@
 package engine;
-import figures.Figure;
-import figures.Point;
+import geometry.Figure;
+import geometry.Point;
 import interfaces.ICollider;
 import interfaces.ITransform;
 

@@ -1,4 +1,4 @@
-package figures;
+package geometry;
 /**
  * Realiza todas as operações sobre círculos.
  * Representa uma figura circular com centro e raio.
