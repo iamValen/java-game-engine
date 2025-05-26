@@ -53,7 +53,7 @@ public class PlayerShape implements IShape {
             animators.put(State.jump, new SpriteAnimator(jumpUpSprite, 4, 96, 96, 8, 3, false));
             animators.put(State.dash, new SpriteAnimator(dashSprite, 6, 96, 96, 2, 3, true));
             animators.put(State.attack, new SpriteAnimator(attackSprite, 3, 96, 96, 5, 3, true));
-            animators.put(State.hurt, new SpriteAnimator(hurtSprite, 4, 96, 96, 4, 3, false));
+            animators.put(State.hurt, new SpriteAnimator(hurtSprite, 4, 96, 96, 6, 3, false));
 
         } catch (IOException e) {
             e.printStackTrace(System.out);

@@ -2,6 +2,7 @@ package game;
 
 import engine.GameEngine;
 import gameManager.ObjectCreator;
+import gameManager.SoundPlayer;
 import geometry.Point;
 import interfaces.IGameObject;
 import interfaces.ITransform;
@@ -77,6 +78,8 @@ public class EnemyBehaviour1 extends AEnemy {
 
         state = State.walk;
         es =(EnemyShape) myGo.shape();
+
+        SoundPlayer.loadSound("enemy_hurt", "sounds/enemy_hurt.wav");
     }
 
     @Override
@@ -144,7 +147,9 @@ public class EnemyBehaviour1 extends AEnemy {
             switch (go.name()) {
             case("playerAttack") ->{
                 lastAtackThatConnected = (AAtack) go.behaviour();
-                health.takeDamage(go);
+                if(health.takeDamage(go)){
+                    SoundPlayer.playLoadedSound("enemy_hurt", 90);
+                }
             }
             case("floor") -> {
                     if(flag)

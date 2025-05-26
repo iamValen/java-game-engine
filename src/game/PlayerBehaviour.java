@@ -74,6 +74,9 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
 
     private long lastFootstepTime;
 
+    private long hurtStart;
+    private final long hurtDuration = 500;
+
     /**
      * Construtor
      * 
@@ -111,6 +114,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         SoundPlayer.loadSound("attack", "sounds/attack.wav");
         SoundPlayer.loadSound("dash", "sounds/dash.wav");
         SoundPlayer.loadSound("step", "sounds/step.wav");
+        SoundPlayer.loadSound("player_hurt", "sounds/player_hurt.wav");
         
         notifyHealth();
         
@@ -165,9 +169,14 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             isDashing = false;
         }
         
+        
         // INPUT
         readAndMove(dt);
         
+        if (now - hurtStart < hurtDuration) {
+            newState = State.hurt;
+        }
+
         physics.update(dt);
         t.move(physics.Speed().scale(dt/0.016666), 0);
         
@@ -182,6 +191,7 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         sounds();
         
         physics.setIsGrounded(false);
+        System.out.println("Player state: " + state);
     }
     
     /**
@@ -202,8 +212,6 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
             isDashing = false;
             
             newState = State.attack;
-            
-            
         }
         // run
         if ((InputManager.isKeyDown(KeyEvent.VK_LEFT) || InputManager.isKeyDown(KeyEvent.VK_RIGHT))){
@@ -322,14 +330,18 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
                     flag = false;
                 }
                 case("Enemy1") -> {
-                    health.takeDamage(go1);
-                    state = State.hurt;
-                    notifyHealth();
+                    if(health.takeDamage(go1)){
+                        hurtStart = now;
+                        notifyHealth();
+                        SoundPlayer.playLoadedSound("player_hurt", 90);
+                    }
                 }
                 case("EnemyAttack") ->{
-                    health.takeDamage(go1);
-                    state = State.hurt;
-                    notifyHealth();
+                    if(health.takeDamage(go1)){
+                        hurtStart = now;
+                        notifyHealth();
+                        SoundPlayer.playLoadedSound("player_hurt", 90);
+                    }
                 }
                 default -> {}
             }

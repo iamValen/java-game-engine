@@ -13,7 +13,7 @@ import java.awt.Graphics;
  * @author Valentim Khakhitva a81785
  * @version 20/05/2025
  */
-public class screenMessageShape implements IShape {
+public class ScreenMessageShape implements IShape {
 
     private final String msg;
     private final int size;
@@ -26,7 +26,7 @@ public class screenMessageShape implements IShape {
      * @param size    tamanho da fonte
      * @param color   cor do texto
      */
-    public screenMessageShape(String message, int size, Color color){
+    public ScreenMessageShape(String message, int size, Color color){
         msg = message;
         this.size = size;
         this.color = color;

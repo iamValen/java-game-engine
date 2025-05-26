@@ -18,7 +18,7 @@ import shapes.HealthShape;
 import shapes.ImageBlockShape;
 import shapes.PlayerShape;
 import shapes.ScoreShape;
-import shapes.screenMessageShape;
+import shapes.ScreenMessageShape;
 
 /**
  * Classe responsável por criar e configurar todos os GameObjects do jogo
@@ -268,7 +268,7 @@ public class ObjectCreator {
 
     public static IGameObject screenMessage(int x, int y, String message, int size, Color color){
         IGameObject out = new GameObject("message");
-        IShape shape = new screenMessageShape(message, size, color);
+        IShape shape = new ScreenMessageShape(message, size, color);
         ITransform transform = new Transform(x, y, 0, 0, 1);
         out.insertElements(transform, null, shape, null);
         return out;

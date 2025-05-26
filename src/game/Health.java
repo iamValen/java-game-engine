@@ -49,19 +49,38 @@ public class Health {
     }
 
     /**
+     * Obtém o iFrames
+     * 
+     * @return valor iFrames
+     */
+    public int getIFrames(){
+        return this.iFrames;
+    }
+
+    /**
+     * Obtem o tempo desde o último dano
+     * 
+     * @return tempo desde o último dano
+     */
+    public long getDamageTime(){
+        return damageTime;
+    }
+
+    /**
      * Tira vida conforme é atacado
      * 
      * @param take objeto que atacou
      */
-    public void takeDamage(IGameObject take){
+    public boolean takeDamage(IGameObject take){
         now = System.currentTimeMillis();
         if(now - damageTime > iFrames){
             damageTime = System.currentTimeMillis();
             this.health -= ((IDamage)take.behaviour()).getDamage();
             if(this.health <= 0)
                 engine.destroy(go);
+            
+            return true;
         }
+        return false;
     }
-
-
 }

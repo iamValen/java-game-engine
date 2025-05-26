@@ -78,6 +78,7 @@ public class BossBehaviour extends AEnemy {
         SoundPlayer.loadSound("scream", "sounds/boss_scream.wav");
         SoundPlayer.loadSound("boom1", "sounds/boom1.wav");
         SoundPlayer.loadSound("boom2", "sounds/boom2.wav");
+        SoundPlayer.loadSound("boss_hurt", "sounds/boss_hurt.wav");
     }
 
     @Override
@@ -171,7 +172,9 @@ public class BossBehaviour extends AEnemy {
             switch (go.name()) {
             case("playerAttack") ->{
                 lastAtackThatConnected = (AAtack) go.behaviour();
-                health.takeDamage(go);
+                if(health.takeDamage(go)){
+                    SoundPlayer.playLoadedSound("boss_hurt", 90);
+                }
             }
             case("floor") -> {
                     if(flag)
