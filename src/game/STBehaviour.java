@@ -39,6 +39,6 @@ public class STBehaviour extends AAABehaviour {
     public void onCollision(ArrayList<IGameObject> gol){
         for(IGameObject go : gol)
             if(go.name().equals("Player"))
-                Loader.loadLevel(roomKey, posKey);
+                Loader.loadLevel(roomKey, posKey, false);
     }
 }

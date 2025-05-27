@@ -1,7 +1,8 @@
 package interfaces;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.SortedMap;
 
 /**
  * Interface que define os métodos essenciais do motor de jogo.
@@ -15,7 +16,7 @@ public interface IGameEngine {
      * Devolve um mapa de camadas onde os objectos estão organizados por ordem de desenho.
      * @return Mapa de camadas (por ordem) com listas de objectos de jogo.
      */
-    public HashMap<Integer, ArrayList<IGameObject>> layers();
+    public SortedMap<Integer, ArrayList<IGameObject>> layers();
 
     /**
      * Devolve a lista de objectos actualmente activos no jogo.
@@ -87,6 +88,13 @@ public interface IGameEngine {
      * Inicia o ciclo principal do motor de jogo.
      */
     public void run();
+
+    /**
+     * Renderiza todos os elementos
+     * 
+     * @param g Grahics
+     */
+    public void render(Graphics g);
 
     /**
      * Verifica colisões entre objectos activos.

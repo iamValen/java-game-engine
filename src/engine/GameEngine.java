@@ -1,4 +1,5 @@
 package engine;
+import gameManager.Loader;
 import gameManager.SoundPlayer;
 import geometry.Point;
 import interfaces.IGameEngine;
@@ -8,7 +9,11 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Classe que representa o motor de jogo, responsável por gerenciar os GameObjects e suas interações.
@@ -25,7 +30,7 @@ public class GameEngine implements IGameEngine{
      */
     private static GameEngine instance = null;
 
-    private final HashMap<Integer, ArrayList<IGameObject>> layers = new HashMap<>();
+    private final SortedMap<Integer, ArrayList<IGameObject>> layers = new TreeMap<>();
     private final ArrayList<IGameObject> enabledList = new ArrayList<>();
     private final ArrayList<IGameObject> disabledList = new ArrayList<>();
     private final HashMap<IGameObject, ArrayList<IGameObject>> collisionMap = new HashMap<>();
@@ -36,6 +41,11 @@ public class GameEngine implements IGameEngine{
     private final ArrayList<IGameObject> toDestroy = new ArrayList<>();
     
     private final int TARGET_FPS = 60; 
+
+    private boolean won = false;
+    private boolean lost = false;
+
+    private long endGameTimer;
 
     private boolean isRunning;
     private Canvas window;
@@ -78,7 +88,7 @@ public class GameEngine implements IGameEngine{
      * @return Lista de GameObjects.
      */
     @Override
-    public HashMap<Integer, ArrayList<IGameObject>> layers(){
+    public SortedMap<Integer, ArrayList<IGameObject>> layers(){
         return this.layers;
     }
 
@@ -191,10 +201,14 @@ public class GameEngine implements IGameEngine{
         final long frameTimeNs = 1_000_000_000L / TARGET_FPS;
         long last = System.nanoTime();
 
+        manageGO();
+
         while(isRunning){
             long now = System.nanoTime();
             double dt = (now - last) / 1_000_000_000.0;
             last = now;
+
+            manageGO();
 
             //System.out.println(1/dt);
 
@@ -211,15 +225,7 @@ public class GameEngine implements IGameEngine{
             g.setColor(java.awt.Color.WHITE);
             g.fillRect(0, 0, window.getWidth(), window.getHeight());
 
-            // draw all GameObjects via your GameObject.render(g)
-            for(IGameObject go : enabledList) {
-                if(go.shape() != null){
-                    Point p = go.transform().position();
-                    int x = p.X();
-                    int y = p.Y();
-                    go.shape().render(g, x, y);
-                }
-            }
+            render(g);
 
             g.dispose();    // release this Graphics
             bs.show();      // flip buffers
@@ -234,24 +240,25 @@ public class GameEngine implements IGameEngine{
             // unreliable way to check frametimes for some reason
             // long actualFrameTime = elapsed + ((toSleep>0) ? toSleep : 0);
             // System.out.println((actualFrameTime)/1000);
-            manageGO();
+
+            if(won && now - endGameTimer > 300_000_000L){
+                Loader.completeGame();
+            }
+            else if(lost && now - endGameTimer > 300_000_000L){
+                Loader.gameOver();
+            }
+
         }
     }
 
+    @Override
     public void render(Graphics g) {
-        for(IGameObject go : enabledList) {
-            int x, y;
-            if(go.transform() == null){
-                x = 0;
-                y = 0;
-            }
-            else{
-                x = go.transform().position().X();
-                y = go.transform().position().Y();
-            }
-            IShape shape = go.shape();
-            if (shape != null) {
-                shape.render(g, x, y);
+        for (var entry : layers.entrySet()) {
+            for (IGameObject go : entry.getValue()) {
+                IShape shape = go.shape();
+                if (shape == null) continue;
+                Point p = go.transform().position();
+                shape.render(g, p.X(), p.Y());
             }
         }
     }
@@ -265,6 +272,24 @@ public class GameEngine implements IGameEngine{
         this.window = canvas;
         // create the double buffer on the Canvas
         this.window.createBufferStrategy(2);
+    }
+
+    public void wonGame(){
+        endGameTimer = System.nanoTime();
+        won = true;
+    }
+
+    public void setWon(boolean set){
+        this.won = set;
+    }
+
+    public void lostGame(){
+        endGameTimer = System.nanoTime();
+        lost = true;
+    }
+
+    public void setLost(boolean set){
+        this.lost = set;
     }
 
     /**

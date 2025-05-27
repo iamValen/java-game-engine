@@ -147,7 +147,12 @@ public class EnemyBehaviour1 extends AEnemy {
             switch (go.name()) {
             case("playerAttack") ->{
                 lastAtackThatConnected = (AAtack) go.behaviour();
-                if(health.takeDamage(go)){
+                Boolean takeDamageResult = health.takeDamage(go);
+                if(takeDamageResult == null){ // died
+                    SoundPlayer.playLoadedSound("enemy_hurt", 90);
+                    engine.destroy(myGo);
+                }
+                else if(takeDamageResult){
                     SoundPlayer.playLoadedSound("enemy_hurt", 90);
                 }
             }

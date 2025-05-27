@@ -26,6 +26,8 @@ public abstract class AEnemy extends AAABehaviour implements IDamage, IPoints {
 
     protected State state;
 
+    protected State newState;
+
     /** 
      * Retorna a física 
      * 

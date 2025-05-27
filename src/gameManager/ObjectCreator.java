@@ -269,7 +269,7 @@ public class ObjectCreator {
     public static IGameObject screenMessage(int x, int y, String message, int size, Color color){
         IGameObject out = new GameObject("message");
         IShape shape = new ScreenMessageShape(message, size, color);
-        ITransform transform = new Transform(x, y, 0, 0, 1);
+        ITransform transform = new Transform(x, y, Integer.MAX_VALUE, 0, 1);
         out.insertElements(transform, null, shape, null);
         return out;
     }

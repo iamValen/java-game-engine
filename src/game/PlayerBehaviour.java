@@ -132,7 +132,21 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
         engine.destroy(healthHUD);
         engine.destroy(dashHUD);
         engine.destroy(scoreHUD);
-        System.out.println("player died");
+    }
+
+    @Override
+    public void onDisable(){
+        health = new Health(myGo, maxHealth);
+        health.setIFrames(2500);
+        score = 0;
+        notifyScore();
+    }
+
+    @Override
+    public void onEnable(){
+        notifyHealth();
+        notifyDash();
+        notifyScore();
     }
     
     
@@ -329,15 +343,13 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
                     Physics.snapToWallOnTheLeft(myGo, go1);
                     flag = false;
                 }
-                case("Enemy1") -> {
-                    if(health.takeDamage(go1)){
-                        hurtStart = now;
-                        notifyHealth();
-                        SoundPlayer.playLoadedSound("player_hurt", 90);
+                case "Enemy1", "EnemyAttack" -> {
+                    Boolean takeDamageResult = health.takeDamage(go1);
+                    if(takeDamageResult == null){
+                        engine.lostGame();
+                        engine.destroy(myGo);
                     }
-                }
-                case("EnemyAttack") ->{
-                    if(health.takeDamage(go1)){
+                    else if(takeDamageResult){
                         hurtStart = now;
                         notifyHealth();
                         SoundPlayer.playLoadedSound("player_hurt", 90);
@@ -345,9 +357,6 @@ public class PlayerBehaviour extends AAABehaviour implements IPoints, Observable
                 }
                 default -> {}
             }
-        }
-        if(health.getHealth() <= 0){
-            Loader.gameOver();
         }
     }
     

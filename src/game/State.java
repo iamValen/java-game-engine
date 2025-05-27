@@ -15,5 +15,6 @@ public enum State {
     jump,
     dash,
     attack,
-    hurt
+    hurt,
+    dead
 }

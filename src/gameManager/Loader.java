@@ -25,21 +25,23 @@ public class Loader {
     private static IGameObject player;
 
     public static void gameOver(){
+        engine.destroyAll();
         IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
         engine.addEnabled(background);
         engine.destroyAll();
-        player = null;
         IGameObject gameOver = ObjectCreator.gameOver();
         engine.addEnabled(gameOver);
+        engine.setLost(false);
     }
 
     public static void completeGame(){
+        engine.destroyAll();
         IGameObject background = ObjectCreator.background(engine.getScreenWidth()/2, engine.getScreenHeight()/2, Integer.MIN_VALUE, 0, 1, engine.getScreenWidth(), engine.getScreenHeight());
         engine.addEnabled(background);
         int score = ((PlayerBehaviour)player.behaviour()).getScore();
-        player = null;
         IGameObject completeGame = ObjectCreator.completeGame(score);
         engine.addEnabled(completeGame);
+        engine.setWon(false);
     }
 
     /**
@@ -50,8 +52,13 @@ public class Loader {
      * @param roomKey identificador do nível a carregar
      * @param posKey  identificador da posição de spawn dentro do nível
      */
-    public static void loadLevel(int roomKey, int posKey) {
+    public static void loadLevel(int roomKey, int posKey, boolean reset) {
+        if(reset && player != null){
+            player = ObjectCreator.Player(150, 700, 0, 0, 1, 40, 100);
+        }
+
         engine.destroyAll();
+
 
         Loader.posKey = posKey;
 

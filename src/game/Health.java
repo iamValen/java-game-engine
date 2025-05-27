@@ -71,13 +71,13 @@ public class Health {
      * 
      * @param take objeto que atacou
      */
-    public boolean takeDamage(IGameObject take){
+    public Boolean takeDamage(IGameObject take){
         now = System.currentTimeMillis();
         if(now - damageTime > iFrames){
             damageTime = System.currentTimeMillis();
             this.health -= ((IDamage)take.behaviour()).getDamage();
             if(this.health <= 0)
-                engine.destroy(go);
+                return null;
             
             return true;
         }

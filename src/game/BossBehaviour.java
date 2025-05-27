@@ -51,6 +51,9 @@ public class BossBehaviour extends AEnemy {
 
     private boolean hasScreamed = false;
 
+    private long deadTime;
+    private boolean dead = false;
+
     public BossBehaviour(int damage, int width, int height) {
         super(5000, damage);
         physics = new Physics();
@@ -86,14 +89,14 @@ public class BossBehaviour extends AEnemy {
         givePointsToWhoDeserves();
         engine.destroy(attack1);
         engine.destroy(attack2);
-        Loader.completeGame();
+        engine.wonGame();
     }
 
     @Override
     public void onUpdate(double dT) {
         ITransform t = myGo.transform();
 
-        State newState = state;
+        newState = state;
 
         long now = System.currentTimeMillis();
 
@@ -109,7 +112,7 @@ public class BossBehaviour extends AEnemy {
         // o boss grita para avisar que vai atacar
         if(elapsedFromLoopStart > 2000 && elapsedFromLoopStart < 3000 ){
             newState = State.jump;
-            if(!hasScreamed) SoundPlayer.playLoadedSound("scream", 95);
+            if(!hasScreamed) SoundPlayer.playLoadedSound("scream", 90);
             hasScreamed = true;
         }
         else{
@@ -157,6 +160,16 @@ public class BossBehaviour extends AEnemy {
 
         // sprite animation
 
+        if(dead){
+            if(now - deadTime < 600){
+                newState = State.dead;
+            }
+            else{
+                engine.destroy(myGo);
+            }
+        }
+        
+
         if (newState != state) {
             state = newState;
         }
@@ -172,30 +185,37 @@ public class BossBehaviour extends AEnemy {
             switch (go.name()) {
             case("playerAttack") ->{
                 lastAtackThatConnected = (AAtack) go.behaviour();
-                if(health.takeDamage(go)){
+                Boolean takeDamageResult = health.takeDamage(go);
+                if(takeDamageResult == null){
+                    SoundPlayer.playLoadedSound("scream", 90);
+                    dead = true;
+                    deadTime = System.currentTimeMillis();
+                }
+                else if(takeDamageResult){
                     SoundPlayer.playLoadedSound("boss_hurt", 90);
                 }
             }
             case("floor") -> {
-                    if(flag)
-                        Physics.snapToFloor(myGo, go);
-                    physics.setIsGrounded(true);
-                }
-                case("celing") ->{
-                    if(flag)
-                        Physics.snapToCeling(myGo, go);
-                    flag = false;
-                }
-                case("rightWall") -> {
-                    if(flag)
-                        Physics.snapToWallOnTheRight(myGo, go);
-                    flag = false;
-                }
-                case("leftWall") -> {
-                    if(flag)
-                        Physics.snapToWallOnTheLeft(myGo, go);
-                    flag = false;
-                }
+                if(flag)
+                    Physics.snapToFloor(myGo, go);
+                physics.setIsGrounded(true);
+                flag = false;
+            }
+            case("celing") ->{
+                if(flag)
+                    Physics.snapToCeling(myGo, go);
+                flag = false;
+            }
+            case("rightWall") -> {
+                if(flag)
+                    Physics.snapToWallOnTheRight(myGo, go);
+                flag = false;
+            }
+            case("leftWall") -> {
+                if(flag)
+                    Physics.snapToWallOnTheLeft(myGo, go);
+                flag = false;
+            }
             }
         }
     }

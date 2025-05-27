@@ -48,7 +48,7 @@ public class GUI extends Canvas {
 
             engine.setWindow(this);
 
-            Loader.loadLevel(1, 1);
+            Loader.loadLevel(1, 1, false);
 
             new Thread(engine::run, "EngineThread").start();
         });

@@ -48,11 +48,13 @@ public class BossShape implements IShape {
             BufferedImage idleSprite = ImageIO.read(getClass().getResource("/assets/boss_idle.png"));
             BufferedImage screamSprite = ImageIO.read(getClass().getResource("/assets/boss_scream.png"));
             BufferedImage attackSprite = ImageIO.read(getClass().getResource("/assets/boss_attack.png"));
+            BufferedImage deadSprite = ImageIO.read(getClass().getResource("/assets/boss_dead.png"));
 
             animators.put(State.idle, new SpriteAnimator(idleSprite, 5, 128, 128, 6, 2.5, true));
             animators.put(State.jump, new SpriteAnimator(screamSprite, 4, 128, 128, 7, 2.5, true));
             animators.put(State.attack, new SpriteAnimator(attackSprite, 4, 128, 128, 4, 2.5, false)); // high attack
             animators.put(State.dash, new SpriteAnimator(attackSprite, 4, 128, 128, 4, 2.5, false));  // wide attack
+            animators.put(State.dead, new SpriteAnimator(deadSprite, 4, 128, 128, 6, 2.5, false));
 
             /* Attack 1 */
             BufferedImage highAttackImage = ImageIO.read(getClass().getResource("/assets/attack.png"));
